@@ -29,6 +29,49 @@ yarn add -D @finanzfluss/calculators
 
 ## Calculators
 
+### Compound Interest Calculator
+
+The Zinseszinsrechner ([https://finanzfluss.de/rechner/zinseszinsrechner](https://www.finanzfluss.de/rechner/zinseszinsrechner/)) demonstrates the power of compound interest for long-term wealth building. It calculates how investments grow over time when returns are reinvested, helping users visualize the compound effect on their savings.
+
+#### Key Features:
+
+- **Flexible starting capital** support for both lump-sum investments and zero initial capital scenarios
+- **Regular savings plans** with configurable monthly payment amounts to model systematic investing
+- **Multiple compounding intervals** supporting monthly, quarterly, and yearly compounding periods
+- **Long-term projections** with duration support from short-term to multi-decade investment horizons
+- **Interest rate sensitivity analysis** showing how small changes in returns dramatically impact final wealth
+- **Visual data output** providing detailed breakdowns of capital growth vs. compound interest accumulation
+- **Realistic return modeling** with validation for reasonable interest rate ranges (-10000% to 10000%)
+
+```ts
+import {
+  calcCompoundInterest,
+  COMPOUND_INTEREST_QUERY_SCHEMA,
+} from '@finanzfluss/calculators'
+
+const input = {
+  startCapital: '5000',
+  monthlyPayment: '100',
+  durationYears: '10',
+  yearlyInterest: '7',
+  type: 'monthly', // 'monthly', 'quarterly', or 'yearly'
+  isTest: 'false',
+}
+
+// Validate input
+const validatedInput = COMPOUND_INTEREST_QUERY_SCHEMA.parse(input)
+
+// Calculate compound interest
+const result = calcCompoundInterest(validatedInput)
+
+console.log(result.finalCapital) // Total capital after compound growth
+console.log(result.totalPayments) // Sum of all payments made
+console.log(result.totalInterest) // Total interest earned through compounding
+console.log(result.diagramData) // Detailed growth data for visualization
+```
+
+<br />
+
 ### Gross-to-Net Calculator
 
 The Brutto-Netto-Rechner ([https://finanzfluss.de/rechner/brutto-netto-rechner](https://www.finanzfluss.de/rechner/brutto-netto-rechner/)) calculates a net salary from gross income, accounting for all German tax and social insurance deductions. It is based on the official pseudo code for tax calculation provided by the German ministry of finance: [https://www.bmf-steuerrechner.de/interface/pseudocodes.xhtml](https://www.bmf-steuerrechner.de/interface/pseudocodes.xhtml).

@@ -1,0 +1,37 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`calculators/compound-interest > should return finalCapital, totalPayments and totalInterest on monthly interest base 1`] = `
+{
+  "diagramData": {},
+  "finalCapital": "23.763€",
+  "totalInterest": "6.763€",
+  "totalPayments": "17.000€",
+}
+`;
+
+exports[`calculators/compound-interest > should return finalCapital, totalPayments and totalInterest on monthly interest base without start capital 1`] = `
+{
+  "diagramData": {},
+  "finalCapital": "15.528€",
+  "totalInterest": "3.528€",
+  "totalPayments": "12.000€",
+}
+`;
+
+exports[`calculators/compound-interest > should return finalCapital, totalPayments and totalInterest on quarterly interest base 1`] = `
+{
+  "diagramData": {},
+  "finalCapital": "55.548€",
+  "totalInterest": "16.548€",
+  "totalPayments": "39.000€",
+}
+`;
+
+exports[`calculators/compound-interest > should return finalCapital, totalPayments and totalInterest on yearly interest base 1`] = `
+{
+  "diagramData": {},
+  "finalCapital": "54.620€",
+  "totalInterest": "15.620€",
+  "totalPayments": "39.000€",
+}
+`;
