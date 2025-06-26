@@ -7,16 +7,12 @@ export const COMPOUND_INTEREST_QUERY_SCHEMA = z.object({
   durationYears: z.coerce.number(),
   yearlyInterest: z.coerce.number(),
   type: z.enum(['monthly', 'quarterly', 'yearly']),
-  isTest: z
-    .string()
-    .optional()
-    .transform((i) => i === 'true'),
 })
 
 type CompoundInterestQuery = z.output<typeof COMPOUND_INTEREST_QUERY_SCHEMA>
 
 export function calcCompoundInterest(parsedQuery: CompoundInterestQuery) {
-  const { startCapital, monthlyPayment, type, isTest } = parsedQuery
+  const { startCapital, monthlyPayment, type } = parsedQuery
   const durationYears = validate
     .number(parsedQuery.durationYears)
     .between(-1000, 1000)
@@ -72,6 +68,6 @@ export function calcCompoundInterest(parsedQuery: CompoundInterestQuery) {
     finalCapital: formatResult(capitalLastMonth),
     totalPayments: formatResult(totalPayments),
     totalInterest: formatResult(capitalLastMonth - totalPayments),
-    diagramData: isTest ? {} : diagramData,
+    diagramData,
   }
 }

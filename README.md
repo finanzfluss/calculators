@@ -55,7 +55,6 @@ const input = {
   durationYears: '10',
   yearlyInterest: '7',
   type: 'monthly', // 'monthly', 'quarterly', or 'yearly'
-  isTest: 'false',
 }
 
 // Validate input

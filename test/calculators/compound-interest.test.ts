@@ -14,12 +14,12 @@ describe('calculators/compound-interest', () => {
         durationYears: '10',
         yearlyInterest: '5',
         type: 'monthly',
-        isTest: 'true',
       }),
     )
 
-    const data = calcCompoundInterest(parsedQuery)
-    expect(data).toMatchSnapshot()
+    const { finalCapital, totalPayments, totalInterest } =
+      calcCompoundInterest(parsedQuery)
+    expect({ finalCapital, totalPayments, totalInterest }).toMatchSnapshot()
   })
 
   it('should return finalCapital, totalPayments and totalInterest on monthly interest base without start capital', async () => {
@@ -30,12 +30,12 @@ describe('calculators/compound-interest', () => {
         durationYears: '10',
         yearlyInterest: '5',
         type: 'monthly',
-        isTest: 'true',
       }),
     )
 
-    const data = calcCompoundInterest(parsedQuery)
-    expect(data).toMatchSnapshot()
+    const { finalCapital, totalPayments, totalInterest } =
+      calcCompoundInterest(parsedQuery)
+    expect({ finalCapital, totalPayments, totalInterest }).toMatchSnapshot()
   })
 
   it('should return finalCapital, totalPayments and totalInterest on quarterly interest base', async () => {
@@ -46,12 +46,12 @@ describe('calculators/compound-interest', () => {
         durationYears: '10',
         yearlyInterest: '5',
         type: 'quarterly',
-        isTest: 'true',
       }),
     )
 
-    const data = calcCompoundInterest(parsedQuery)
-    expect(data).toMatchSnapshot()
+    const { finalCapital, totalPayments, totalInterest } =
+      calcCompoundInterest(parsedQuery)
+    expect({ finalCapital, totalPayments, totalInterest }).toMatchSnapshot()
   })
 
   it('should return finalCapital, totalPayments and totalInterest on yearly interest base', async () => {
@@ -62,11 +62,11 @@ describe('calculators/compound-interest', () => {
         durationYears: '10',
         yearlyInterest: '5',
         type: 'yearly',
-        isTest: 'true',
       }),
     )
 
-    const data = calcCompoundInterest(parsedQuery)
-    expect(data).toMatchSnapshot()
+    const { finalCapital, totalPayments, totalInterest } =
+      calcCompoundInterest(parsedQuery)
+    expect({ finalCapital, totalPayments, totalInterest }).toMatchSnapshot()
   })
 })
