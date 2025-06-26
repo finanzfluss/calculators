@@ -1,25 +1,24 @@
 import { z } from 'zod'
-import { formatResult, validate } from '../utils'
+import { formatResult, toPercentRate } from '../utils'
 
 export const COMPOUND_INTEREST_QUERY_SCHEMA = z.object({
   startCapital: z.coerce.number(),
   monthlyPayment: z.coerce.number(),
-  durationYears: z.coerce.number(),
-  yearlyInterest: z.coerce.number(),
+  durationYears: z.coerce.number().nonnegative().max(1000),
+  yearlyInterest: z.coerce
+    .number()
+    .min(-10_000)
+    .max(10_000)
+    .transform(toPercentRate),
   type: z.enum(['monthly', 'quarterly', 'yearly']),
 })
 
 type CompoundInterestQuery = z.output<typeof COMPOUND_INTEREST_QUERY_SCHEMA>
 
 export function calcCompoundInterest(parsedQuery: CompoundInterestQuery) {
-  const { startCapital, monthlyPayment, type } = parsedQuery
-  const durationYears = validate
-    .number(parsedQuery.durationYears)
-    .between(-1000, 1000)
-  const yearlyInterest = parsedQuery.yearlyInterest / 100
+  const { startCapital, monthlyPayment, type, durationYears, yearlyInterest } =
+    parsedQuery
   const totalPayments = startCapital + durationYears * 12 * monthlyPayment
-
-  validate.number(parsedQuery.yearlyInterest).between(-10000, 10000)
 
   let duration: number
   let payment: number
