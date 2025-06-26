@@ -1,6 +1,11 @@
 import { z } from 'zod'
 import { CORRECTION_VALUES } from '../constants/net-policy'
 import { formatInput, formatNumber } from '../utils/formatters'
+import {
+  toMonthly,
+  toMonthlyConformalRate,
+  toPercentRate,
+} from '../utils/validator'
 import { calcGrossToNet } from './gross-to-net'
 
 const MAX_EURO = 10_000
@@ -254,16 +259,4 @@ function calcPolicyTax(policyGross: number, additionalIncome: number) {
   }).outputTotalTaxesYear.replace('€', '')
 
   return formatInput(taxesWithPolicy) - formatInput(taxesWithoutPolicy)
-}
-
-function toMonthly(valuePerYear: number) {
-  return valuePerYear / 12
-}
-
-function toPercentRate(value: number) {
-  return value / 100
-}
-
-function toMonthlyConformalRate(valuePerYear: number) {
-  return (1 + valuePerYear / 100) ** (1 / 12) - 1
 }
