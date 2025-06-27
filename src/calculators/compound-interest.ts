@@ -11,9 +11,9 @@ export const COMPOUND_INTEREST_SCHEMA = z.object({
 
 type CompoundInterestInput = z.output<typeof COMPOUND_INTEREST_SCHEMA>
 
-export function calcCompoundInterest(parsedQuery: CompoundInterestInput) {
+export function calcCompoundInterest(parsedInput: CompoundInterestInput) {
   const { startCapital, monthlyPayment, type, durationYears, yearlyInterest } =
-    parsedQuery
+    parsedInput
   const totalPayments = startCapital + durationYears * 12 * monthlyPayment
 
   let duration: number
