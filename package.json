@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.2.1",
   "packageManager": "pnpm@10.12.3",
-  "description": "Financial calculators for the Finanzfluss API",
+  "description": "Financial calculators for Finanzfluss",
   "author": "Finflow GmbH",
   "license": "AGPL-3.0",
   "homepage": "https://github.com/finanzfluss/calculators#readme",
@@ -15,7 +15,6 @@
     "url": "https://github.com/finanzfluss/calculators/issues"
   },
   "keywords": [
-    "api",
     "calculator",
     "finanzfluss",
     "finflow"
