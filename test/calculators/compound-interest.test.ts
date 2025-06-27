@@ -1,12 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import {
-  calcCompoundInterest,
-  COMPOUND_INTEREST_SCHEMA,
-} from '../../src/calculators/compound-interest'
+import { compoundInterest } from '../../src/calculators/compound-interest'
 
 describe('calculators/compound-interest', () => {
   it('should return finalCapital, totalPayments and totalInterest on monthly interest base', async () => {
-    const parsedInput = COMPOUND_INTEREST_SCHEMA.parse({
+    const result = compoundInterest.validateAndCalculate({
       startCapital: 5000,
       monthlyPayment: 100,
       durationYears: 10,
@@ -14,13 +11,12 @@ describe('calculators/compound-interest', () => {
       type: 'monthly',
     })
 
-    const { finalCapital, totalPayments, totalInterest } =
-      calcCompoundInterest(parsedInput)
+    const { finalCapital, totalPayments, totalInterest } = result
     expect({ finalCapital, totalPayments, totalInterest }).toMatchSnapshot()
   })
 
   it('should return finalCapital, totalPayments and totalInterest on monthly interest base without start capital', async () => {
-    const parsedInput = COMPOUND_INTEREST_SCHEMA.parse({
+    const result = compoundInterest.validateAndCalculate({
       startCapital: 0,
       monthlyPayment: 100,
       durationYears: 10,
@@ -28,13 +24,12 @@ describe('calculators/compound-interest', () => {
       type: 'monthly',
     })
 
-    const { finalCapital, totalPayments, totalInterest } =
-      calcCompoundInterest(parsedInput)
+    const { finalCapital, totalPayments, totalInterest } = result
     expect({ finalCapital, totalPayments, totalInterest }).toMatchSnapshot()
   })
 
   it('should return finalCapital, totalPayments and totalInterest on quarterly interest base', async () => {
-    const parsedInput = COMPOUND_INTEREST_SCHEMA.parse({
+    const result = compoundInterest.validateAndCalculate({
       startCapital: 15000,
       monthlyPayment: 200,
       durationYears: 10,
@@ -42,13 +37,12 @@ describe('calculators/compound-interest', () => {
       type: 'quarterly',
     })
 
-    const { finalCapital, totalPayments, totalInterest } =
-      calcCompoundInterest(parsedInput)
+    const { finalCapital, totalPayments, totalInterest } = result
     expect({ finalCapital, totalPayments, totalInterest }).toMatchSnapshot()
   })
 
   it('should return finalCapital, totalPayments and totalInterest on yearly interest base', async () => {
-    const parsedInput = COMPOUND_INTEREST_SCHEMA.parse({
+    const result = compoundInterest.validateAndCalculate({
       startCapital: 15000,
       monthlyPayment: 200,
       durationYears: 10,
@@ -56,8 +50,7 @@ describe('calculators/compound-interest', () => {
       type: 'yearly',
     })
 
-    const { finalCapital, totalPayments, totalInterest } =
-      calcCompoundInterest(parsedInput)
+    const { finalCapital, totalPayments, totalInterest } = result
     expect({ finalCapital, totalPayments, totalInterest }).toMatchSnapshot()
   })
 })

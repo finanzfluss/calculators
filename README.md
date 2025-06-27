@@ -44,10 +44,7 @@ The Zinseszinsrechner ([https://finanzfluss.de/rechner/zinseszinsrechner](https:
 - **Realistic return modeling** with validation for reasonable interest rate ranges (-10000% to 10000%)
 
 ```ts
-import {
-  calcCompoundInterest,
-  COMPOUND_INTEREST_SCHEMA,
-} from '@finanzfluss/calculators'
+import { compoundInterest } from '@finanzfluss/calculators'
 
 const input = {
   startCapital: 5000,
@@ -57,11 +54,8 @@ const input = {
   type: 'monthly', // 'monthly', 'quarterly', or 'yearly'
 }
 
-// Validate input
-const parsedInput = COMPOUND_INTEREST_SCHEMA.parse(input)
-
-// Calculate compound interest
-const result = calcCompoundInterest(parsedInput)
+// Validate input and calculate compound interest result
+const result = compoundInterest.validateAndCalculate(input)
 
 console.log(result.finalCapital) // Total capital after compound growth
 console.log(result.totalPayments) // Sum of all payments made
