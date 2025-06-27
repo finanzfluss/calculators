@@ -13,41 +13,41 @@ const MAX_PERCENT = 100
 
 export const NET_POLICY_QUERY_SCHEMA = z.object({
   // General inputs
-  savingRate: z.coerce.number().nonnegative().max(MAX_EURO),
-  duration: z.coerce
+  savingRate: z.number().nonnegative().max(MAX_EURO),
+  duration: z
     .number()
     .positive()
     .int()
     .max(100)
     .transform((years) => years * 12),
-  taxAllowance: z.coerce.number().nonnegative().max(MAX_EURO),
-  additionalIncome: z.coerce
+  taxAllowance: z.number().nonnegative().max(MAX_EURO),
+  additionalIncome: z
     .number()
     .nonnegative()
     .max(MAX_EURO * 100),
-  personalTaxRate: z.coerce
+  personalTaxRate: z
     .number()
     .nonnegative()
     .max(MAX_PERCENT)
     .optional()
     .default(0)
     .transform(toPercentRate),
-  capitalGainsTax: z.coerce
+  capitalGainsTax: z
     .number()
     .nonnegative()
     .max(MAX_PERCENT)
     .transform(toPercentRate),
 
   // Policy inputs
-  placementCommission: z.coerce.number().nonnegative().max(MAX_EURO),
-  savingRateCosts: z.coerce
+  placementCommission: z.number().nonnegative().max(MAX_EURO),
+  savingRateCosts: z
     .number()
     .nonnegative()
     .max(MAX_PERCENT)
     .optional()
     .default(0)
     .transform(toPercentRate),
-  balanceCosts: z.coerce
+  balanceCosts: z
     .number()
     .nonnegative()
     .max(MAX_PERCENT)
@@ -55,14 +55,14 @@ export const NET_POLICY_QUERY_SCHEMA = z.object({
     .default(0)
     .transform(toPercentRate)
     .transform(toMonthly),
-  fixedCosts: z.coerce
+  fixedCosts: z
     .number()
     .nonnegative()
     .max(MAX_EURO)
     .optional()
     .default(0)
     .transform(toMonthly),
-  minimumCosts: z.coerce
+  minimumCosts: z
     .number()
     .nonnegative()
     .max(MAX_EURO)
@@ -71,18 +71,18 @@ export const NET_POLICY_QUERY_SCHEMA = z.object({
     .transform(toMonthly),
 
   // ETF inputs
-  ter: z.coerce
+  ter: z
     .number()
     .nonnegative()
     .max(MAX_PERCENT)
     .transform(toPercentRate)
     .transform(toMonthly),
-  expectedInterest: z.coerce
+  expectedInterest: z
     .number()
     .nonnegative()
     .max(MAX_PERCENT)
     .transform(toMonthlyConformalRate),
-  partialExemption: z.coerce
+  partialExemption: z
     .number()
     .nonnegative()
     .max(MAX_PERCENT)
@@ -90,14 +90,14 @@ export const NET_POLICY_QUERY_SCHEMA = z.object({
     .transform((rate) => 1 - rate),
 
   // Reallocation inputs
-  reallocationOccurrence: z.coerce
+  reallocationOccurrence: z
     .number()
     .int()
     .max(100)
     .optional()
     .default(0)
     .transform((years) => years * 12),
-  reallocationRate: z.coerce
+  reallocationRate: z
     .number()
     .nonnegative()
     .max(MAX_PERCENT)

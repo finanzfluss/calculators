@@ -50,10 +50,10 @@ import {
 } from '@finanzfluss/calculators'
 
 const input = {
-  startCapital: '5000',
-  monthlyPayment: '100',
-  durationYears: '10',
-  yearlyInterest: '7',
+  startCapital: 5000,
+  monthlyPayment: 100,
+  durationYears: 10,
+  yearlyInterest: 7,
   type: 'monthly', // 'monthly', 'quarterly', or 'yearly'
 }
 
@@ -92,23 +92,23 @@ import {
 
 const input = {
   inputAccountingYear: '2025',
-  inputTaxClass: '1',
-  inputTaxAllowance: '0',
-  inputChurchTax: '0',
+  inputTaxClass: 1,
+  inputTaxAllowance: 0,
+  inputChurchTax: 0,
   inputState: 'Hamburg',
-  inputYearOfBirth: '1990',
-  inputChildren: '0',
-  inputChildTaxAllowance: '0',
-  inputPkvContribution: '0',
-  inputEmployerSubsidy: '0',
-  inputPensionInsurance: '0',
-  inputLevyOne: '0',
-  inputLevyTwo: '0',
-  inputActivateLevy: '0',
-  inputHealthInsurance: '0',
-  inputAdditionalContribution: '1.7',
-  inputGrossWage: '5000',
-  inputPeriod: '2', // 2 = monthly, 1 = yearly
+  inputYearOfBirth: 1990,
+  inputChildren: 0,
+  inputChildTaxAllowance: 0,
+  inputPkvContribution: 0,
+  inputEmployerSubsidy: 0,
+  inputPensionInsurance: 0,
+  inputLevyOne: 0,
+  inputLevyTwo: 0,
+  inputActivateLevy: 0,
+  inputHealthInsurance: 0,
+  inputAdditionalContribution: 1.7,
+  inputGrossWage: 5000,
+  inputPeriod: 2, // 2 = monthly, 1 = yearly
 }
 
 // Validate input
@@ -143,23 +143,22 @@ import {
 } from '@finanzfluss/calculators'
 
 const input = {
-  savingRate: '500',
-  duration: '30', // years
-  taxAllowance: '1000',
-  useGrossToNet: 'false',
-  additionalIncome: '0',
-  personalTaxRate: '25',
-  capitalGainsTax: '26.375',
-  placementCommission: '0',
-  savingRateCosts: '2.5',
-  balanceCosts: '1.5',
-  fixedCosts: '10',
-  minimumCosts: '15',
-  ter: '0.2',
-  expectedInterest: '7',
-  reallocationOccurrence: '0',
-  partialExemption: '30',
-  reallocationRate: '0',
+  savingRate: 500,
+  duration: 30, // years
+  taxAllowance: 1000,
+  additionalIncome: 0,
+  personalTaxRate: 25,
+  capitalGainsTax: 26.375,
+  placementCommission: 0,
+  savingRateCosts: 2.5,
+  balanceCosts: 1.5,
+  fixedCosts: 10,
+  minimumCosts: 15,
+  ter: 0.2,
+  expectedInterest: 7,
+  reallocationOccurrence: 0,
+  partialExemption: 30,
+  reallocationRate: 0,
 }
 
 // Validate input

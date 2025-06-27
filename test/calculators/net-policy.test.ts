@@ -3,7 +3,6 @@ import {
   calcNetPolicy,
   NET_POLICY_QUERY_SCHEMA,
 } from '../../src/calculators/net-policy'
-import { stringifyValues } from '../utils'
 
 const SHARED_QUERY = {
   savingRate: 250,
@@ -28,25 +27,21 @@ const SHARED_QUERY = {
 
 describe('calculators/net-policy', () => {
   it('should have correct table data', () => {
-    const parsedQuery = NET_POLICY_QUERY_SCHEMA.parse(
-      stringifyValues({
-        ...SHARED_QUERY,
-        duration: 35,
-      }),
-    )
+    const parsedQuery = NET_POLICY_QUERY_SCHEMA.parse({
+      ...SHARED_QUERY,
+      duration: 35,
+    })
 
     const data = calcNetPolicy(parsedQuery)
     expect(data.tableData).toMatchSnapshot()
   })
 
   it('should work with fixed costs', () => {
-    const parsedQuery = NET_POLICY_QUERY_SCHEMA.parse(
-      stringifyValues({
-        ...SHARED_QUERY,
-        duration: 35,
-        fixedCosts: 12,
-      }),
-    )
+    const parsedQuery = NET_POLICY_QUERY_SCHEMA.parse({
+      ...SHARED_QUERY,
+      duration: 35,
+      fixedCosts: 12,
+    })
 
     const data = calcNetPolicy(parsedQuery)
 
@@ -55,12 +50,10 @@ describe('calculators/net-policy', () => {
   })
 
   it('should use different calculation for durations under 12 years', () => {
-    const parsedQuery = NET_POLICY_QUERY_SCHEMA.parse(
-      stringifyValues({
-        ...SHARED_QUERY,
-        duration: 10,
-      }),
-    )
+    const parsedQuery = NET_POLICY_QUERY_SCHEMA.parse({
+      ...SHARED_QUERY,
+      duration: 10,
+    })
 
     const data = calcNetPolicy(parsedQuery)
 

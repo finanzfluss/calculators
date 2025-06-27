@@ -4,7 +4,6 @@ import {
   calcGrossToNet,
   GROSS_NET_QUERY_SCHEMA,
 } from '../../src/calculators/gross-to-net'
-import { stringifyValues } from '../utils'
 
 const MONTHLY_PERIOD = 2
 const YEARLY_PERIOD = 1
@@ -52,7 +51,7 @@ const NO_LEVY = 1
 const DEFAULT_VALUES: Record<string, string | number> = {
   grossWage: 2500,
   period: MONTHLY_PERIOD,
-  accountingYear: 2022,
+  accountingYear: '2022',
   taxClass: TAX_CLASS_1,
   taxAllowance: 0,
   churchTax: NO_CHURCH_TAX,
@@ -73,22 +72,18 @@ const DEFAULT_VALUES: Record<string, string | number> = {
 describe('calculators/gross-to-net', () => {
   describe('with page defaults', () => {
     it('data from initial page load', async () => {
-      const parsedQuery = GROSS_NET_QUERY_SCHEMA.parse(
-        stringifyValues(fakeTestValues()),
-      )
+      const parsedQuery = GROSS_NET_QUERY_SCHEMA.parse(fakeTestValues())
 
       expect(calcGrossToNet(parsedQuery)).toMatchSnapshot()
     })
 
     it('taxClass 1', async () => {
       const parsedQuery = GROSS_NET_QUERY_SCHEMA.parse(
-        stringifyValues(
-          fakeTestValues({
-            grossWage: 4000,
-            churchTax: PAY_CHURCH_TAX,
-            taxClass: TAX_CLASS_1,
-          }),
-        ),
+        fakeTestValues({
+          grossWage: 4000,
+          churchTax: PAY_CHURCH_TAX,
+          taxClass: TAX_CLASS_1,
+        }),
       )
 
       expect(calcGrossToNet(parsedQuery)).toMatchSnapshot()
@@ -96,13 +91,11 @@ describe('calculators/gross-to-net', () => {
 
     it('taxClass 2', async () => {
       const parsedQuery = GROSS_NET_QUERY_SCHEMA.parse(
-        stringifyValues(
-          fakeTestValues({
-            grossWage: 4000,
-            churchTax: PAY_CHURCH_TAX,
-            taxClass: TAX_CLASS_2,
-          }),
-        ),
+        fakeTestValues({
+          grossWage: 4000,
+          churchTax: PAY_CHURCH_TAX,
+          taxClass: TAX_CLASS_2,
+        }),
       )
 
       expect(calcGrossToNet(parsedQuery)).toMatchSnapshot()
@@ -110,13 +103,11 @@ describe('calculators/gross-to-net', () => {
 
     it('taxClass 3', async () => {
       const parsedQuery = GROSS_NET_QUERY_SCHEMA.parse(
-        stringifyValues(
-          fakeTestValues({
-            grossWage: 4000,
-            churchTax: PAY_CHURCH_TAX,
-            taxClass: TAX_CLASS_3,
-          }),
-        ),
+        fakeTestValues({
+          grossWage: 4000,
+          churchTax: PAY_CHURCH_TAX,
+          taxClass: TAX_CLASS_3,
+        }),
       )
 
       expect(calcGrossToNet(parsedQuery)).toMatchSnapshot()
@@ -124,13 +115,11 @@ describe('calculators/gross-to-net', () => {
 
     it('taxClass 4', async () => {
       const parsedQuery = GROSS_NET_QUERY_SCHEMA.parse(
-        stringifyValues(
-          fakeTestValues({
-            grossWage: 4000,
-            churchTax: PAY_CHURCH_TAX,
-            taxClass: TAX_CLASS_4,
-          }),
-        ),
+        fakeTestValues({
+          grossWage: 4000,
+          churchTax: PAY_CHURCH_TAX,
+          taxClass: TAX_CLASS_4,
+        }),
       )
 
       expect(calcGrossToNet(parsedQuery)).toMatchSnapshot()
@@ -138,13 +127,11 @@ describe('calculators/gross-to-net', () => {
 
     it('taxClass 5', async () => {
       const parsedQuery = GROSS_NET_QUERY_SCHEMA.parse(
-        stringifyValues(
-          fakeTestValues({
-            grossWage: 4000,
-            churchTax: PAY_CHURCH_TAX,
-            taxClass: TAX_CLASS_5,
-          }),
-        ),
+        fakeTestValues({
+          grossWage: 4000,
+          churchTax: PAY_CHURCH_TAX,
+          taxClass: TAX_CLASS_5,
+        }),
       )
 
       expect(calcGrossToNet(parsedQuery)).toMatchSnapshot()
@@ -152,13 +139,11 @@ describe('calculators/gross-to-net', () => {
 
     it('taxClass 6', async () => {
       const parsedQuery = GROSS_NET_QUERY_SCHEMA.parse(
-        stringifyValues(
-          fakeTestValues({
-            grossWage: 4000,
-            churchTax: PAY_CHURCH_TAX,
-            taxClass: TAX_CLASS_6,
-          }),
-        ),
+        fakeTestValues({
+          grossWage: 4000,
+          churchTax: PAY_CHURCH_TAX,
+          taxClass: TAX_CLASS_6,
+        }),
       )
 
       expect(calcGrossToNet(parsedQuery)).toMatchSnapshot()
@@ -168,11 +153,9 @@ describe('calculators/gross-to-net', () => {
   describe('with children', () => {
     it('no children', async () => {
       const parsedQuery = GROSS_NET_QUERY_SCHEMA.parse(
-        stringifyValues(
-          fakeTestValues({
-            children: 0,
-          }),
-        ),
+        fakeTestValues({
+          children: 0,
+        }),
       )
 
       expect(calcGrossToNet(parsedQuery)).toMatchSnapshot()
@@ -180,12 +163,10 @@ describe('calculators/gross-to-net', () => {
 
     it('one child', async () => {
       const parsedQuery = GROSS_NET_QUERY_SCHEMA.parse(
-        stringifyValues(
-          fakeTestValues({
-            children: 1,
-            childTaxAllowance: 0.5,
-          }),
-        ),
+        fakeTestValues({
+          children: 1,
+          childTaxAllowance: 0.5,
+        }),
       )
 
       expect(calcGrossToNet(parsedQuery)).toMatchSnapshot()
@@ -193,12 +174,10 @@ describe('calculators/gross-to-net', () => {
 
     it('five children', async () => {
       const parsedQuery = GROSS_NET_QUERY_SCHEMA.parse(
-        stringifyValues(
-          fakeTestValues({
-            children: 5,
-            childTaxAllowance: 0.5,
-          }),
-        ),
+        fakeTestValues({
+          children: 5,
+          childTaxAllowance: 0.5,
+        }),
       )
 
       expect(calcGrossToNet(parsedQuery)).toMatchSnapshot()
@@ -208,16 +187,14 @@ describe('calculators/gross-to-net', () => {
   describe('with children and church', () => {
     it('monthly period', async () => {
       const parsedQuery = GROSS_NET_QUERY_SCHEMA.parse(
-        stringifyValues(
-          fakeTestValues({
-            grossWage: 6500,
-            churchTax: PAY_CHURCH_TAX,
-            state: STATE_SAARLAND,
-            yearOfBirth: 1984,
-            children: 1,
-            childTaxAllowance: 0.5,
-          }),
-        ),
+        fakeTestValues({
+          grossWage: 6500,
+          churchTax: PAY_CHURCH_TAX,
+          state: STATE_SAARLAND,
+          yearOfBirth: 1984,
+          children: 1,
+          childTaxAllowance: 0.5,
+        }),
       )
 
       expect(calcGrossToNet(parsedQuery)).toMatchSnapshot()
@@ -225,17 +202,15 @@ describe('calculators/gross-to-net', () => {
 
     it('yearly period', async () => {
       const parsedQuery = GROSS_NET_QUERY_SCHEMA.parse(
-        stringifyValues(
-          fakeTestValues({
-            grossWage: 78000,
-            period: YEARLY_PERIOD,
-            churchTax: PAY_CHURCH_TAX,
-            state: STATE_SAARLAND,
-            yearOfBirth: 1984,
-            children: 1,
-            childTaxAllowance: 0.5,
-          }),
-        ),
+        fakeTestValues({
+          grossWage: 78000,
+          period: YEARLY_PERIOD,
+          churchTax: PAY_CHURCH_TAX,
+          state: STATE_SAARLAND,
+          yearOfBirth: 1984,
+          children: 1,
+          childTaxAllowance: 0.5,
+        }),
       )
 
       expect(calcGrossToNet(parsedQuery)).toMatchSnapshot()
@@ -245,13 +220,11 @@ describe('calculators/gross-to-net', () => {
   describe('private health insurance', () => {
     it(' without employer subsidy', async () => {
       const parsedQuery = GROSS_NET_QUERY_SCHEMA.parse(
-        stringifyValues(
-          fakeTestValues({
-            healthInsurance: PRIVATE_HEALTH_INSURANCE,
-            pkvContribution: 800,
-            employerSubsidy: NO_EMPLOYER_SUBSIDY,
-          }),
-        ),
+        fakeTestValues({
+          healthInsurance: PRIVATE_HEALTH_INSURANCE,
+          pkvContribution: 800,
+          employerSubsidy: NO_EMPLOYER_SUBSIDY,
+        }),
       )
 
       expect(calcGrossToNet(parsedQuery)).toMatchSnapshot()
@@ -259,13 +232,11 @@ describe('calculators/gross-to-net', () => {
 
     it('with employer subsidy', async () => {
       const parsedQuery = GROSS_NET_QUERY_SCHEMA.parse(
-        stringifyValues(
-          fakeTestValues({
-            healthInsurance: PRIVATE_HEALTH_INSURANCE,
-            pkvContribution: 800,
-            employerSubsidy: EMPLOYER_SUBSIDY,
-          }),
-        ),
+        fakeTestValues({
+          healthInsurance: PRIVATE_HEALTH_INSURANCE,
+          pkvContribution: 800,
+          employerSubsidy: EMPLOYER_SUBSIDY,
+        }),
       )
 
       expect(calcGrossToNet(parsedQuery)).toMatchSnapshot()
@@ -275,12 +246,10 @@ describe('calculators/gross-to-net', () => {
   describe('reduced health insurance', () => {
     it('should return specific result for user made input', async () => {
       const parsedQuery = GROSS_NET_QUERY_SCHEMA.parse(
-        stringifyValues(
-          fakeTestValues({
-            healthInsurance: REDUCED_HEALTH_INSURANCE,
-            additionalContribution: 0,
-          }),
-        ),
+        fakeTestValues({
+          healthInsurance: REDUCED_HEALTH_INSURANCE,
+          additionalContribution: 0,
+        }),
       )
 
       expect(calcGrossToNet(parsedQuery)).toMatchSnapshot()
@@ -290,11 +259,9 @@ describe('calculators/gross-to-net', () => {
   describe('without pension insurance', () => {
     it('should return specific result for user made input', async () => {
       const parsedQuery = GROSS_NET_QUERY_SCHEMA.parse(
-        stringifyValues(
-          fakeTestValues({
-            pensionInsurance: NO_PENSION_INSURANCE,
-          }),
-        ),
+        fakeTestValues({
+          pensionInsurance: NO_PENSION_INSURANCE,
+        }),
       )
 
       expect(calcGrossToNet(parsedQuery)).toMatchSnapshot()
@@ -304,11 +271,9 @@ describe('calculators/gross-to-net', () => {
   describe('tax year 2019', () => {
     it('should return specific result for tax year 2019', async () => {
       const parsedQuery = GROSS_NET_QUERY_SCHEMA.parse(
-        stringifyValues(
-          fakeTestValues({
-            accountingYear: 2019,
-          }),
-        ),
+        fakeTestValues({
+          accountingYear: '2019',
+        }),
       )
 
       expect(calcGrossToNet(parsedQuery)).toMatchSnapshot()
@@ -318,11 +283,9 @@ describe('calculators/gross-to-net', () => {
   describe('tax year 2020', () => {
     it('should return specific result for tax year 2020', async () => {
       const parsedQuery = GROSS_NET_QUERY_SCHEMA.parse(
-        stringifyValues(
-          fakeTestValues({
-            accountingYear: 2020,
-          }),
-        ),
+        fakeTestValues({
+          accountingYear: '2020',
+        }),
       )
 
       expect(calcGrossToNet(parsedQuery)).toMatchSnapshot()
@@ -332,11 +295,9 @@ describe('calculators/gross-to-net', () => {
   describe('tax year 2021', () => {
     it('should return specific result for tax year 2021', async () => {
       const parsedQuery = GROSS_NET_QUERY_SCHEMA.parse(
-        stringifyValues(
-          fakeTestValues({
-            accountingYear: 2021,
-          }),
-        ),
+        fakeTestValues({
+          accountingYear: '2021',
+        }),
       )
 
       expect(calcGrossToNet(parsedQuery)).toMatchSnapshot()
@@ -345,9 +306,7 @@ describe('calculators/gross-to-net', () => {
 
   describe('tax year 2022', () => {
     it('should return specific result for tax year 2022', async () => {
-      const parsedQuery = GROSS_NET_QUERY_SCHEMA.parse(
-        stringifyValues(fakeTestValues()),
-      )
+      const parsedQuery = GROSS_NET_QUERY_SCHEMA.parse(fakeTestValues())
 
       expect(calcGrossToNet(parsedQuery)).toMatchSnapshot()
     })
@@ -356,11 +315,9 @@ describe('calculators/gross-to-net', () => {
   describe('tax year 2023', () => {
     it('should return specific result for tax year 2023', async () => {
       const parsedQuery = GROSS_NET_QUERY_SCHEMA.parse(
-        stringifyValues(
-          fakeTestValues({
-            accountingYear: 2023,
-          }),
-        ),
+        fakeTestValues({
+          accountingYear: '2023',
+        }),
       )
 
       expect(calcGrossToNet(parsedQuery)).toMatchSnapshot()
@@ -370,11 +327,9 @@ describe('calculators/gross-to-net', () => {
   describe('tax year 2024', () => {
     it('should return specific result for tax year 2024', async () => {
       const parsedQuery = GROSS_NET_QUERY_SCHEMA.parse(
-        stringifyValues(
-          fakeTestValues({
-            accountingYear: 2024,
-          }),
-        ),
+        fakeTestValues({
+          accountingYear: '2024',
+        }),
       )
 
       expect(calcGrossToNet(parsedQuery)).toMatchSnapshot()
@@ -385,11 +340,9 @@ describe('calculators/gross-to-net', () => {
 describe('tax year 2025', () => {
   it('should return specific result for tax year 2025', async () => {
     const parsedQuery = GROSS_NET_QUERY_SCHEMA.parse(
-      stringifyValues(
-        fakeTestValues({
-          accountingYear: 2025,
-        }),
-      ),
+      fakeTestValues({
+        accountingYear: '2025',
+      }),
     )
 
     expect(calcGrossToNet(parsedQuery)).toMatchSnapshot()
