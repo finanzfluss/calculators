@@ -225,7 +225,7 @@ function calcTableData(
 }
 
 function calcPolicyTax(policyGross: number, additionalIncome: number) {
-  const sharedQuery = {
+  const sharedInput = {
     inputPeriod: 1,
     inputAccountingYear: 2025,
     inputTaxClass: 1,
@@ -249,12 +249,12 @@ function calcPolicyTax(policyGross: number, additionalIncome: number) {
     CORRECTION_VALUES.arbeitslosenversicherung *
       Math.min(policyGross, CORRECTION_VALUES.beitragsbemessungsgrenze)
   const taxesWithPolicy = calcGrossToNet({
-    ...sharedQuery,
+    ...sharedInput,
     inputGrossWage: policyGross + correction + additionalIncome,
   }).outputTotalTaxesYear.replace('€', '')
 
   const taxesWithoutPolicy = calcGrossToNet({
-    ...sharedQuery,
+    ...sharedInput,
     inputGrossWage: additionalIncome + correction,
   }).outputTotalTaxesYear.replace('€', '')
 

@@ -4,7 +4,7 @@ import {
   NET_POLICY_SCHEMA,
 } from '../../src/calculators/net-policy'
 
-const SHARED_QUERY = {
+const SHARED_INPUT = {
   savingRate: 250,
   taxAllowance: 1000,
   useGrossToNet: false,
@@ -27,35 +27,35 @@ const SHARED_QUERY = {
 
 describe('calculators/net-policy', () => {
   it('should have correct table data', () => {
-    const parsedQuery = NET_POLICY_SCHEMA.parse({
-      ...SHARED_QUERY,
+    const parsedInput = NET_POLICY_SCHEMA.parse({
+      ...SHARED_INPUT,
       duration: 35,
     })
 
-    const data = calcNetPolicy(parsedQuery)
+    const data = calcNetPolicy(parsedInput)
     expect(data.tableData).toMatchSnapshot()
   })
 
   it('should work with fixed costs', () => {
-    const parsedQuery = NET_POLICY_SCHEMA.parse({
-      ...SHARED_QUERY,
+    const parsedInput = NET_POLICY_SCHEMA.parse({
+      ...SHARED_INPUT,
       duration: 35,
       fixedCosts: 12,
     })
 
-    const data = calcNetPolicy(parsedQuery)
+    const data = calcNetPolicy(parsedInput)
 
     expect(data.tableData.grossWorth.policy).toMatchInlineSnapshot('"374.366"')
     expect(data.tableData.netWorth.policy).toMatchInlineSnapshot(`"335.163"`)
   })
 
   it('should use different calculation for durations under 12 years', () => {
-    const parsedQuery = NET_POLICY_SCHEMA.parse({
-      ...SHARED_QUERY,
+    const parsedInput = NET_POLICY_SCHEMA.parse({
+      ...SHARED_INPUT,
       duration: 10,
     })
 
-    const data = calcNetPolicy(parsedQuery)
+    const data = calcNetPolicy(parsedInput)
 
     expect(data.tableData.gain.policy).toMatchInlineSnapshot(`"10.114"`)
     expect(data.tableData.gross.policy).toMatchInlineSnapshot(`"8.597"`)
