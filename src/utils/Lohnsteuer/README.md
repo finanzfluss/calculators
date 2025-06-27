@@ -1,10 +1,10 @@
 # How to Add a New Tax Year
 
-This guide includes instructions how to add a new tax year to the calculators. It uses _year 2024_ as a tangible example.
+This guide includes instructions on how to add a new tax year to the calculators. It uses _year 2024_ as a tangible example.
 
 ## Generating Lohnsteuer File
 
-### Prerequesites: Set Up Environment
+### Prerequisites: Set Up Environment
 
 1. Clone the latest version of [the generator repository](https://github.com/jenner/LstGen) on your local machine.
 2. Activate your virtual environment and install the package in editable mode:
@@ -27,7 +27,7 @@ This guide includes instructions how to add a new tax year to the calculators. I
    ```
 4. Finally, follow the instructions below.
 
-We can't use the global `lstgen` command, as it is may not be up-to-date with the latest tax year. Instead, we will use the local `lstgen` command from the cloned repository.
+We can't use the global `lstgen` command, as it may not be up-to-date with the latest tax year. Instead, we will use the local `lstgen` command from the cloned repository.
 
 ### Trigger Generator
 
@@ -75,6 +75,6 @@ export const INCOME_TAX_CLASSES = {
 } as const
 ```
 
-Lastly, adjust `inputAccountingYear` enum in the schema of `src/calculators/gross-to-net.ts`.
+Lastly, adjust the `inputAccountingYear` enum in the schema of `src/calculators/gross-to-net.ts`.
 
 Done! The calculator can now be called with new tax year as input.
