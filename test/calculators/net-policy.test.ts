@@ -1,8 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import {
-  calcNetPolicy,
-  NET_POLICY_SCHEMA,
-} from '../../src/calculators/net-policy'
+import { netPolicy } from '../../src/calculators/net-policy'
 
 const SHARED_INPUT = {
   savingRate: 250,
@@ -27,35 +24,30 @@ const SHARED_INPUT = {
 
 describe('calculators/net-policy', () => {
   it('should have correct table data', () => {
-    const parsedInput = NET_POLICY_SCHEMA.parse({
+    const data = netPolicy.validateAndCalculate({
       ...SHARED_INPUT,
       duration: 35,
     })
 
-    const data = calcNetPolicy(parsedInput)
     expect(data.tableData).toMatchSnapshot()
   })
 
   it('should work with fixed costs', () => {
-    const parsedInput = NET_POLICY_SCHEMA.parse({
+    const data = netPolicy.validateAndCalculate({
       ...SHARED_INPUT,
       duration: 35,
       fixedCosts: 12,
     })
-
-    const data = calcNetPolicy(parsedInput)
 
     expect(data.tableData.grossWorth.policy).toMatchInlineSnapshot('"374.366"')
     expect(data.tableData.netWorth.policy).toMatchInlineSnapshot(`"335.163"`)
   })
 
   it('should use different calculation for durations under 12 years', () => {
-    const parsedInput = NET_POLICY_SCHEMA.parse({
+    const data = netPolicy.validateAndCalculate({
       ...SHARED_INPUT,
       duration: 10,
     })
-
-    const data = calcNetPolicy(parsedInput)
 
     expect(data.tableData.gain.policy).toMatchInlineSnapshot(`"10.114"`)
     expect(data.tableData.gross.policy).toMatchInlineSnapshot(`"8.597"`)

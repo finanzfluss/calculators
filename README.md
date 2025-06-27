@@ -128,11 +128,11 @@ The Rentenversicherung-Rechner ([https://finanzfluss.de/rechner/rentenversicheru
 - **Real-world cost modeling** using actual insurance product data and fee structures
 
 ```ts
-import { calcNetPolicy, NET_POLICY_SCHEMA } from '@finanzfluss/calculators'
+import { netPolicy } from '@finanzfluss/calculators'
 
 const input = {
   savingRate: 500,
-  duration: 30, // years
+  duration: 30, // in years
   taxAllowance: 1000,
   additionalIncome: 0,
   personalTaxRate: 25,
@@ -149,11 +149,8 @@ const input = {
   reallocationRate: 0,
 }
 
-// Validate input
-const parsedInput = NET_POLICY_SCHEMA.parse(input)
-
-// Calculate net policy
-const result = calcNetPolicy(parsedInput)
+// Validate input and calculate net policy result
+const result = netPolicy.validateAndCalculate(input)
 
 console.log(result.tableData.netWorth) // Projected net worth over time
 ```

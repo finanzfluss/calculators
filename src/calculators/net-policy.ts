@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { CORRECTION_VALUES } from '../constants/net-policy'
+import { defineCalculator } from '../utils/calculator'
 import { formatInput, formatNumber } from '../utils/formatters'
 import {
   toMonthly,
@@ -11,7 +12,7 @@ import { calcGrossToNet } from './gross-to-net'
 const MAX_EURO = 10_000
 const MAX_PERCENT = 100
 
-export const NET_POLICY_SCHEMA = z.object({
+const schema = z.object({
   // General inputs
   savingRate: z.number().nonnegative().max(MAX_EURO),
   duration: z
@@ -25,13 +26,6 @@ export const NET_POLICY_SCHEMA = z.object({
     .number()
     .nonnegative()
     .max(MAX_EURO * 100),
-  personalTaxRate: z
-    .number()
-    .nonnegative()
-    .max(MAX_PERCENT)
-    .optional()
-    .default(0)
-    .transform(toPercentRate),
   capitalGainsTax: z
     .number()
     .nonnegative()
@@ -106,15 +100,20 @@ export const NET_POLICY_SCHEMA = z.object({
     .transform(toPercentRate),
 })
 
-type NetPolicyInput = z.output<typeof NET_POLICY_SCHEMA>
+type NetPolicyInput = z.output<typeof schema>
 
-export function calcNetPolicy(parsedInput: NetPolicyInput) {
-  const { policyBalance, etfBalance, etfGain } = simulateOverPeriod(parsedInput)
+export const netPolicy = defineCalculator({
+  schema,
 
-  return {
-    tableData: calcTableData(policyBalance, etfBalance, etfGain, parsedInput),
-  }
-}
+  calculate: (parsedInput) => {
+    const { policyBalance, etfBalance, etfGain } =
+      simulateOverPeriod(parsedInput)
+
+    return {
+      tableData: calcTableData(policyBalance, etfBalance, etfGain, parsedInput),
+    }
+  },
+})
 
 function simulateOverPeriod(parsedInput: NetPolicyInput) {
   const {
