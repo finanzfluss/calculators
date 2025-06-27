@@ -1,9 +1,6 @@
 /* eslint-disable unused-imports/no-unused-vars */
 import { describe, expect, it } from 'vitest'
-import {
-  calcGrossToNet,
-  GROSS_NET_SCHEMA,
-} from '../../src/calculators/gross-to-net'
+import { grossToNet } from '../../src/calculators/gross-to-net'
 
 const MONTHLY_PERIOD = 2
 const YEARLY_PERIOD = 1
@@ -72,13 +69,13 @@ const DEFAULT_VALUES: Record<string, string | number> = {
 describe('calculators/gross-to-net', () => {
   describe('with page defaults', () => {
     it('data from initial page load', async () => {
-      const parsedInput = GROSS_NET_SCHEMA.parse(fakeTestValues())
+      const result = grossToNet.validateAndCalculate(fakeTestValues())
 
-      expect(calcGrossToNet(parsedInput)).toMatchSnapshot()
+      expect(result).toMatchSnapshot()
     })
 
     it('taxClass 1', async () => {
-      const parsedInput = GROSS_NET_SCHEMA.parse(
+      const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           grossWage: 4000,
           churchTax: PAY_CHURCH_TAX,
@@ -86,11 +83,11 @@ describe('calculators/gross-to-net', () => {
         }),
       )
 
-      expect(calcGrossToNet(parsedInput)).toMatchSnapshot()
+      expect(result).toMatchSnapshot()
     })
 
     it('taxClass 2', async () => {
-      const parsedInput = GROSS_NET_SCHEMA.parse(
+      const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           grossWage: 4000,
           churchTax: PAY_CHURCH_TAX,
@@ -98,11 +95,11 @@ describe('calculators/gross-to-net', () => {
         }),
       )
 
-      expect(calcGrossToNet(parsedInput)).toMatchSnapshot()
+      expect(result).toMatchSnapshot()
     })
 
     it('taxClass 3', async () => {
-      const parsedInput = GROSS_NET_SCHEMA.parse(
+      const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           grossWage: 4000,
           churchTax: PAY_CHURCH_TAX,
@@ -110,11 +107,11 @@ describe('calculators/gross-to-net', () => {
         }),
       )
 
-      expect(calcGrossToNet(parsedInput)).toMatchSnapshot()
+      expect(result).toMatchSnapshot()
     })
 
     it('taxClass 4', async () => {
-      const parsedInput = GROSS_NET_SCHEMA.parse(
+      const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           grossWage: 4000,
           churchTax: PAY_CHURCH_TAX,
@@ -122,11 +119,11 @@ describe('calculators/gross-to-net', () => {
         }),
       )
 
-      expect(calcGrossToNet(parsedInput)).toMatchSnapshot()
+      expect(result).toMatchSnapshot()
     })
 
     it('taxClass 5', async () => {
-      const parsedInput = GROSS_NET_SCHEMA.parse(
+      const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           grossWage: 4000,
           churchTax: PAY_CHURCH_TAX,
@@ -134,11 +131,11 @@ describe('calculators/gross-to-net', () => {
         }),
       )
 
-      expect(calcGrossToNet(parsedInput)).toMatchSnapshot()
+      expect(result).toMatchSnapshot()
     })
 
     it('taxClass 6', async () => {
-      const parsedInput = GROSS_NET_SCHEMA.parse(
+      const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           grossWage: 4000,
           churchTax: PAY_CHURCH_TAX,
@@ -146,47 +143,47 @@ describe('calculators/gross-to-net', () => {
         }),
       )
 
-      expect(calcGrossToNet(parsedInput)).toMatchSnapshot()
+      expect(result).toMatchSnapshot()
     })
   })
 
   describe('with children', () => {
     it('no children', async () => {
-      const parsedInput = GROSS_NET_SCHEMA.parse(
+      const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           children: 0,
         }),
       )
 
-      expect(calcGrossToNet(parsedInput)).toMatchSnapshot()
+      expect(result).toMatchSnapshot()
     })
 
     it('one child', async () => {
-      const parsedInput = GROSS_NET_SCHEMA.parse(
+      const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           children: 1,
           childTaxAllowance: 0.5,
         }),
       )
 
-      expect(calcGrossToNet(parsedInput)).toMatchSnapshot()
+      expect(result).toMatchSnapshot()
     })
 
     it('five children', async () => {
-      const parsedInput = GROSS_NET_SCHEMA.parse(
+      const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           children: 5,
           childTaxAllowance: 0.5,
         }),
       )
 
-      expect(calcGrossToNet(parsedInput)).toMatchSnapshot()
+      expect(result).toMatchSnapshot()
     })
   })
 
   describe('with children and church', () => {
     it('monthly period', async () => {
-      const parsedInput = GROSS_NET_SCHEMA.parse(
+      const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           grossWage: 6500,
           churchTax: PAY_CHURCH_TAX,
@@ -197,11 +194,11 @@ describe('calculators/gross-to-net', () => {
         }),
       )
 
-      expect(calcGrossToNet(parsedInput)).toMatchSnapshot()
+      expect(result).toMatchSnapshot()
     })
 
     it('yearly period', async () => {
-      const parsedInput = GROSS_NET_SCHEMA.parse(
+      const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           grossWage: 78000,
           period: YEARLY_PERIOD,
@@ -213,13 +210,13 @@ describe('calculators/gross-to-net', () => {
         }),
       )
 
-      expect(calcGrossToNet(parsedInput)).toMatchSnapshot()
+      expect(result).toMatchSnapshot()
     })
   })
 
   describe('private health insurance', () => {
     it(' without employer subsidy', async () => {
-      const parsedInput = GROSS_NET_SCHEMA.parse(
+      const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           healthInsurance: PRIVATE_HEALTH_INSURANCE,
           pkvContribution: 800,
@@ -227,11 +224,11 @@ describe('calculators/gross-to-net', () => {
         }),
       )
 
-      expect(calcGrossToNet(parsedInput)).toMatchSnapshot()
+      expect(result).toMatchSnapshot()
     })
 
     it('with employer subsidy', async () => {
-      const parsedInput = GROSS_NET_SCHEMA.parse(
+      const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           healthInsurance: PRIVATE_HEALTH_INSURANCE,
           pkvContribution: 800,
@@ -239,113 +236,113 @@ describe('calculators/gross-to-net', () => {
         }),
       )
 
-      expect(calcGrossToNet(parsedInput)).toMatchSnapshot()
+      expect(result).toMatchSnapshot()
     })
   })
 
   describe('reduced health insurance', () => {
     it('should return specific result for user made input', async () => {
-      const parsedInput = GROSS_NET_SCHEMA.parse(
+      const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           healthInsurance: REDUCED_HEALTH_INSURANCE,
           additionalContribution: 0,
         }),
       )
 
-      expect(calcGrossToNet(parsedInput)).toMatchSnapshot()
+      expect(result).toMatchSnapshot()
     })
   })
 
   describe('without pension insurance', () => {
     it('should return specific result for user made input', async () => {
-      const parsedInput = GROSS_NET_SCHEMA.parse(
+      const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           pensionInsurance: NO_PENSION_INSURANCE,
         }),
       )
 
-      expect(calcGrossToNet(parsedInput)).toMatchSnapshot()
+      expect(result).toMatchSnapshot()
     })
   })
 
   describe('tax year 2019', () => {
     it('should return specific result for tax year 2019', async () => {
-      const parsedInput = GROSS_NET_SCHEMA.parse(
+      const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           accountingYear: '2019',
         }),
       )
 
-      expect(calcGrossToNet(parsedInput)).toMatchSnapshot()
+      expect(result).toMatchSnapshot()
     })
   })
 
   describe('tax year 2020', () => {
     it('should return specific result for tax year 2020', async () => {
-      const parsedInput = GROSS_NET_SCHEMA.parse(
+      const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           accountingYear: '2020',
         }),
       )
 
-      expect(calcGrossToNet(parsedInput)).toMatchSnapshot()
+      expect(result).toMatchSnapshot()
     })
   })
 
   describe('tax year 2021', () => {
     it('should return specific result for tax year 2021', async () => {
-      const parsedInput = GROSS_NET_SCHEMA.parse(
+      const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           accountingYear: '2021',
         }),
       )
 
-      expect(calcGrossToNet(parsedInput)).toMatchSnapshot()
+      expect(result).toMatchSnapshot()
     })
   })
 
   describe('tax year 2022', () => {
     it('should return specific result for tax year 2022', async () => {
-      const parsedInput = GROSS_NET_SCHEMA.parse(fakeTestValues())
+      const result = grossToNet.validateAndCalculate(fakeTestValues())
 
-      expect(calcGrossToNet(parsedInput)).toMatchSnapshot()
+      expect(result).toMatchSnapshot()
     })
   })
 
   describe('tax year 2023', () => {
     it('should return specific result for tax year 2023', async () => {
-      const parsedInput = GROSS_NET_SCHEMA.parse(
+      const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           accountingYear: '2023',
         }),
       )
 
-      expect(calcGrossToNet(parsedInput)).toMatchSnapshot()
+      expect(result).toMatchSnapshot()
     })
   })
 
   describe('tax year 2024', () => {
     it('should return specific result for tax year 2024', async () => {
-      const parsedInput = GROSS_NET_SCHEMA.parse(
+      const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           accountingYear: '2024',
         }),
       )
 
-      expect(calcGrossToNet(parsedInput)).toMatchSnapshot()
+      expect(result).toMatchSnapshot()
     })
   })
 })
 
 describe('tax year 2025', () => {
   it('should return specific result for tax year 2025', async () => {
-    const parsedInput = GROSS_NET_SCHEMA.parse(
+    const result = grossToNet.validateAndCalculate(
       fakeTestValues({
         accountingYear: '2025',
       }),
     )
 
-    expect(calcGrossToNet(parsedInput)).toMatchSnapshot()
+    expect(result).toMatchSnapshot()
   })
 })
 

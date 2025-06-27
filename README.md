@@ -79,7 +79,7 @@ The Brutto-Netto-Rechner ([https://finanzfluss.de/rechner/brutto-netto-rechner](
 - **Comprehensive social insurance** including pension, unemployment, and care insurance calculations
 
 ```ts
-import { calcGrossToNet, GROSS_NET_SCHEMA } from '@finanzfluss/calculators'
+import { grossToNet } from '@finanzfluss/calculators'
 
 const input = {
   inputAccountingYear: '2025',
@@ -102,14 +102,11 @@ const input = {
   inputPeriod: 2, // 2 = monthly, 1 = yearly
 }
 
-// Validate input
-const parsedInput = GROSS_NET_SCHEMA.parse(input)
+// Validate input and calculate gross to net result
+const result = grossToNet.validateAndCalculate(input)
 
-// Calculate net salary
-const result = calcGrossToNet(parsedInput)
-
-console.log(result.outputResNetWageMonth) // Net monthly salary
-console.log(result.outputResNetWageYear) // Net yearly salary
+console.log(result.outputResNetWageMonth) // Net monthly wage
+console.log(result.outputResNetWageYear) // Net yearly wage
 ```
 
 <br />
@@ -131,22 +128,28 @@ The Rentenversicherung-Rechner ([https://finanzfluss.de/rechner/rentenversicheru
 import { netPolicy } from '@finanzfluss/calculators'
 
 const input = {
-  savingRate: 500,
-  duration: 30, // in years
+  // General inputs
+  savingRate: 250,
+  duration: 35, // in years
   taxAllowance: 1000,
   additionalIncome: 0,
-  personalTaxRate: 25,
   capitalGainsTax: 26.375,
-  placementCommission: 0,
-  savingRateCosts: 2.5,
-  balanceCosts: 1.5,
+
+  // Policy inputs
+  placementCommission: 299,
+  savingRateCosts: 4,
+  balanceCosts: 0.22,
   fixedCosts: 10,
-  minimumCosts: 15,
+  minimumCosts: 30,
+
+  // ETF inputs
   ter: 0.2,
   expectedInterest: 7,
-  reallocationOccurrence: 0,
   partialExemption: 30,
-  reallocationRate: 0,
+
+  // Reallocation inputs
+  reallocationOccurrence: 10,
+  reallocationRate: 40,
 }
 
 // Validate input and calculate net policy result

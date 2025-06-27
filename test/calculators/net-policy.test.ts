@@ -4,9 +4,7 @@ import { netPolicy } from '../../src/calculators/net-policy'
 const SHARED_INPUT = {
   savingRate: 250,
   taxAllowance: 1000,
-  useGrossToNet: false,
   additionalIncome: 0,
-  personalTaxRate: 35,
   capitalGainsTax: 26.375,
 
   placementCommission: 299,

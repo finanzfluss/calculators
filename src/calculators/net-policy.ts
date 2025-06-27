@@ -7,7 +7,7 @@ import {
   toMonthlyConformalRate,
   toPercentRate,
 } from '../utils/validation'
-import { calcGrossToNet } from './gross-to-net'
+import { grossToNet } from './gross-to-net'
 
 const MAX_EURO = 10_000
 const MAX_PERCENT = 100
@@ -226,7 +226,7 @@ function calcTableData(
 function calcPolicyTax(policyGross: number, additionalIncome: number) {
   const sharedInput = {
     inputPeriod: 1,
-    inputAccountingYear: 2025,
+    inputAccountingYear: '2025',
     inputTaxClass: 1,
     inputTaxAllowance: 0,
     inputChurchTax: 0,
@@ -247,15 +247,19 @@ function calcPolicyTax(policyGross: number, additionalIncome: number) {
     CORRECTION_VALUES.werbungskostenpauschale +
     CORRECTION_VALUES.arbeitslosenversicherung *
       Math.min(policyGross, CORRECTION_VALUES.beitragsbemessungsgrenze)
-  const taxesWithPolicy = calcGrossToNet({
-    ...sharedInput,
-    inputGrossWage: policyGross + correction + additionalIncome,
-  }).outputTotalTaxesYear.replace('€', '')
+  const taxesWithPolicy = grossToNet
+    .validateAndCalculate({
+      ...sharedInput,
+      inputGrossWage: policyGross + correction + additionalIncome,
+    })
+    .outputTotalTaxesYear.replace('€', '')
 
-  const taxesWithoutPolicy = calcGrossToNet({
-    ...sharedInput,
-    inputGrossWage: additionalIncome + correction,
-  }).outputTotalTaxesYear.replace('€', '')
+  const taxesWithoutPolicy = grossToNet
+    .validateAndCalculate({
+      ...sharedInput,
+      inputGrossWage: additionalIncome + correction,
+    })
+    .outputTotalTaxesYear.replace('€', '')
 
   return formatInput(taxesWithPolicy) - formatInput(taxesWithoutPolicy)
 }

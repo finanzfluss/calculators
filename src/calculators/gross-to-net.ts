@@ -5,6 +5,7 @@ import {
 } from '../constants/gross-to-net'
 import { PENSION_VALUES } from '../constants/pension'
 import { formatPercent, formatResultWithTwoOptionalDecimals } from '../utils'
+import { defineCalculator } from '../utils/calculator'
 import { INCOME_TAX_CLASSES } from '../utils/Lohnsteuer'
 import { BigDecimal } from '../utils/Lohnsteuer/shims/BigDecimal'
 
@@ -37,7 +38,13 @@ export const GROSS_NET_SCHEMA = z.object({
 
 type GrossNetInput = z.output<typeof GROSS_NET_SCHEMA>
 
-export function calcGrossToNet({
+export const grossToNet = defineCalculator({
+  schema: GROSS_NET_SCHEMA,
+
+  calculate: calcGrossToNet,
+})
+
+function calcGrossToNet({
   inputAccountingYear,
   inputTaxClass,
   inputTaxAllowance,
