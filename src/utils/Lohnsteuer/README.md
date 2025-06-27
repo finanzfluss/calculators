@@ -1,6 +1,6 @@
 # How to Add a New Tax Year
 
-This guide includes instructions how to add a new tax year to the calculators API. It uses _year 2024_ as a tangible example.
+This guide includes instructions how to add a new tax year to the calculators. It uses _year 2024_ as a tangible example.
 
 ## Generating Lohnsteuer File
 
@@ -58,7 +58,7 @@ Then, copy the generated file `Lohnsteuer2024.js` as `Lohnsteuer2024.ts` into th
 
 ## Insert Into Handler Logic
 
-Adjust `/routes/calculator/gross-to-net-calculator.get.ts` by editing as follows.
+Adjust `src/utils/Lohnsteuer/index.ts` by editing as follows.
 
 First, add the import of the recently created file:
 
@@ -71,10 +71,10 @@ Then, add a new entry to the `INCOME_TAX_CLASSES` object map:
 ```ts
 export const INCOME_TAX_CLASSES = {
   // ...
-  2025: Lohnsteuer2025 as unknown as LohnsteuerInstance,
+  2024: Lohnsteuer2024 as unknown as LohnsteuerInstance,
 } as const
 ```
 
-Done! The Calculators API can now be called with new tax year as query parameter.
+Lastly, adjust `inputAccountingYear` enum in the schema of `src/calculators/gross-to-net.ts`.
 
-Please note, that you might need to change some dropdown entries etc. in the frontend as well.
+Done! The calculator can now be called with new tax year as input.
