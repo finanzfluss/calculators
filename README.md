@@ -58,10 +58,10 @@ const input = {
 }
 
 // Validate input
-const validatedInput = COMPOUND_INTEREST_SCHEMA.parse(input)
+const parsedInput = COMPOUND_INTEREST_SCHEMA.parse(input)
 
 // Calculate compound interest
-const result = calcCompoundInterest(validatedInput)
+const result = calcCompoundInterest(parsedInput)
 
 console.log(result.finalCapital) // Total capital after compound growth
 console.log(result.totalPayments) // Sum of all payments made
@@ -109,10 +109,10 @@ const input = {
 }
 
 // Validate input
-const validatedInput = GROSS_NET_SCHEMA.parse(input)
+const parsedInput = GROSS_NET_SCHEMA.parse(input)
 
 // Calculate net salary
-const result = calcGrossToNet(validatedInput)
+const result = calcGrossToNet(parsedInput)
 
 console.log(result.outputResNetWageMonth) // Net monthly salary
 console.log(result.outputResNetWageYear) // Net yearly salary
@@ -156,10 +156,10 @@ const input = {
 }
 
 // Validate input
-const validatedInput = NET_POLICY_SCHEMA.parse(input)
+const parsedInput = NET_POLICY_SCHEMA.parse(input)
 
 // Calculate net policy
-const result = calcNetPolicy(validatedInput)
+const result = calcNetPolicy(parsedInput)
 
 console.log(result.tableData.netWorth) // Projected net worth over time
 ```
