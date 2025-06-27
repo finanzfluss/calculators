@@ -1,8 +1,11 @@
 import type { z } from 'zod'
 
-export function defineCalculator<TInput, TOutput>(config: {
-  schema: z.ZodSchema<TInput>
-  calculate: (input: TInput) => TOutput
+export function defineCalculator<
+  TSchema extends z.ZodTypeAny,
+  TOutput,
+>(config: {
+  schema: TSchema
+  calculate: (input: z.output<TSchema>) => TOutput
 }) {
   return {
     ...config,
