@@ -11,7 +11,7 @@ import { calcGrossToNet } from './gross-to-net'
 const MAX_EURO = 10_000
 const MAX_PERCENT = 100
 
-export const NET_POLICY_QUERY_SCHEMA = z.object({
+export const NET_POLICY_SCHEMA = z.object({
   // General inputs
   savingRate: z.number().nonnegative().max(MAX_EURO),
   duration: z
@@ -106,7 +106,7 @@ export const NET_POLICY_QUERY_SCHEMA = z.object({
     .transform(toPercentRate),
 })
 
-type NetPolicyQuery = z.output<typeof NET_POLICY_QUERY_SCHEMA>
+type NetPolicyQuery = z.output<typeof NET_POLICY_SCHEMA>
 
 export function calcNetPolicy(parsedQuery: NetPolicyQuery) {
   const { policyBalance, etfBalance, etfGain } = simulateOverPeriod(parsedQuery)

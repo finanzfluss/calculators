@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
   calcNetPolicy,
-  NET_POLICY_QUERY_SCHEMA,
+  NET_POLICY_SCHEMA,
 } from '../../src/calculators/net-policy'
 
 const SHARED_QUERY = {
@@ -27,7 +27,7 @@ const SHARED_QUERY = {
 
 describe('calculators/net-policy', () => {
   it('should have correct table data', () => {
-    const parsedQuery = NET_POLICY_QUERY_SCHEMA.parse({
+    const parsedQuery = NET_POLICY_SCHEMA.parse({
       ...SHARED_QUERY,
       duration: 35,
     })
@@ -37,7 +37,7 @@ describe('calculators/net-policy', () => {
   })
 
   it('should work with fixed costs', () => {
-    const parsedQuery = NET_POLICY_QUERY_SCHEMA.parse({
+    const parsedQuery = NET_POLICY_SCHEMA.parse({
       ...SHARED_QUERY,
       duration: 35,
       fixedCosts: 12,
@@ -50,7 +50,7 @@ describe('calculators/net-policy', () => {
   })
 
   it('should use different calculation for durations under 12 years', () => {
-    const parsedQuery = NET_POLICY_QUERY_SCHEMA.parse({
+    const parsedQuery = NET_POLICY_SCHEMA.parse({
       ...SHARED_QUERY,
       duration: 10,
     })

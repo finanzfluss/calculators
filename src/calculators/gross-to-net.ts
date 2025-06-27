@@ -8,7 +8,7 @@ import { formatPercent, formatResultWithTwoOptionalDecimals } from '../utils'
 import { INCOME_TAX_CLASSES } from '../utils/Lohnsteuer'
 import { BigDecimal } from '../utils/Lohnsteuer/shims/BigDecimal'
 
-export const GROSS_NET_QUERY_SCHEMA = z.object({
+export const GROSS_NET_SCHEMA = z.object({
   output: z.literal('grossToNetCalc').optional(),
   inputAccountingYear: z
     .enum(['2019', '2020', '2021', '2022', '2023', '2024', '2025'])
@@ -35,7 +35,7 @@ export const GROSS_NET_QUERY_SCHEMA = z.object({
   inputPeriod: z.number(), // LZZ
 })
 
-type GrossNetQuery = z.output<typeof GROSS_NET_QUERY_SCHEMA>
+type GrossNetQuery = z.output<typeof GROSS_NET_SCHEMA>
 
 export function calcGrossToNet({
   inputAccountingYear,

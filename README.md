@@ -46,7 +46,7 @@ The Zinseszinsrechner ([https://finanzfluss.de/rechner/zinseszinsrechner](https:
 ```ts
 import {
   calcCompoundInterest,
-  COMPOUND_INTEREST_QUERY_SCHEMA,
+  COMPOUND_INTEREST_SCHEMA,
 } from '@finanzfluss/calculators'
 
 const input = {
@@ -58,7 +58,7 @@ const input = {
 }
 
 // Validate input
-const validatedInput = COMPOUND_INTEREST_QUERY_SCHEMA.parse(input)
+const validatedInput = COMPOUND_INTEREST_SCHEMA.parse(input)
 
 // Calculate compound interest
 const result = calcCompoundInterest(validatedInput)
@@ -85,10 +85,7 @@ The Brutto-Netto-Rechner ([https://finanzfluss.de/rechner/brutto-netto-rechner](
 - **Comprehensive social insurance** including pension, unemployment, and care insurance calculations
 
 ```ts
-import {
-  calcGrossToNet,
-  GROSS_NET_QUERY_SCHEMA,
-} from '@finanzfluss/calculators'
+import { calcGrossToNet, GROSS_NET_SCHEMA } from '@finanzfluss/calculators'
 
 const input = {
   inputAccountingYear: '2025',
@@ -112,7 +109,7 @@ const input = {
 }
 
 // Validate input
-const validatedInput = GROSS_NET_QUERY_SCHEMA.parse(input)
+const validatedInput = GROSS_NET_SCHEMA.parse(input)
 
 // Calculate net salary
 const result = calcGrossToNet(validatedInput)
@@ -137,10 +134,7 @@ The Rentenversicherung-Rechner ([https://finanzfluss.de/rechner/rentenversicheru
 - **Real-world cost modeling** using actual insurance product data and fee structures
 
 ```ts
-import {
-  calcNetPolicy,
-  NET_POLICY_QUERY_SCHEMA,
-} from '@finanzfluss/calculators'
+import { calcNetPolicy, NET_POLICY_SCHEMA } from '@finanzfluss/calculators'
 
 const input = {
   savingRate: 500,
@@ -162,7 +156,7 @@ const input = {
 }
 
 // Validate input
-const validatedInput = NET_POLICY_QUERY_SCHEMA.parse(input)
+const validatedInput = NET_POLICY_SCHEMA.parse(input)
 
 // Calculate net policy
 const result = calcNetPolicy(validatedInput)
