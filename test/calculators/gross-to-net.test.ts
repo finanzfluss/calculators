@@ -68,13 +68,13 @@ const DEFAULT_VALUES: Record<string, string | number> = {
 
 describe('calculators/gross-to-net', () => {
   describe('with page defaults', () => {
-    it('data from initial page load', async () => {
+    it('data from initial page load', () => {
       const result = grossToNet.validateAndCalculate(fakeTestValues())
 
       expect(result).toMatchSnapshot()
     })
 
-    it('taxClass 1', async () => {
+    it('taxClass 1', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           grossWage: 4000,
@@ -86,7 +86,7 @@ describe('calculators/gross-to-net', () => {
       expect(result).toMatchSnapshot()
     })
 
-    it('taxClass 2', async () => {
+    it('taxClass 2', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           grossWage: 4000,
@@ -98,7 +98,7 @@ describe('calculators/gross-to-net', () => {
       expect(result).toMatchSnapshot()
     })
 
-    it('taxClass 3', async () => {
+    it('taxClass 3', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           grossWage: 4000,
@@ -110,7 +110,7 @@ describe('calculators/gross-to-net', () => {
       expect(result).toMatchSnapshot()
     })
 
-    it('taxClass 4', async () => {
+    it('taxClass 4', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           grossWage: 4000,
@@ -122,7 +122,7 @@ describe('calculators/gross-to-net', () => {
       expect(result).toMatchSnapshot()
     })
 
-    it('taxClass 5', async () => {
+    it('taxClass 5', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           grossWage: 4000,
@@ -134,7 +134,7 @@ describe('calculators/gross-to-net', () => {
       expect(result).toMatchSnapshot()
     })
 
-    it('taxClass 6', async () => {
+    it('taxClass 6', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           grossWage: 4000,
@@ -148,7 +148,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('with children', () => {
-    it('no children', async () => {
+    it('no children', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           children: 0,
@@ -158,7 +158,7 @@ describe('calculators/gross-to-net', () => {
       expect(result).toMatchSnapshot()
     })
 
-    it('one child', async () => {
+    it('one child', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           children: 1,
@@ -169,7 +169,7 @@ describe('calculators/gross-to-net', () => {
       expect(result).toMatchSnapshot()
     })
 
-    it('five children', async () => {
+    it('five children', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           children: 5,
@@ -182,7 +182,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('with children and church', () => {
-    it('monthly period', async () => {
+    it('monthly period', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           grossWage: 6500,
@@ -197,7 +197,7 @@ describe('calculators/gross-to-net', () => {
       expect(result).toMatchSnapshot()
     })
 
-    it('yearly period', async () => {
+    it('yearly period', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           grossWage: 78000,
@@ -215,7 +215,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('private health insurance', () => {
-    it(' without employer subsidy', async () => {
+    it(' without employer subsidy', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           healthInsurance: PRIVATE_HEALTH_INSURANCE,
@@ -227,7 +227,7 @@ describe('calculators/gross-to-net', () => {
       expect(result).toMatchSnapshot()
     })
 
-    it('with employer subsidy', async () => {
+    it('with employer subsidy', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           healthInsurance: PRIVATE_HEALTH_INSURANCE,
@@ -241,7 +241,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('reduced health insurance', () => {
-    it('should return specific result for user made input', async () => {
+    it('should return specific result for user made input', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           healthInsurance: REDUCED_HEALTH_INSURANCE,
@@ -254,7 +254,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('without pension insurance', () => {
-    it('should return specific result for user made input', async () => {
+    it('should return specific result for user made input', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           pensionInsurance: NO_PENSION_INSURANCE,
@@ -266,7 +266,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('tax year 2019', () => {
-    it('should return specific result for tax year 2019', async () => {
+    it('should return specific result for tax year 2019', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           accountingYear: '2019',
@@ -278,7 +278,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('tax year 2020', () => {
-    it('should return specific result for tax year 2020', async () => {
+    it('should return specific result for tax year 2020', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           accountingYear: '2020',
@@ -290,7 +290,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('tax year 2021', () => {
-    it('should return specific result for tax year 2021', async () => {
+    it('should return specific result for tax year 2021', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           accountingYear: '2021',
@@ -302,7 +302,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('tax year 2022', () => {
-    it('should return specific result for tax year 2022', async () => {
+    it('should return specific result for tax year 2022', () => {
       const result = grossToNet.validateAndCalculate(fakeTestValues())
 
       expect(result).toMatchSnapshot()
@@ -310,7 +310,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('tax year 2023', () => {
-    it('should return specific result for tax year 2023', async () => {
+    it('should return specific result for tax year 2023', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           accountingYear: '2023',
@@ -322,7 +322,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('tax year 2024', () => {
-    it('should return specific result for tax year 2024', async () => {
+    it('should return specific result for tax year 2024', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           accountingYear: '2024',
@@ -335,7 +335,7 @@ describe('calculators/gross-to-net', () => {
 })
 
 describe('tax year 2025', () => {
-  it('should return specific result for tax year 2025', async () => {
+  it('should return specific result for tax year 2025', () => {
     const result = grossToNet.validateAndCalculate(
       fakeTestValues({
         accountingYear: '2025',
