@@ -35,7 +35,7 @@ export const GROSS_NET_SCHEMA = z.object({
   inputPeriod: z.number(), // LZZ
 })
 
-type GrossNetQuery = z.output<typeof GROSS_NET_SCHEMA>
+type GrossNetInput = z.output<typeof GROSS_NET_SCHEMA>
 
 export function calcGrossToNet({
   inputAccountingYear,
@@ -56,7 +56,7 @@ export function calcGrossToNet({
   inputAdditionalContribution,
   inputGrossWage,
   inputPeriod,
-}: GrossNetQuery) {
+}: GrossNetInput) {
   const { PENSION_LIMIT_WEST, PENSION_LIMIT_EAST } = PENSION_VALUES
 
   const ZERO = new BigDecimal(0)

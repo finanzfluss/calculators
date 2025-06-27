@@ -106,17 +106,17 @@ export const NET_POLICY_SCHEMA = z.object({
     .transform(toPercentRate),
 })
 
-type NetPolicyQuery = z.output<typeof NET_POLICY_SCHEMA>
+type NetPolicyInput = z.output<typeof NET_POLICY_SCHEMA>
 
-export function calcNetPolicy(parsedQuery: NetPolicyQuery) {
-  const { policyBalance, etfBalance, etfGain } = simulateOverPeriod(parsedQuery)
+export function calcNetPolicy(parsedInput: NetPolicyInput) {
+  const { policyBalance, etfBalance, etfGain } = simulateOverPeriod(parsedInput)
 
   return {
-    tableData: calcTableData(policyBalance, etfBalance, etfGain, parsedQuery),
+    tableData: calcTableData(policyBalance, etfBalance, etfGain, parsedInput),
   }
 }
 
-function simulateOverPeriod(parsedQuery: NetPolicyQuery) {
+function simulateOverPeriod(parsedInput: NetPolicyInput) {
   const {
     duration,
     savingRate,
@@ -132,7 +132,7 @@ function simulateOverPeriod(parsedQuery: NetPolicyQuery) {
     taxAllowance,
     capitalGainsTax,
     partialExemption,
-  } = parsedQuery
+  } = parsedInput
 
   let policyBalance = 0
   let etfBalance = 0
@@ -174,7 +174,7 @@ function calcTableData(
   policyGrossWorth: number,
   etfGrossWorth: number,
   etfGain: number,
-  parsedQuery: NetPolicyQuery,
+  parsedInput: NetPolicyInput,
 ) {
   const {
     duration,
@@ -184,7 +184,7 @@ function calcTableData(
     capitalGainsTax,
     partialExemption,
     additionalIncome,
-  } = parsedQuery
+  } = parsedInput
 
   const etfGross = Math.max(0, etfGain * partialExemption - taxAllowance)
   const policyGain = policyGrossWorth - savingRate * duration

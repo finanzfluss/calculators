@@ -9,9 +9,9 @@ export const COMPOUND_INTEREST_SCHEMA = z.object({
   type: z.enum(['monthly', 'quarterly', 'yearly']),
 })
 
-type CompoundInterestQuery = z.output<typeof COMPOUND_INTEREST_SCHEMA>
+type CompoundInterestInput = z.output<typeof COMPOUND_INTEREST_SCHEMA>
 
-export function calcCompoundInterest(parsedQuery: CompoundInterestQuery) {
+export function calcCompoundInterest(parsedQuery: CompoundInterestInput) {
   const { startCapital, monthlyPayment, type, durationYears, yearlyInterest } =
     parsedQuery
   const totalPayments = startCapital + durationYears * 12 * monthlyPayment
