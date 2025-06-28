@@ -1,17 +1,18 @@
 import { z } from 'zod'
 import { CORRECTION_VALUES } from '../constants/net-policy'
+import { defineCalculator } from '../utils/calculator'
 import { formatInput, formatNumber } from '../utils/formatters'
 import {
   toMonthly,
   toMonthlyConformalRate,
   toPercentRate,
 } from '../utils/validation'
-import { calcGrossToNet } from './gross-to-net'
+import { grossToNet } from './gross-to-net'
 
 const MAX_EURO = 10_000
 const MAX_PERCENT = 100
 
-export const NET_POLICY_SCHEMA = z.object({
+const schema = z.object({
   // General inputs
   savingRate: z.number().nonnegative().max(MAX_EURO),
   duration: z
@@ -25,13 +26,6 @@ export const NET_POLICY_SCHEMA = z.object({
     .number()
     .nonnegative()
     .max(MAX_EURO * 100),
-  personalTaxRate: z
-    .number()
-    .nonnegative()
-    .max(MAX_PERCENT)
-    .optional()
-    .default(0)
-    .transform(toPercentRate),
   capitalGainsTax: z
     .number()
     .nonnegative()
@@ -106,15 +100,20 @@ export const NET_POLICY_SCHEMA = z.object({
     .transform(toPercentRate),
 })
 
-type NetPolicyInput = z.output<typeof NET_POLICY_SCHEMA>
+type NetPolicyInput = z.output<typeof schema>
 
-export function calcNetPolicy(parsedInput: NetPolicyInput) {
-  const { policyBalance, etfBalance, etfGain } = simulateOverPeriod(parsedInput)
+export const netPolicy = defineCalculator({
+  schema,
 
-  return {
-    tableData: calcTableData(policyBalance, etfBalance, etfGain, parsedInput),
-  }
-}
+  calculate: (parsedInput) => {
+    const { policyBalance, etfBalance, etfGain } =
+      simulateOverPeriod(parsedInput)
+
+    return {
+      tableData: calcTableData(policyBalance, etfBalance, etfGain, parsedInput),
+    }
+  },
+})
 
 function simulateOverPeriod(parsedInput: NetPolicyInput) {
   const {
@@ -227,7 +226,7 @@ function calcTableData(
 function calcPolicyTax(policyGross: number, additionalIncome: number) {
   const sharedInput = {
     inputPeriod: 1,
-    inputAccountingYear: 2025,
+    inputAccountingYear: '2025',
     inputTaxClass: 1,
     inputTaxAllowance: 0,
     inputChurchTax: 0,
@@ -248,15 +247,19 @@ function calcPolicyTax(policyGross: number, additionalIncome: number) {
     CORRECTION_VALUES.werbungskostenpauschale +
     CORRECTION_VALUES.arbeitslosenversicherung *
       Math.min(policyGross, CORRECTION_VALUES.beitragsbemessungsgrenze)
-  const taxesWithPolicy = calcGrossToNet({
-    ...sharedInput,
-    inputGrossWage: policyGross + correction + additionalIncome,
-  }).outputTotalTaxesYear.replace('€', '')
+  const taxesWithPolicy = grossToNet
+    .validateAndCalculate({
+      ...sharedInput,
+      inputGrossWage: policyGross + correction + additionalIncome,
+    })
+    .outputTotalTaxesYear.replace('€', '')
 
-  const taxesWithoutPolicy = calcGrossToNet({
-    ...sharedInput,
-    inputGrossWage: additionalIncome + correction,
-  }).outputTotalTaxesYear.replace('€', '')
+  const taxesWithoutPolicy = grossToNet
+    .validateAndCalculate({
+      ...sharedInput,
+      inputGrossWage: additionalIncome + correction,
+    })
+    .outputTotalTaxesYear.replace('€', '')
 
   return formatInput(taxesWithPolicy) - formatInput(taxesWithoutPolicy)
 }
