@@ -1,11 +1,11 @@
 import type { z } from 'zod'
 
 export function defineCalculator<
-  TSchema extends z.ZodTypeAny,
+  TSchema extends z.ZodRawShape,
   TOutput,
 >(config: {
-  schema: TSchema
-  calculate: (input: z.output<TSchema>) => TOutput
+  schema: z.ZodObject<TSchema>
+  calculate: (input: z.output<z.ZodObject<TSchema>>) => TOutput
 }) {
   return {
     ...config,
