@@ -9,7 +9,7 @@ import { defineCalculator } from '../utils/calculator'
 import { INCOME_TAX_CLASSES } from '../utils/Lohnsteuer'
 import { BigDecimal } from '../utils/Lohnsteuer/shims/BigDecimal'
 
-export const GROSS_NET_SCHEMA = z.object({
+const schema = z.object({
   output: z.literal('grossToNetCalc').optional(),
   inputAccountingYear: z
     .enum(['2019', '2020', '2021', '2022', '2023', '2024', '2025'])
@@ -36,15 +36,14 @@ export const GROSS_NET_SCHEMA = z.object({
   inputPeriod: z.number(), // LZZ
 })
 
-type GrossNetInput = z.output<typeof GROSS_NET_SCHEMA>
+type CalculatorInput = z.output<typeof schema>
 
 export const grossToNet = defineCalculator({
-  schema: GROSS_NET_SCHEMA,
-
-  calculate: calcGrossToNet,
+  schema,
+  calculate,
 })
 
-function calcGrossToNet({
+function calculate({
   inputAccountingYear,
   inputTaxClass,
   inputTaxAllowance,
@@ -63,7 +62,7 @@ function calcGrossToNet({
   inputAdditionalContribution,
   inputGrossWage,
   inputPeriod,
-}: GrossNetInput) {
+}: CalculatorInput) {
   const { PENSION_LIMIT_WEST, PENSION_LIMIT_EAST } = PENSION_VALUES
 
   const ZERO = new BigDecimal(0)

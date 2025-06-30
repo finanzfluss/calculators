@@ -100,22 +100,22 @@ const schema = z.object({
     .transform(toPercentRate),
 })
 
-type NetPolicyInput = z.output<typeof schema>
+type CalculatorInput = z.output<typeof schema>
 
 export const netPolicy = defineCalculator({
   schema,
-
-  calculate: (parsedInput) => {
-    const { policyBalance, etfBalance, etfGain } =
-      simulateOverPeriod(parsedInput)
-
-    return {
-      tableData: calcTableData(policyBalance, etfBalance, etfGain, parsedInput),
-    }
-  },
+  calculate,
 })
 
-function simulateOverPeriod(parsedInput: NetPolicyInput) {
+function calculate(parsedInput: CalculatorInput) {
+  const { policyBalance, etfBalance, etfGain } = simulateOverPeriod(parsedInput)
+
+  return {
+    tableData: calcTableData(policyBalance, etfBalance, etfGain, parsedInput),
+  }
+}
+
+function simulateOverPeriod(parsedInput: CalculatorInput) {
   const {
     duration,
     savingRate,
@@ -173,7 +173,7 @@ function calcTableData(
   policyGrossWorth: number,
   etfGrossWorth: number,
   etfGain: number,
-  parsedInput: NetPolicyInput,
+  parsedInput: CalculatorInput,
 ) {
   const {
     duration,
