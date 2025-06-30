@@ -14,34 +14,34 @@ const MAX_PERCENT = 100
 
 const schema = z.object({
   // General inputs
-  savingRate: z.number().nonnegative().max(MAX_EURO),
-  duration: z
+  savingRate: z.coerce.number().nonnegative().max(MAX_EURO),
+  duration: z.coerce
     .number()
     .positive()
     .int()
     .max(100)
     .transform((years) => years * 12),
-  taxAllowance: z.number().nonnegative().max(MAX_EURO),
-  additionalIncome: z
+  taxAllowance: z.coerce.number().nonnegative().max(MAX_EURO),
+  additionalIncome: z.coerce
     .number()
     .nonnegative()
     .max(MAX_EURO * 100),
-  capitalGainsTax: z
+  capitalGainsTax: z.coerce
     .number()
     .nonnegative()
     .max(MAX_PERCENT)
     .transform(toPercentRate),
 
   // Policy inputs
-  placementCommission: z.number().nonnegative().max(MAX_EURO),
-  savingRateCosts: z
+  placementCommission: z.coerce.number().nonnegative().max(MAX_EURO),
+  savingRateCosts: z.coerce
     .number()
     .nonnegative()
     .max(MAX_PERCENT)
     .optional()
     .default(0)
     .transform(toPercentRate),
-  balanceCosts: z
+  balanceCosts: z.coerce
     .number()
     .nonnegative()
     .max(MAX_PERCENT)
@@ -49,14 +49,14 @@ const schema = z.object({
     .default(0)
     .transform(toPercentRate)
     .transform(toMonthly),
-  fixedCosts: z
+  fixedCosts: z.coerce
     .number()
     .nonnegative()
     .max(MAX_EURO)
     .optional()
     .default(0)
     .transform(toMonthly),
-  minimumCosts: z
+  minimumCosts: z.coerce
     .number()
     .nonnegative()
     .max(MAX_EURO)
@@ -65,18 +65,18 @@ const schema = z.object({
     .transform(toMonthly),
 
   // ETF inputs
-  ter: z
+  ter: z.coerce
     .number()
     .nonnegative()
     .max(MAX_PERCENT)
     .transform(toPercentRate)
     .transform(toMonthly),
-  expectedInterest: z
+  expectedInterest: z.coerce
     .number()
     .nonnegative()
     .max(MAX_PERCENT)
     .transform(toMonthlyConformalRate),
-  partialExemption: z
+  partialExemption: z.coerce
     .number()
     .nonnegative()
     .max(MAX_PERCENT)
@@ -84,14 +84,14 @@ const schema = z.object({
     .transform((rate) => 1 - rate),
 
   // Reallocation inputs
-  reallocationOccurrence: z
+  reallocationOccurrence: z.coerce
     .number()
     .int()
     .max(100)
     .optional()
     .default(0)
     .transform((years) => years * 12),
-  reallocationRate: z
+  reallocationRate: z.coerce
     .number()
     .nonnegative()
     .max(MAX_PERCENT)

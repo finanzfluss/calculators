@@ -14,26 +14,26 @@ const schema = z.object({
   inputAccountingYear: z
     .enum(['2019', '2020', '2021', '2022', '2023', '2024', '2025'])
     .transform(Number), // YEAR
-  inputTaxClass: z.number(), // STKL
-  inputTaxAllowance: z.number(), // LZZFREIB
-  inputChurchTax: z.number(), // R
+  inputTaxClass: z.coerce.number(), // STKL
+  inputTaxAllowance: z.coerce.number(), // LZZFREIB
+  inputChurchTax: z.coerce.number(), // R
   inputState: z.string(),
-  inputYearOfBirth: z.number(),
-  inputChildren: z.number().default(0),
-  inputChildTaxAllowance: z.number(), // ZKF
-  inputPkvContribution: z.number(),
-  inputEmployerSubsidy: z.number(),
-  inputPensionInsurance: z.number(), // KRV
-  inputLevyOne: z.number(),
-  inputLevyTwo: z.number(),
-  inputActivateLevy: z.number(),
-  inputHealthInsurance: z.number(), // PKV
-  inputAdditionalContribution: z.number(), // KVZ
-  inputGrossWage: z
+  inputYearOfBirth: z.coerce.number(),
+  inputChildren: z.coerce.number().default(0),
+  inputChildTaxAllowance: z.coerce.number(), // ZKF
+  inputPkvContribution: z.coerce.number(),
+  inputEmployerSubsidy: z.coerce.number(),
+  inputPensionInsurance: z.coerce.number(), // KRV
+  inputLevyOne: z.coerce.number(),
+  inputLevyTwo: z.coerce.number(),
+  inputActivateLevy: z.coerce.number(),
+  inputHealthInsurance: z.coerce.number(), // PKV
+  inputAdditionalContribution: z.coerce.number(), // KVZ
+  inputGrossWage: z.coerce
     .number()
     .min(-(10 ** 9))
     .max(10 ** 9), // RE4
-  inputPeriod: z.number(), // LZZ
+  inputPeriod: z.coerce.number(), // LZZ
 })
 
 type CalculatorInput = z.output<typeof schema>
