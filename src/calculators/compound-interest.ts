@@ -1,4 +1,5 @@
 import { z } from 'zod'
+
 import { formatResult, toPercentRate } from '../utils'
 import { defineCalculator } from '../utils/calculator'
 
@@ -16,33 +17,43 @@ const schema = z.object({
 
 type CalculatorInput = z.output<typeof schema>
 
-export const compoundInterest = defineCalculator({
-  schema,
-  calculate,
-})
+const CompoundInterestMultipliers: Record<
+  CalculatorInput['type'],
+  { duration: number; monthlyPayment: number }
+> = {
+  monthly: { duration: 12, monthlyPayment: 1 },
+  quarterly: { duration: 4, monthlyPayment: 3 },
+  yearly: { duration: 1, monthlyPayment: 12 },
+}
 
+export const compoundInterest = defineCalculator({ schema, calculate })
+
+/**
+ * Helper Function to get the base investment data
+ * @param parsedInput - The parsed input from the calculator
+ * @returns The base investment data
+ */
+function getBaseInvestmentData(parsedInput: CalculatorInput) {
+  const { monthlyPayment, type, durationYears, yearlyInterest } = parsedInput
+  const multiplier = CompoundInterestMultipliers[type]!
+
+  return {
+    duration: durationYears * multiplier.duration,
+    payment: monthlyPayment * multiplier.monthlyPayment,
+    interest: yearlyInterest / multiplier.duration,
+  }
+}
+
+/**
+ * Main function to calculate the compound interest
+ * @param parsedInput - The parsed input from the calculator
+ * @returns The calculated compound interest
+ */
 function calculate(parsedInput: CalculatorInput) {
-  const { startCapital, monthlyPayment, type, durationYears, yearlyInterest } =
-    parsedInput
+  const { startCapital, monthlyPayment, durationYears } = parsedInput
   const totalPayments = startCapital + durationYears * 12 * monthlyPayment
 
-  let duration: number
-  let payment: number
-  let interest: number
-
-  if (type === 'monthly') {
-    duration = durationYears * 12
-    payment = monthlyPayment
-    interest = yearlyInterest / 12
-  } else if (type === 'quarterly') {
-    duration = durationYears * 4
-    payment = monthlyPayment * 3
-    interest = yearlyInterest / 4
-  } else {
-    duration = durationYears
-    payment = monthlyPayment * 12
-    interest = yearlyInterest
-  }
+  const { duration, payment, interest } = getBaseInvestmentData(parsedInput)
 
   const capitalList: number[] = []
   const accInterestList: number[] = []
@@ -61,18 +72,18 @@ function calculate(parsedInput: CalculatorInput) {
     capitalLastMonth = capitalAmount + accInterestAmount
   }
 
-  const diagramData = {
-    CAPITAL_LIST: capitalList,
-    INTEREST_LIST: accInterestList,
-    LAST_CAPITAL: formatResult(capitalAmount),
-    LAST_INTEREST: formatResult(accInterestAmount),
-    TOTAL_CAPITAL: formatResult(capitalLastMonth),
-  }
+  const finalCapital = formatResult(capitalLastMonth)
 
   return {
-    finalCapital: formatResult(capitalLastMonth),
+    finalCapital,
     totalPayments: formatResult(totalPayments),
     totalInterest: formatResult(capitalLastMonth - totalPayments),
-    diagramData,
+    diagramData: {
+      CAPITAL_LIST: capitalList,
+      INTEREST_LIST: accInterestList,
+      LAST_CAPITAL: formatResult(capitalAmount),
+      LAST_INTEREST: formatResult(accInterestAmount),
+      TOTAL_CAPITAL: finalCapital,
+    },
   }
 }
