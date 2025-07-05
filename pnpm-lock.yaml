@@ -18,6 +18,9 @@ importers:
       '@antfu/eslint-config':
         specifier: ^4.16.1
         version: 4.16.1(@vue/compiler-sfc@3.5.17)(eslint@9.29.0(jiti@2.4.2))(typescript@5.8.3)(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.15.33)(jiti@2.4.2)(yaml@2.8.0))
+      '@types/dinero.js':
+        specifier: ^1.9.4
+        version: 1.9.4
       '@types/node':
         specifier: ^22.15.33
         version: 22.15.33
@@ -27,6 +30,9 @@ importers:
       bumpp:
         specifier: ^10.2.0
         version: 10.2.0(magicast@0.3.5)
+      dinero.js:
+        specifier: ^1.9.1
+        version: 1.9.1
       eslint:
         specifier: ^9.29.0
         version: 9.29.0(jiti@2.4.2)
@@ -632,6 +638,9 @@ packages:
   '@types/deep-eql@4.0.2':
     resolution: {integrity: sha512-c9h9dVVMigMPc4bwTvC5dxqtqJZwQPePsWjPlpSOnojbor6pGqdk541lfA7AqFQr5pB1BRdq0juY9db81BwyFw==}
 
+  '@types/dinero.js@1.9.4':
+    resolution: {integrity: sha512-mtJnan4ajy9MqvoJGVXu0tC9EAAzFjeoKc3d+8AW+H/Od9+8IiC59ymjrZF+JdTToyDvkLReacTsc50Z8eYr6Q==}
+
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
 
@@ -987,6 +996,9 @@ packages:
   diff@8.0.2:
     resolution: {integrity: sha512-sSuxWU5j5SR9QQji/o2qMvqRNYRDOcBTgsJ/DeCf4iSN4gW+gNMXM7wFIP+fdXZxoNiAnHUTGjCr+TSWXdRDKg==}
     engines: {node: '>=0.3.1'}
+
+  dinero.js@1.9.1:
+    resolution: {integrity: sha512-1HXiF2vv3ZeRQ23yr+9lFxj/PbZqutuYWJnE0qfCB9xYBPnuaJ8lXtli1cJM0TvUXW1JTOaePldmqN5JVNxKSA==}
 
   dotenv@16.5.0:
     resolution: {integrity: sha512-m/C+AwOAr9/W1UOIZUo232ejMNnJAJtYQjUbHoNTBNTJSvqzzDh7vnrei3o3r3m9blf6ZoDkvcw0VmozNRFJxg==}
@@ -2657,6 +2669,8 @@ snapshots:
 
   '@types/deep-eql@4.0.2': {}
 
+  '@types/dinero.js@1.9.4': {}
+
   '@types/estree@1.0.8': {}
 
   '@types/json-schema@7.0.15': {}
@@ -3065,6 +3079,8 @@ snapshots:
       dequal: 2.0.3
 
   diff@8.0.2: {}
+
+  dinero.js@1.9.1: {}
 
   dotenv@16.5.0: {}
 

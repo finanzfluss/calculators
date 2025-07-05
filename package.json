@@ -51,9 +51,11 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.16.1",
+    "@types/dinero.js": "^1.9.4",
     "@types/node": "^22.15.33",
     "@vitest/coverage-v8": "3.2.4",
     "bumpp": "^10.2.0",
+    "dinero.js": "^1.9.1",
     "eslint": "^9.29.0",
     "prettier": "^3.6.1",
     "tsdown": "^0.12.9",
