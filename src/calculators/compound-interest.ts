@@ -1,5 +1,4 @@
 import { z } from 'zod'
-
 import { formatResult, toPercentRate } from '../utils'
 import { defineCalculator } from '../utils/calculator'
 
@@ -28,14 +27,9 @@ const CompoundInterestMultipliers: Record<
 
 export const compoundInterest = defineCalculator({ schema, calculate })
 
-/**
- * Helper Function to get the base investment data
- * @param parsedInput - The parsed input from the calculator
- * @returns The base investment data
- */
 function getBaseInvestmentData(parsedInput: CalculatorInput) {
   const { monthlyPayment, type, durationYears, yearlyInterest } = parsedInput
-  const multiplier = CompoundInterestMultipliers[type]!
+  const multiplier = CompoundInterestMultipliers[type]
 
   return {
     duration: durationYears * multiplier.duration,
@@ -44,11 +38,6 @@ function getBaseInvestmentData(parsedInput: CalculatorInput) {
   }
 }
 
-/**
- * Main function to calculate the compound interest
- * @param parsedInput - The parsed input from the calculator
- * @returns The calculated compound interest
- */
 function calculate(parsedInput: CalculatorInput) {
   const { startCapital, monthlyPayment, durationYears } = parsedInput
   const totalPayments = startCapital + durationYears * 12 * monthlyPayment
