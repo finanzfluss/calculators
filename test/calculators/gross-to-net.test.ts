@@ -215,7 +215,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('private health insurance', () => {
-    it(' without employer subsidy', () => {
+    it('without employer subsidy', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           healthInsurance: PRIVATE_HEALTH_INSURANCE,
@@ -258,6 +258,51 @@ describe('calculators/gross-to-net', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           pensionInsurance: NO_PENSION_INSURANCE,
+        }),
+      )
+
+      expect(result).toMatchSnapshot()
+    })
+  })
+
+  describe('edge cases', () => {
+    it('care insurance special case for Sachsen', () => {
+      const result = grossToNet.validateAndCalculate(
+        fakeTestValues({
+          state: STATE_SACHSEN,
+        }),
+      )
+
+      expect(result).toMatchSnapshot()
+    })
+
+    it('low pkv contribution in 2019', () => {
+      const result = grossToNet.validateAndCalculate(
+        fakeTestValues({
+          accountingYear: '2019',
+          healthInsurance: PRIVATE_HEALTH_INSURANCE,
+          pkvContribution: 100,
+          employerSubsidy: EMPLOYER_SUBSIDY,
+        }),
+      )
+
+      expect(result).toMatchSnapshot()
+    })
+
+    it('input period 0', () => {
+      const result = grossToNet.validateAndCalculate(
+        fakeTestValues({
+          period: 0, // Invalid period
+        }),
+      )
+
+      expect(result).toMatchSnapshot()
+    })
+
+    it('additional tax allowance', () => {
+      const result = grossToNet.validateAndCalculate(
+        fakeTestValues({
+          taxAllowance: 1000,
         }),
       )
 
