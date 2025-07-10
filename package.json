@@ -41,6 +41,7 @@
     "format": "prettier \"**/*.{css,html,json,js,md,ts,yml}\" --write",
     "format:check": "prettier \"**/*.{css,html,json,js,md,ts,yml}\" --check",
     "test": "vitest",
+    "test:coverage": "vitest --coverage",
     "test:types": "tsc --noEmit",
     "release": "bumpp"
   },

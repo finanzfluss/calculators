@@ -174,6 +174,12 @@ Run type checking:
 pnpm test:types
 ```
 
+Run tests with coverage report:
+
+```bash
+pnpm test:coverage
+```
+
 <br />
 
 ## License
