@@ -9,6 +9,9 @@ export default defineConfig({
         'src/index.ts', // index.ts only includes exports
         'src/utils/Lohnsteuer', // Lohnsteuer files are automatically generated
       ],
+      thresholds: {
+        100: true, // enforce 100% coverage
+      },
     },
   },
 })
