@@ -4,13 +4,13 @@ import {
   formatNumber,
   formatPercent,
   formatResult,
+  formatResultWithTwoOptionalDecimals,
   pad,
 } from '../../src/utils/formatters'
 import { setLocale } from '../../src/utils/i18n'
 
 describe('formatting methods', () => {
-  // eslint-disable-next-line test/prefer-lowercase-title
-  describe('DE', () => {
+  describe('de', () => {
     beforeAll(() => {
       setLocale('de')
     })
@@ -73,6 +73,23 @@ describe('formatting methods', () => {
       })
     })
 
+    describe('formatResultWithTwoOptionalDecimals', () => {
+      it('should show decimals when number has fractional part', () => {
+        expect(formatResultWithTwoOptionalDecimals(99.5)).toBe('99,50€')
+      })
+      it('should not show decimals for whole numbers', () => {
+        expect(formatResultWithTwoOptionalDecimals(99)).toBe('99€')
+      })
+      it('should support custom suffix', () => {
+        expect(formatResultWithTwoOptionalDecimals(99, ' EUR')).toBe('99 EUR')
+      })
+      it('should handle exponential numbers', () => {
+        expect(formatResultWithTwoOptionalDecimals(1.2 * 10 ** 21)).toBe(
+          '1,2×10²¹€',
+        )
+      })
+    })
+
     describe('formatPercent', () => {
       it('should round up', () => {
         expect(formatPercent(12.4437)).toBe('12,444%')
@@ -101,11 +118,21 @@ describe('formatting methods', () => {
       it('should set correct decimal points and naming', () => {
         expect(formatNumber(13.547, 2)).toBe('13,55')
       })
+      it('should throw error for non-finite values', () => {
+        expect(() => formatNumber(Number.NaN)).toThrowError(
+          'NaN is not a valid number',
+        )
+        expect(() => formatNumber(Number.POSITIVE_INFINITY)).toThrowError(
+          'Infinity is not a valid number',
+        )
+        expect(() => formatNumber(Number.NEGATIVE_INFINITY)).toThrowError(
+          '-Infinity is not a valid number',
+        )
+      })
     })
   })
 
-  // eslint-disable-next-line test/prefer-lowercase-title
-  describe('FR', () => {
+  describe('fr', () => {
     beforeAll(() => {
       setLocale('fr')
     })

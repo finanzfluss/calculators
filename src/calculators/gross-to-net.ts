@@ -98,7 +98,8 @@ function calculate({
   const SOCIAL_INSURANCE_THRESHOLD_KEY =
     Object.keys(SOCIAL_THRESHOLDS).find(
       (key) => key === inputAccountingYear.toString(),
-    ) ?? Object.keys(SOCIAL_THRESHOLDS).at(-1)!
+    ) /* v8 ignore next -- exclude this fallback from test coverage */ ??
+    Object.keys(SOCIAL_THRESHOLDS).at(-1)!
 
   // Krankenversicherung
   const HI_INCOME_THRESHOLD = SOCIAL_THRESHOLDS[SOCIAL_INSURANCE_THRESHOLD_KEY]
