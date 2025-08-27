@@ -3,9 +3,9 @@ import { CORRECTION_VALUES } from '../constants/net-policy'
 import { defineCalculator } from '../utils/calculator'
 import { formatInput, formatNumber } from '../utils/formatters'
 import {
-  toMonthly,
-  toMonthlyConformalRate,
-  toPercentRate,
+  annualToMonthly,
+  annualToMonthlyConformalRate,
+  percentToDecimal,
 } from '../utils/validation'
 import { grossToNet } from './gross-to-net'
 
@@ -30,7 +30,7 @@ const schema = z.object({
     .number()
     .nonnegative()
     .max(MAX_PERCENT)
-    .transform(toPercentRate),
+    .transform(percentageToDecimal),
 
   // Policy inputs
   placementCommission: z.coerce.number().nonnegative().max(MAX_EURO),
@@ -40,47 +40,47 @@ const schema = z.object({
     .max(MAX_PERCENT)
     .optional()
     .default(0)
-    .transform(toPercentRate),
+    .transform(percentageToDecimal),
   balanceCosts: z.coerce
     .number()
     .nonnegative()
     .max(MAX_PERCENT)
     .optional()
     .default(0)
-    .transform(toPercentRate)
-    .transform(toMonthly),
+    .transform(percentageToDecimal)
+    .transform(annualToMonthly),
   fixedCosts: z.coerce
     .number()
     .nonnegative()
     .max(MAX_EURO)
     .optional()
     .default(0)
-    .transform(toMonthly),
+    .transform(annualToMonthly),
   minimumCosts: z.coerce
     .number()
     .nonnegative()
     .max(MAX_EURO)
     .optional()
     .default(0)
-    .transform(toMonthly),
+    .transform(annualToMonthly),
 
   // ETF inputs
   ter: z.coerce
     .number()
     .nonnegative()
     .max(MAX_PERCENT)
-    .transform(toPercentRate)
-    .transform(toMonthly),
+    .transform(percentageToDecimal)
+    .transform(annualToMonthly),
   expectedInterest: z.coerce
     .number()
     .nonnegative()
     .max(MAX_PERCENT)
-    .transform(toMonthlyConformalRate),
+    .transform(annualToMonthlyConformalRate),
   partialExemption: z.coerce
     .number()
     .nonnegative()
     .max(MAX_PERCENT)
-    .transform(toPercentRate)
+    .transform(percentageToDecimal)
     .transform((rate) => 1 - rate),
 
   // Reallocation inputs
@@ -97,7 +97,7 @@ const schema = z.object({
     .max(MAX_PERCENT)
     .optional()
     .default(0)
-    .transform(toPercentRate),
+    .transform(percentageToDecimal),
 })
 
 type CalculatorInput = z.output<typeof schema>

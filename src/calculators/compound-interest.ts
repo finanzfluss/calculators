@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { formatResult, toPercentRate } from '../utils'
+import { formatResult, percentToDecimal } from '../utils'
 import { defineCalculator } from '../utils/calculator'
 
 const schema = z.object({
@@ -10,7 +10,7 @@ const schema = z.object({
     .number()
     .min(-10_000)
     .max(10_000)
-    .transform(toPercentRate),
+    .transform(percentToDecimal),
   type: z.enum(['monthly', 'quarterly', 'yearly']),
 })
 
