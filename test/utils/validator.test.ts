@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  toDinero,
   toMonthly,
   toMonthlyConformalRate,
   toPercentRate,
@@ -26,5 +27,15 @@ describe('toMonthlyConformalRate', () => {
     expect(toMonthlyConformalRate(0)).toBe(0)
     expect(toMonthlyConformalRate(12.68)).toBeCloseTo(0.01, 5)
     expect(toMonthlyConformalRate(213.84)).toBeCloseTo(0.1, 5)
+  })
+})
+
+describe('toDinero', () => {
+  it('should convert euros to Dinero object', () => {
+    const dineroValue = toDinero(10)
+    expect(dineroValue).not.toBeInstanceOf(Number)
+    expect(dineroValue.toUnit()).toBe(10)
+    expect(dineroValue.getAmount()).toBe(1000)
+    expect(dineroValue.getCurrency()).toBe('EUR')
   })
 })

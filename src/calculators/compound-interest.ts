@@ -1,10 +1,10 @@
 import { z } from 'zod'
-import { formatResult, toPercentRate } from '../utils'
+import { formatResult, toDinero, toPercentRate } from '../utils'
 import { defineCalculator } from '../utils/calculator'
 
 const schema = z.object({
-  startCapital: z.coerce.number(),
-  monthlyPayment: z.coerce.number(),
+  startCapital: z.coerce.number().transform(toDinero),
+  monthlyPayment: z.coerce.number().transform(toDinero),
   durationYears: z.coerce.number().nonnegative().max(1000),
   yearlyInterest: z.coerce
     .number()
@@ -33,46 +33,47 @@ function getBaseInvestmentData(parsedInput: CalculatorInput) {
 
   return {
     duration: durationYears * multiplier.duration,
-    payment: monthlyPayment * multiplier.monthlyPayment,
+    payment: monthlyPayment.multiply(multiplier.monthlyPayment),
     interest: yearlyInterest / multiplier.duration,
   }
 }
 
 function calculate(parsedInput: CalculatorInput) {
   const { startCapital, monthlyPayment, durationYears } = parsedInput
-  const totalPayments = startCapital + durationYears * 12 * monthlyPayment
+  const totalPayments =
+    startCapital.toUnit() + durationYears * 12 * monthlyPayment.toUnit()
 
   const { duration, payment, interest } = getBaseInvestmentData(parsedInput)
 
   const capitalList: number[] = []
   const accInterestList: number[] = []
   let capitalAmount = startCapital
-  let accInterestAmount = 0
+  let accInterestAmount = toDinero(0)
   let capitalLastMonth = capitalAmount
 
   for (let i = 0; i < duration; i++) {
-    capitalAmount += payment
-    capitalList.push(capitalAmount)
+    capitalAmount = capitalAmount.add(payment)
+    capitalList.push(capitalAmount.toUnit())
 
-    const interestMonth = capitalLastMonth * interest
-    accInterestAmount += interestMonth
-    accInterestList.push(accInterestAmount)
+    const interestMonth = capitalLastMonth.multiply(interest)
+    accInterestAmount = accInterestAmount.add(interestMonth)
+    accInterestList.push(accInterestAmount.toUnit())
 
-    capitalLastMonth = capitalAmount + accInterestAmount
+    capitalLastMonth = capitalAmount.add(accInterestAmount)
   }
 
-  const finalCapital = formatResult(capitalLastMonth)
+  const diagramData = {
+    CAPITAL_LIST: capitalList,
+    INTEREST_LIST: accInterestList,
+    LAST_CAPITAL: formatResult(capitalAmount.toUnit()),
+    LAST_INTEREST: formatResult(accInterestAmount.toUnit()),
+    TOTAL_CAPITAL: formatResult(capitalLastMonth.toUnit()),
+  }
 
   return {
-    finalCapital,
+    finalCapital: formatResult(capitalLastMonth.toUnit()),
     totalPayments: formatResult(totalPayments),
-    totalInterest: formatResult(capitalLastMonth - totalPayments),
-    diagramData: {
-      CAPITAL_LIST: capitalList,
-      INTEREST_LIST: accInterestList,
-      LAST_CAPITAL: formatResult(capitalAmount),
-      LAST_INTEREST: formatResult(accInterestAmount),
-      TOTAL_CAPITAL: finalCapital,
-    },
+    totalInterest: formatResult(capitalLastMonth.toUnit() - totalPayments),
+    diagramData,
   }
 }
