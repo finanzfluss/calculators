@@ -1,3 +1,4 @@
+import type Dinero from 'dinero.js'
 import { z } from 'zod'
 import { formatResult, toDinero, toPercentRate } from '../utils'
 import { defineCalculator } from '../utils/calculator'
@@ -40,31 +41,32 @@ function getBaseInvestmentData(parsedInput: CalculatorInput) {
 
 function calculate(parsedInput: CalculatorInput) {
   const { startCapital, monthlyPayment, durationYears } = parsedInput
-  const totalPayments =
-    startCapital.toUnit() + durationYears * 12 * monthlyPayment.toUnit()
+  const totalPayments = startCapital.add(
+    monthlyPayment.multiply(durationYears * 12),
+  )
 
   const { duration, payment, interest } = getBaseInvestmentData(parsedInput)
 
-  const capitalList: number[] = []
-  const accInterestList: number[] = []
+  const capitalList: Dinero.Dinero[] = []
+  const accInterestList: Dinero.Dinero[] = []
   let capitalAmount = startCapital
   let accInterestAmount = toDinero(0)
   let capitalLastMonth = capitalAmount
 
   for (let i = 0; i < duration; i++) {
     capitalAmount = capitalAmount.add(payment)
-    capitalList.push(capitalAmount.toUnit())
+    capitalList.push(capitalAmount)
 
     const interestMonth = capitalLastMonth.multiply(interest)
     accInterestAmount = accInterestAmount.add(interestMonth)
-    accInterestList.push(accInterestAmount.toUnit())
+    accInterestList.push(accInterestAmount)
 
     capitalLastMonth = capitalAmount.add(accInterestAmount)
   }
 
   const diagramData = {
-    CAPITAL_LIST: capitalList,
-    INTEREST_LIST: accInterestList,
+    CAPITAL_LIST: capitalList.map((dinero) => dinero.toUnit()),
+    INTEREST_LIST: accInterestList.map((dinero) => dinero.toUnit()),
     LAST_CAPITAL: formatResult(capitalAmount.toUnit()),
     LAST_INTEREST: formatResult(accInterestAmount.toUnit()),
     TOTAL_CAPITAL: formatResult(capitalLastMonth.toUnit()),
@@ -72,8 +74,10 @@ function calculate(parsedInput: CalculatorInput) {
 
   return {
     finalCapital: formatResult(capitalLastMonth.toUnit()),
-    totalPayments: formatResult(totalPayments),
-    totalInterest: formatResult(capitalLastMonth.toUnit() - totalPayments),
+    totalPayments: formatResult(totalPayments.toUnit()),
+    totalInterest: formatResult(
+      capitalLastMonth.subtract(totalPayments).toUnit(),
+    ),
     diagramData,
   }
 }
