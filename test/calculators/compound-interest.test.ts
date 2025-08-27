@@ -53,4 +53,17 @@ describe('calculators/compound-interest', () => {
     const { finalCapital, totalPayments, totalInterest } = result
     expect({ finalCapital, totalPayments, totalInterest }).toMatchSnapshot()
   })
+
+  it('should return diagram data', () => {
+    const result = compoundInterest.validateAndCalculate({
+      startCapital: 5000,
+      monthlyPayment: 100,
+      durationYears: 10,
+      yearlyInterest: 5,
+      type: 'monthly',
+    })
+
+    const { diagramData } = result
+    expect(diagramData).toMatchSnapshot()
+  })
 })
