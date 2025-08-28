@@ -7,9 +7,10 @@ export function pad(value: number) {
 }
 
 export function formatResultWithTwoOptionalDecimals(
-  amount: number,
+  value: number | { toUnit: () => number },
   suffix = '€',
 ) {
+  const amount = typeof value === 'number' ? value : value.toUnit()
   const decimalsRequired =
     Math.abs(amount) - Number.parseInt(amount.toString()) > 0
   const decimalCount = decimalsRequired ? 2 : 0
@@ -17,7 +18,11 @@ export function formatResultWithTwoOptionalDecimals(
   return `${formattedAmount}${suffix}`
 }
 
-export function formatResult(amount: number, suffix = '€') {
+export function formatResult(
+  value: number | { toUnit: () => number },
+  suffix = '€',
+) {
+  const amount = typeof value === 'number' ? value : value.toUnit()
   const decimalCount = Math.abs(amount) < 1000 ? 2 : 0
   const formattedAmount = formatNumber(amount, decimalCount)
   return `${formattedAmount}${suffix}`

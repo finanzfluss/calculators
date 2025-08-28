@@ -67,17 +67,15 @@ function calculate(parsedInput: CalculatorInput) {
   const diagramData = {
     CAPITAL_LIST: capitalList.map((dinero) => dinero.toUnit()),
     INTEREST_LIST: accInterestList.map((dinero) => dinero.toUnit()),
-    LAST_CAPITAL: formatResult(capitalAmount.toUnit()),
-    LAST_INTEREST: formatResult(accInterestAmount.toUnit()),
-    TOTAL_CAPITAL: formatResult(capitalLastMonth.toUnit()),
+    LAST_CAPITAL: formatResult(capitalAmount),
+    LAST_INTEREST: formatResult(accInterestAmount),
+    TOTAL_CAPITAL: formatResult(capitalLastMonth),
   }
 
   return {
-    finalCapital: formatResult(capitalLastMonth.toUnit()),
-    totalPayments: formatResult(totalPayments.toUnit()),
-    totalInterest: formatResult(
-      capitalLastMonth.subtract(totalPayments).toUnit(),
-    ),
+    finalCapital: formatResult(capitalLastMonth),
+    totalPayments: formatResult(totalPayments),
+    totalInterest: formatResult(capitalLastMonth.subtract(totalPayments)),
     diagramData,
   }
 }

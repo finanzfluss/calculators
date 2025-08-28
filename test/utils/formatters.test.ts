@@ -1,3 +1,4 @@
+import Dinero from 'dinero.js'
 import { beforeAll, describe, expect, it } from 'vitest'
 import {
   formatInput,
@@ -71,6 +72,10 @@ describe('formatting methods', () => {
       it('should return pow format with cropped decimal for large numbers', () => {
         expect(formatResult(1.299999e21)).toBe('1,2×10²¹€')
       })
+      it('should handle Dinero objects', () => {
+        const dinero = Dinero({ amount: 12345, currency: 'EUR' })
+        expect(formatResult(dinero)).toBe('123,45€')
+      })
     })
 
     describe('formatResultWithTwoOptionalDecimals', () => {
@@ -86,6 +91,15 @@ describe('formatting methods', () => {
       it('should handle exponential numbers', () => {
         expect(formatResultWithTwoOptionalDecimals(1.2 * 10 ** 21)).toBe(
           '1,2×10²¹€',
+        )
+      })
+      it('should handle Dinero objects', () => {
+        const dinero = Dinero({ amount: 9900, currency: 'EUR' })
+        expect(formatResultWithTwoOptionalDecimals(dinero)).toBe('99€')
+
+        const dineroWithFraction = Dinero({ amount: 9950, currency: 'EUR' })
+        expect(formatResultWithTwoOptionalDecimals(dineroWithFraction)).toBe(
+          '99,50€',
         )
       })
     })
