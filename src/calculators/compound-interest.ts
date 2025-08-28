@@ -17,25 +17,25 @@ const schema = z.object({
 
 type CalculatorInput = z.output<typeof schema>
 
-const CompoundInterestMultipliers: Record<
+const IntervalFactors: Record<
   CalculatorInput['type'],
-  { duration: number; monthlyPayment: number }
+  { periodsPerYear: number; paymentsPerPeriod: number }
 > = {
-  monthly: { duration: 12, monthlyPayment: 1 },
-  quarterly: { duration: 4, monthlyPayment: 3 },
-  yearly: { duration: 1, monthlyPayment: 12 },
+  monthly: { periodsPerYear: 12, paymentsPerPeriod: 1 },
+  quarterly: { periodsPerYear: 4, paymentsPerPeriod: 3 },
+  yearly: { periodsPerYear: 1, paymentsPerPeriod: 12 },
 }
 
 export const compoundInterest = defineCalculator({ schema, calculate })
 
 function getBaseInvestmentData(parsedInput: CalculatorInput) {
   const { monthlyPayment, type, durationYears, yearlyInterest } = parsedInput
-  const multiplier = CompoundInterestMultipliers[type]
+  const intervalFactors = IntervalFactors[type]
 
   return {
-    duration: durationYears * multiplier.duration,
-    payment: monthlyPayment.multiply(multiplier.monthlyPayment),
-    interest: yearlyInterest / multiplier.duration,
+    totalPeriods: durationYears * intervalFactors.periodsPerYear,
+    periodicPayment: monthlyPayment.multiply(intervalFactors.paymentsPerPeriod),
+    periodicInterestRate: yearlyInterest / intervalFactors.periodsPerYear,
   }
 }
 
@@ -45,37 +45,38 @@ function calculate(parsedInput: CalculatorInput) {
     monthlyPayment.multiply(durationYears * 12),
   )
 
-  const { duration, payment, interest } = getBaseInvestmentData(parsedInput)
+  const { totalPeriods, periodicPayment, periodicInterestRate } =
+    getBaseInvestmentData(parsedInput)
 
   const capitalList: Dinero.Dinero[] = []
-  const accInterestList: Dinero.Dinero[] = []
-  let capitalAmount = startCapital
-  let accInterestAmount = toDinero(0)
-  let capitalLastMonth = capitalAmount
+  const interestList: Dinero.Dinero[] = []
+  let currentCapital = startCapital
+  let accumulatedInterest = toDinero(0)
+  let totalBalance = currentCapital
 
-  for (let i = 0; i < duration; i++) {
-    capitalAmount = capitalAmount.add(payment)
-    capitalList.push(capitalAmount)
+  for (let period = 0; period < totalPeriods; period++) {
+    currentCapital = currentCapital.add(periodicPayment)
+    capitalList.push(currentCapital)
 
-    const interestMonth = capitalLastMonth.multiply(interest)
-    accInterestAmount = accInterestAmount.add(interestMonth)
-    accInterestList.push(accInterestAmount)
+    const periodicInterest = totalBalance.multiply(periodicInterestRate)
+    accumulatedInterest = accumulatedInterest.add(periodicInterest)
+    interestList.push(accumulatedInterest)
 
-    capitalLastMonth = capitalAmount.add(accInterestAmount)
+    totalBalance = currentCapital.add(accumulatedInterest)
   }
 
   const diagramData = {
     CAPITAL_LIST: capitalList.map((dinero) => dinero.toUnit()),
-    INTEREST_LIST: accInterestList.map((dinero) => dinero.toUnit()),
-    LAST_CAPITAL: formatResult(capitalAmount),
-    LAST_INTEREST: formatResult(accInterestAmount),
-    TOTAL_CAPITAL: formatResult(capitalLastMonth),
+    INTEREST_LIST: interestList.map((dinero) => dinero.toUnit()),
+    LAST_CAPITAL: formatResult(currentCapital),
+    LAST_INTEREST: formatResult(accumulatedInterest),
+    TOTAL_CAPITAL: formatResult(totalBalance),
   }
 
   return {
-    finalCapital: formatResult(capitalLastMonth),
+    finalCapital: formatResult(totalBalance),
     totalPayments: formatResult(totalPayments),
-    totalInterest: formatResult(capitalLastMonth.subtract(totalPayments)),
+    totalInterest: formatResult(totalBalance.subtract(totalPayments)),
     diagramData,
   }
 }
