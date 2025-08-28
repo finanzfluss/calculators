@@ -14,7 +14,7 @@ export function toMonthlyConformalRate(valuePerYear: number) {
 
 export function toDinero(euros: number) {
   return Dinero({
-    amount: euros * 100,
+    amount: Math.round(euros * 100),
     currency: 'EUR',
   })
 }
