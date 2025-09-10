@@ -47,7 +47,7 @@
   },
   "peerDependencies": {
     "bignumber.js": "^9.3.1",
-    "zod": "^3.25.76"
+    "zod": "^4.1.5"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^5.3.0",
@@ -58,7 +58,7 @@
     "dinero.js": "^1.9.1",
     "eslint": "^9.35.0",
     "prettier": "^3.6.2",
-    "tsdown": "^0.14.2",
+    "tsdown": "^0.15.0",
     "typescript": "^5.9.2",
     "ufo": "^1.6.1",
     "vitest": "^3.2.4"
