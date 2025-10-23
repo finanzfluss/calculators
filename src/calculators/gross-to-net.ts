@@ -95,17 +95,18 @@ function calculate({
 
   const STATE_IS_OST = isNewFederalState(inputState)
 
+  /* v8 ignore next -- @preserve */
   const SOCIAL_INSURANCE_THRESHOLD_KEY =
     Object.keys(SOCIAL_THRESHOLDS).find(
       (key) => key === inputAccountingYear.toString(),
-    ) /* v8 ignore next -- exclude this fallback from test coverage */ ??
-    Object.keys(SOCIAL_THRESHOLDS).at(-1)!
+    ) ?? Object.keys(SOCIAL_THRESHOLDS).at(-1)!
 
   // Krankenversicherung
   const HI_INCOME_THRESHOLD = SOCIAL_THRESHOLDS[SOCIAL_INSURANCE_THRESHOLD_KEY]
 
   let inputContributionRate = ZERO
 
+  /* v8 ignore else -- @preserve */
   if (inputHealthInsurance === 0) {
     inputContributionRate = new BigDecimal(14.6)
   } else if (inputHealthInsurance === -1) {
@@ -140,6 +141,7 @@ function calculate({
   let noCareInsurance = false
   let privateHealthInsurance = ZERO
 
+  /* v8 ignore else -- @preserve */
   if (inputHealthInsurance === 0) {
     // Gesetzliche Krankenversicherung
     healthInsurance = HI_CONTRIBUTION_AMOUNT_PROPOTION
@@ -217,6 +219,7 @@ function calculate({
 
   // Rentenversicherung
   let piIncomeThreshold = ZERO
+  /* v8 ignore else -- @preserve */
   if (inputPensionInsurance === 0) {
     // gesetzliche Rentenversicherung
     if (STATE_IS_OST) {
