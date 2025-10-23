@@ -1,5 +1,5 @@
-import { formatPercent, formatResult } from '@finanzfluss/calculators/utils'
 import { describe, expect, it } from 'vitest'
+import { formatPercent, formatResult } from '../../src/utils'
 import { fv, nper, pmt, pv, rate, xirr } from '../../src/utils/financial'
 
 describe('financial functions', () => {
