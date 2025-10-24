@@ -6,7 +6,7 @@ export default defineConfig({
       reporter: ['text'],
       include: ['src/**/*.ts'],
       exclude: [
-        'src/index.ts', // index.ts only includes exports
+        'src/**/index.ts', // index.ts only includes exports
         'src/utils/Lohnsteuer', // Lohnsteuer files are automatically generated
       ],
       thresholds: {
