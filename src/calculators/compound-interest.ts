@@ -1,82 +1,51 @@
-import type Dinero from 'dinero.js'
 import { z } from 'zod'
-import { formatResult, toDinero, toPercentRate } from '../utils'
+import { formatResult } from '../utils'
 import { defineCalculator } from '../utils/calculator'
+import { savingsEndValue } from './savings-end-value'
+import { calcDiagramData } from './savings-utils'
 
 const schema = z.object({
-  startCapital: z.coerce.number().transform(toDinero),
-  monthlyPayment: z.coerce.number().transform(toDinero),
+  startCapital: z.coerce.number(),
+  monthlyPayment: z.coerce.number(),
   durationYears: z.coerce.number().nonnegative().max(1000),
-  yearlyInterest: z.coerce
-    .number()
-    .min(-10_000)
-    .max(10_000)
-    .transform(toPercentRate),
+  yearlyInterest: z.coerce.number().min(0).max(10_000),
   type: z.enum(['monthly', 'quarterly', 'yearly']),
 })
 
 type CalculatorInput = z.output<typeof schema>
 
-const IntervalFactors: Record<
-  CalculatorInput['type'],
-  { periodsPerYear: number; paymentsPerPeriod: number }
-> = {
-  monthly: { periodsPerYear: 12, paymentsPerPeriod: 1 },
-  quarterly: { periodsPerYear: 4, paymentsPerPeriod: 3 },
-  yearly: { periodsPerYear: 1, paymentsPerPeriod: 12 },
-}
-
 export const compoundInterest = defineCalculator({ schema, calculate })
 
-function getBaseInvestmentData(parsedInput: CalculatorInput) {
-  const { monthlyPayment, type, durationYears, yearlyInterest } = parsedInput
-  const intervalFactors = IntervalFactors[type]
+function calculate(parsedInput: CalculatorInput) {
+  const savingsObject = getSavingsObject(parsedInput)
+  const finalCapital = savingsEndValue.calculate(savingsObject)
+
+  const { startCapital, monthlyPayment, durationYears } = parsedInput
+  const totalPayments = startCapital + monthlyPayment * durationYears * 12
 
   return {
-    totalPeriods: durationYears * intervalFactors.periodsPerYear,
-    periodicPayment: monthlyPayment.multiply(intervalFactors.paymentsPerPeriod),
-    periodicInterestRate: yearlyInterest / intervalFactors.periodsPerYear,
+    finalCapital: formatResult(finalCapital),
+    totalPayments: formatResult(totalPayments),
+    totalInterest: formatResult(finalCapital - totalPayments),
+    diagramData: calcDiagramData({ ...savingsObject, endValue: finalCapital }),
   }
 }
 
-function calculate(parsedInput: CalculatorInput) {
-  const { startCapital, monthlyPayment, durationYears } = parsedInput
-  const totalPayments = startCapital.add(
-    monthlyPayment.multiply(durationYears * 12),
-  )
-
-  const { totalPeriods, periodicPayment, periodicInterestRate } =
-    getBaseInvestmentData(parsedInput)
-
-  const capitalList: Dinero.Dinero[] = []
-  const interestList: Dinero.Dinero[] = []
-  let currentCapital = startCapital
-  let accumulatedInterest = toDinero(0)
-  let totalBalance = currentCapital
-
-  for (let period = 0; period < totalPeriods; period++) {
-    currentCapital = currentCapital.add(periodicPayment)
-    capitalList.push(currentCapital)
-
-    const periodicInterest = totalBalance.multiply(periodicInterestRate)
-    accumulatedInterest = accumulatedInterest.add(periodicInterest)
-    interestList.push(accumulatedInterest)
-
-    totalBalance = currentCapital.add(accumulatedInterest)
-  }
-
-  const diagramData = {
-    CAPITAL_LIST: capitalList.map((dinero) => dinero.toUnit()),
-    INTEREST_LIST: interestList.map((dinero) => dinero.toUnit()),
-    LAST_CAPITAL: formatResult(currentCapital),
-    LAST_INTEREST: formatResult(accumulatedInterest),
-    TOTAL_CAPITAL: formatResult(totalBalance),
-  }
-
+function getSavingsObject(parsedInput: CalculatorInput) {
   return {
-    finalCapital: formatResult(totalBalance),
-    totalPayments: formatResult(totalPayments),
-    totalInterest: formatResult(totalBalance.subtract(totalPayments)),
-    diagramData,
-  }
+    startValue: parsedInput.startCapital,
+    savingRate: parsedInput.monthlyPayment,
+    yearlyDuration: parsedInput.durationYears,
+    yearlyInterest: parsedInput.yearlyInterest,
+    interestIntervalType: parsedInput.type,
+
+    // All other parameters stay at their defaults
+    useCompoundInterest: true,
+    saveIntervalType: 'monthly',
+    savingType: 'inAdvance',
+    considerCapitalGainsTax: false,
+    capitalGainsTax: 0,
+    distributionType: 'distributing',
+    partialExemption: 0,
+  } as const
 }
