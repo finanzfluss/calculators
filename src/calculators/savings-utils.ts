@@ -51,7 +51,7 @@ export function getFinancialFunctionParameters(
       | 'saveIntervalType'
       | 'savingType'
     >,
-  config: { forceConsiderTax?: boolean } = {},
+  options: { forceConsiderTax?: boolean } = {},
 ) {
   const {
     // @keep-sorted
@@ -69,7 +69,7 @@ export function getFinancialFunctionParameters(
 
   const taxFactor = 1 - (capitalGainsTax / 100) * (1 - partialExemption / 100)
   const useTaxFactor =
-    config.forceConsiderTax ??
+    options.forceConsiderTax ??
     (considerCapitalGainsTax && distributionType !== 'accumulating')
   const effectiveInterest = useTaxFactor
     ? yearlyInterest * taxFactor

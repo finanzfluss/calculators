@@ -57,6 +57,7 @@ export function bisectByEndValue<K extends keyof CalculatorInput>({
       upper = upper * 2
     }
   }
+
   if (!isBracketed) {
     throw new Error(
       `Failed to bracket target end value ${targetEndValue} after expanding range for parameter "${paramName}"`,
@@ -80,6 +81,7 @@ export function bisectByEndValue<K extends keyof CalculatorInput>({
       break
     }
   }
+
   return (lower + upper) / 2
 }
 
