@@ -65,6 +65,50 @@ console.log(result.diagramData) // Detailed growth data for visualization
 
 <br />
 
+### Savings Calculator
+
+The Sparrechner ([https://finanzfluss.de/rechner/sparrechner](https://www.finanzfluss.de/rechner/sparrechner/)) is a versatile financial planning tool that calculates any unknown variable in a savings plan when all other variables are provided. It helps users plan their savings goals by solving for end value, starting capital, interest rate, duration, or payment amount.
+
+#### Key Features:
+
+- **Flexible calculation modes** solving for any of five variables: end value, start capital, interest rate, duration, or payment amount
+- **Tax-optimized calculations** supporting both distributing and accumulating investment types with capital gains tax considerations
+- **Partial tax exemption** modeling the German partial exemption (Teilfreistellung) for funds
+- **Multiple saving intervals** supporting both monthly and yearly payment schedules
+- **Visual growth tracking** providing detailed capital and interest accumulation data for charts
+
+```ts
+import { savings } from '@finanzfluss/calculators'
+
+const input = {
+  output: 'endValue', // What to calculate: 'endValue', 'startValue', 'yearlyInterest', 'monthlyDuration', or 'savingRate'
+  startValue: 10000,
+  savingRate: 200,
+  saveIntervalType: 'monthly', // 'monthly' or 'yearly'
+  savingType: 'inAdvance', // 'inAdvance' or 'inArrear'
+  yearlyInterest: 7,
+  interestIntervalType: 'monthly', // 'monthly', 'quarterly', or 'yearly'
+  yearlyDuration: 20,
+  considerCapitalGainsTax: true,
+  capitalGainsTax: 26.375,
+  distributionType: 'accumulating', // 'accumulating' or 'distributing'
+  partialExemption: 30,
+  useCompoundInterest: true,
+}
+
+// Validate input and calculate savings result
+const result = savings.validateAndCalculate(input)
+
+console.log(result.endValue) // Final portfolio value
+console.log(result.deposits) // Total amount deposited
+console.log(result.interestAfterTax) // Net interest earned after tax
+console.log(result.yearlyDuration) // Duration in years
+console.log(result.monthlyDuration) // Duration in months
+console.log(result.diagramData) // Detailed capital and interest growth data
+```
+
+<br />
+
 ### Gross-to-Net Calculator
 
 The Brutto-Netto-Rechner ([https://finanzfluss.de/rechner/brutto-netto-rechner](https://www.finanzfluss.de/rechner/brutto-netto-rechner/)) calculates a net salary from gross income, accounting for all German tax and social insurance deductions. It is based on the official pseudo code for tax calculation provided by the German ministry of finance: [https://www.bmf-steuerrechner.de/interface/pseudocodes.xhtml](https://www.bmf-steuerrechner.de/interface/pseudocodes.xhtml).
