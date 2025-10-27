@@ -38,7 +38,7 @@ describe('calculators/net-policy', () => {
     })
 
     expect(data.tableData.grossWorth.policy).toMatchInlineSnapshot('"374.366"')
-    expect(data.tableData.netWorth.policy).toMatchInlineSnapshot(`"335.163"`)
+    expect(data.tableData.netWorth.policy).toMatchInlineSnapshot(`"335.467"`)
   })
 
   it('should use different calculation for durations under 12 years', () => {

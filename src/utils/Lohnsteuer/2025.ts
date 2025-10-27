@@ -1382,12 +1382,11 @@ Lohnsteuer2025.prototype.MPARA = function () {
       this.PVA.multiply(BigDecimal.valueOf(0.0025)),
     )
   }
-  this.W1STKL5 = new BigDecimal(13432)
-  this.W2STKL5 = new BigDecimal(33380)
+  this.W1STKL5 = new BigDecimal(13785)
+  this.W2STKL5 = new BigDecimal(34240)
   this.W3STKL5 = new BigDecimal(222260)
-  // Grundfreibetrag 2025: Original Wert 11784 (was aber dem 2024 Wert entspricht) => https://app.asana.com/0/1193639981484880/1203856954323978
   this.GFB = new BigDecimal(12096)
-  this.SOLZFREI = new BigDecimal(18130)
+  this.SOLZFREI = new BigDecimal(19950)
 }
 
 /**
@@ -1692,7 +1691,7 @@ Lohnsteuer2025.prototype.MZTABFB = function () {
   this.KZTAB = 1
   if (this.STKL == 1) {
     this.SAP = BigDecimal.valueOf(36)
-    this.KFB = this.ZKF.multiply(BigDecimal.valueOf(9540)).setScale(
+    this.KFB = this.ZKF.multiply(BigDecimal.valueOf(9600)).setScale(
       0,
       BigDecimal.ROUND_DOWN,
     )
@@ -1700,7 +1699,7 @@ Lohnsteuer2025.prototype.MZTABFB = function () {
     if (this.STKL == 2) {
       this.EFA = BigDecimal.valueOf(4260)
       this.SAP = BigDecimal.valueOf(36)
-      this.KFB = this.ZKF.multiply(BigDecimal.valueOf(9540)).setScale(
+      this.KFB = this.ZKF.multiply(BigDecimal.valueOf(9600)).setScale(
         0,
         BigDecimal.ROUND_DOWN,
       )
@@ -1708,14 +1707,14 @@ Lohnsteuer2025.prototype.MZTABFB = function () {
       if (this.STKL == 3) {
         this.KZTAB = 2
         this.SAP = BigDecimal.valueOf(36)
-        this.KFB = this.ZKF.multiply(BigDecimal.valueOf(9540)).setScale(
+        this.KFB = this.ZKF.multiply(BigDecimal.valueOf(9600)).setScale(
           0,
           BigDecimal.ROUND_DOWN,
         )
       } else {
         if (this.STKL == 4) {
           this.SAP = BigDecimal.valueOf(36)
-          this.KFB = this.ZKF.multiply(BigDecimal.valueOf(4770)).setScale(
+          this.KFB = this.ZKF.multiply(BigDecimal.valueOf(4800)).setScale(
             0,
             BigDecimal.ROUND_DOWN,
           )
@@ -1793,7 +1792,7 @@ Lohnsteuer2025.prototype.UPMLST = function () {
     )
   }
   if (this.STKL < 5) {
-    this.UPTAB24()
+    this.UPTAB25()
   } else {
     this.MST5_6()
   }
@@ -1909,13 +1908,13 @@ Lohnsteuer2025.prototype.UP5_6 = function () {
     2,
     BigDecimal.ROUND_DOWN,
   )
-  this.UPTAB24()
+  this.UPTAB25()
   this.ST1 = this.ST
   this.X = this.ZX.multiply(BigDecimal.valueOf(0.75)).setScale(
     2,
     BigDecimal.ROUND_DOWN,
   )
-  this.UPTAB24()
+  this.UPTAB25()
   this.ST2 = this.ST
   this.DIFF = this.ST1.subtract(this.ST2).multiply(Lohnsteuer2025.ZAHL2)
   this.MIST = this.ZX.multiply(BigDecimal.valueOf(0.14)).setScale(
@@ -2098,7 +2097,7 @@ Lohnsteuer2025.prototype.MSOLZSTS = function () {
     )
   }
   if (this.STKL < 5) {
-    this.UPTAB24()
+    this.UPTAB25()
   } else {
     this.MST5_6()
   }
@@ -2179,41 +2178,41 @@ Lohnsteuer2025.prototype.MRE4SONST = function () {
 /**
  * Tarifliche Einkommensteuer §32a EStG, PAP Seite 38
  */
-Lohnsteuer2025.prototype.UPTAB24 = function () {
+Lohnsteuer2025.prototype.UPTAB25 = function () {
   if (this.X.compareTo(this.GFB.add(Lohnsteuer2025.ZAHL1)) == -1) {
     this.ST = BigDecimal.ZERO()
   } else {
-    if (this.X.compareTo(BigDecimal.valueOf(17006)) == -1) {
+    if (this.X.compareTo(BigDecimal.valueOf(17444)) == -1) {
       this.Y = this.X.subtract(this.GFB).divide(
         Lohnsteuer2025.ZAHL10000,
         6,
         BigDecimal.ROUND_DOWN,
       )
-      this.RW = this.Y.multiply(BigDecimal.valueOf(954.8))
+      this.RW = this.Y.multiply(BigDecimal.valueOf(932.3))
       this.RW = this.RW.add(BigDecimal.valueOf(1400))
       this.ST = this.RW.multiply(this.Y).setScale(0, BigDecimal.ROUND_DOWN)
     } else {
-      if (this.X.compareTo(BigDecimal.valueOf(66761)) == -1) {
-        this.Y = this.X.subtract(BigDecimal.valueOf(17005)).divide(
+      if (this.X.compareTo(BigDecimal.valueOf(68481)) == -1) {
+        this.Y = this.X.subtract(BigDecimal.valueOf(17443)).divide(
           Lohnsteuer2025.ZAHL10000,
           6,
           BigDecimal.ROUND_DOWN,
         )
-        this.RW = this.Y.multiply(BigDecimal.valueOf(181.19))
+        this.RW = this.Y.multiply(BigDecimal.valueOf(176.64))
         this.RW = this.RW.add(BigDecimal.valueOf(2397))
         this.RW = this.RW.multiply(this.Y)
-        this.ST = this.RW.add(BigDecimal.valueOf(991.21)).setScale(
+        this.ST = this.RW.add(BigDecimal.valueOf(1015.13)).setScale(
           0,
           BigDecimal.ROUND_DOWN,
         )
       } else {
         if (this.X.compareTo(BigDecimal.valueOf(277826)) == -1) {
           this.ST = this.X.multiply(BigDecimal.valueOf(0.42))
-            .subtract(BigDecimal.valueOf(10636.31))
+            .subtract(BigDecimal.valueOf(10911.92))
             .setScale(0, BigDecimal.ROUND_DOWN)
         } else {
           this.ST = this.X.multiply(BigDecimal.valueOf(0.45))
-            .subtract(BigDecimal.valueOf(18971.06))
+            .subtract(BigDecimal.valueOf(19246.67))
             .setScale(0, BigDecimal.ROUND_DOWN)
         }
       }
