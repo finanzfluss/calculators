@@ -24,39 +24,6 @@ export function pmt(
 }
 
 /**
- * Calculates the payment for a loan based on constant payments and a constant interest rate,
- * with taxes applied only to gains at the end (**accumulating distribution**).
- *
- * @param rate The interest rate for the loan.
- * @param nper The total number of payments for the loan.
- * @param pv The present value, or the total amount that a series of future payments is worth now.
- * @param fv The future value, or a cash balance you want to attain after the last payment is made.
- * @param taxRate The tax rate applied to gains (as a decimal, e.g., 0.25 for 25%).
- * @param type The number `0` or `1` and indicates when payments are due.
- *   Set type equal to `0` if payments are due *at the end* of the period; set to `1` if payments are due *at the beginning* of the period.
- */
-export function pmtAccumulatingTaxed(
-  rate: number,
-  nper: number,
-  pv: number,
-  fv: number,
-  taxRate: number,
-  type: 0 | 1 = 0,
-): number {
-  if (rate === 0) {
-    return -(fv + pv) / nper
-  }
-
-  const pow = (1 + rate) ** nper
-  const pvTerm = -pv * (pow * (1 - taxRate) + taxRate)
-  const denominator =
-    ((pow - 1) / rate) * (1 + rate * type) * (1 - taxRate) + nper * taxRate
-
-  const pmt = (fv - pvTerm) / denominator
-  return -pmt
-}
-
-/**
  * Calculates the present value of a loan or an investment, based on a constant interest rate.
  *
  * @param rate The interest rate per period.
