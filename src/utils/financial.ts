@@ -47,40 +47,6 @@ export function pv(
 }
 
 /**
- * Calculates the present value of a loan or an investment, based on a constant interest rate,
- * with taxes applied only to gains at the end (**accumulating distribution**).
- *
- * @param rate The interest rate per period.
- * @param periods The total number of payment periods in an annuity.
- * @param payment The payment made each period and cannot change over the life of the annuity.
- * @param future The future value, or a cash balance you want to attain after the last payment is made.
- * @param taxRate The tax rate applied to gains (as a decimal, e.g., 0.25 for 25%).
- * @param type The number `0` or `1` and indicates when payments are due.
- *   Set type equal to `0` if payments are due *at the end* of the period; set to `1` if payments are due *at the beginning* of the period.
- */
-export function pvAccumulatingTaxed(
-  rate: number,
-  periods: number,
-  payment: number,
-  future: number,
-  taxRate: number,
-  type: 0 | 1 = 0,
-): number {
-  if (rate === 0) {
-    return -(future + payment * periods)
-  }
-
-  const pow = (1 + rate) ** periods
-  const denominator =
-    ((pow - 1) / rate) * (1 + rate * type) * (1 - taxRate) + periods * taxRate
-
-  const pvCoeff = pow * (1 - taxRate) + taxRate
-  const pv = -(future + payment * denominator) / pvCoeff
-
-  return pv
-}
-
-/**
  * Calculates the future value of an investment based on a constant interest rate.
  *
  * @param rate The interest rate per period.

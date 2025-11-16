@@ -1,7 +1,7 @@
 import type { z } from 'zod'
 import { toDinero } from '../utils'
 import { defineCalculator } from '../utils/calculator'
-import { pv, pvAccumulatingTaxed } from '../utils/financial'
+import { pv } from '../utils/financial'
 import { bisectByEndValue } from './savings-end-value'
 import {
   getFinancialFunctionParameters,
@@ -28,36 +28,19 @@ function calculate(parsedInput: CalculatorInput) {
 }
 
 function calculateWithCompoundInterest(parsedInput: CalculatorInput) {
-  const {
-    considerCapitalGainsTax,
-    distributionType,
-    endValue,
-    interestIntervalType,
-    saveIntervalType,
-  } = parsedInput
+  const { considerCapitalGainsTax, distributionType, endValue } = parsedInput
 
-  const { rate, numberOfPeriods, payments, fvType, effectiveTaxRate } =
+  const { rate, numberOfPeriods, payments, fvType } =
     getFinancialFunctionParameters(parsedInput)
 
   let startValue: number
   if (considerCapitalGainsTax && distributionType === 'accumulating') {
-    if (saveIntervalType === 'monthly' && interestIntervalType === 'monthly') {
-      startValue = -pvAccumulatingTaxed(
-        rate,
-        numberOfPeriods,
-        -payments,
-        endValue,
-        effectiveTaxRate,
-        fvType,
-      )
-    } else {
-      startValue = bisectByEndValue({
-        targetEndValue: endValue,
-        baseInput: parsedInput,
-        paramName: 'startValue',
-        searchRange: { lower: 0, upper: endValue },
-      })
-    }
+    startValue = bisectByEndValue({
+      targetEndValue: endValue,
+      baseInput: parsedInput,
+      paramName: 'startValue',
+      searchRange: { lower: 0, upper: endValue },
+    })
   } else {
     startValue = -pv(rate, numberOfPeriods, -payments, endValue, fvType)
   }
