@@ -1,7 +1,8 @@
 import type { z } from 'zod'
 import { toDinero } from '../utils'
 import { defineCalculator } from '../utils/calculator'
-import { pmt, pmtAccumulatingTaxed } from '../utils/financial'
+import { pmt } from '../utils/financial'
+import { bisectByEndValue } from './savings-end-value'
 import {
   getFinancialFunctionParameters,
   savingsBaseSchema,
@@ -30,19 +31,18 @@ function calculateWithCompoundInterest(parsedInput: CalculatorInput) {
   const { considerCapitalGainsTax, distributionType, endValue, startValue } =
     parsedInput
 
-  const { rate, numberOfPeriods, fvType, effectiveTaxRate } =
+  const { rate, numberOfPeriods, fvType } =
     getFinancialFunctionParameters(parsedInput)
 
   let payment: number
   if (considerCapitalGainsTax && distributionType === 'accumulating') {
-    payment = -pmtAccumulatingTaxed(
-      rate,
-      numberOfPeriods,
-      -startValue,
-      endValue,
-      effectiveTaxRate,
-      fvType,
-    )
+    payment = bisectByEndValue({
+      targetEndValue: endValue,
+      baseInput: parsedInput,
+      paramName: 'savingRate',
+      searchRange: { lower: 0, upper: endValue },
+    })
+    return toDinero(payment).toUnit()
   } else {
     payment = -pmt(rate, numberOfPeriods, -startValue, endValue, fvType)
   }

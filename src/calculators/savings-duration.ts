@@ -1,6 +1,7 @@
 import type { z } from 'zod'
 import { defineCalculator } from '../utils/calculator'
-import { nper, nperAccumulatingTaxed } from '../utils/financial'
+import { nper } from '../utils/financial'
+import { bisectByEndValue } from './savings-end-value'
 import {
   getFinancialFunctionParameters,
   savingsBaseSchema,
@@ -34,19 +35,16 @@ function calculateWithCompoundInterest(parsedInput: CalculatorInput) {
     payments,
     fvType,
     numberOfPeriods: periodsPerYear,
-    effectiveTaxRate,
   } = getFinancialFunctionParameters(parsedInput)
 
   let actualPeriods: number
   if (considerCapitalGainsTax && distributionType === 'accumulating') {
-    actualPeriods = nperAccumulatingTaxed(
-      rate,
-      -payments,
-      -startValue,
-      endValue,
-      effectiveTaxRate,
-      fvType,
-    )
+    return bisectByEndValue({
+      targetEndValue: endValue,
+      baseInput: parsedInput,
+      paramName: 'yearlyDuration',
+      searchRange: { lower: 1, upper: 1_000 },
+    })
   } else {
     actualPeriods = nper(rate, -payments, -startValue, endValue, fvType)
   }

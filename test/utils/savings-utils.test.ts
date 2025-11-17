@@ -511,16 +511,7 @@ describe('/calculators/savings-utils', () => {
               endValue,
             })
 
-            if (
-              saveIntervalType === 'monthly' &&
-              interestIntervalType !== 'monthly'
-            ) {
-              // With these settings the result is a bit inaccurate
-              expect.soft(result).toBeCloseTo(input.yearlyDuration, 1)
-            } else {
-              expect.soft(result).toBeCloseTo(input.yearlyDuration, 3)
-            }
-
+            expect.soft(result).toBeCloseTo(input.yearlyDuration, 3)
             const formattedResult = formatNumber(result)
             const expected = formatNumber(input.yearlyDuration)
             expect(formattedResult).toBe(expected)

@@ -24,39 +24,6 @@ export function pmt(
 }
 
 /**
- * Calculates the payment for a loan based on constant payments and a constant interest rate,
- * with taxes applied only to gains at the end (**accumulating distribution**).
- *
- * @param rate The interest rate for the loan.
- * @param nper The total number of payments for the loan.
- * @param pv The present value, or the total amount that a series of future payments is worth now.
- * @param fv The future value, or a cash balance you want to attain after the last payment is made.
- * @param taxRate The tax rate applied to gains (as a decimal, e.g., 0.25 for 25%).
- * @param type The number `0` or `1` and indicates when payments are due.
- *   Set type equal to `0` if payments are due *at the end* of the period; set to `1` if payments are due *at the beginning* of the period.
- */
-export function pmtAccumulatingTaxed(
-  rate: number,
-  nper: number,
-  pv: number,
-  fv: number,
-  taxRate: number,
-  type: 0 | 1 = 0,
-): number {
-  if (rate === 0) {
-    return -(fv + pv) / nper
-  }
-
-  const pow = (1 + rate) ** nper
-  const pvTerm = -pv * (pow * (1 - taxRate) + taxRate)
-  const denominator =
-    ((pow - 1) / rate) * (1 + rate * type) * (1 - taxRate) + nper * taxRate
-
-  const pmt = (fv - pvTerm) / denominator
-  return -pmt
-}
-
-/**
  * Calculates the present value of a loan or an investment, based on a constant interest rate.
  *
  * @param rate The interest rate per period.
@@ -77,40 +44,6 @@ export function pv(
 ): number {
   const result = PV(rate, periods, payment, future, type)
   return handleFormulaResult(result)
-}
-
-/**
- * Calculates the present value of a loan or an investment, based on a constant interest rate,
- * with taxes applied only to gains at the end (**accumulating distribution**).
- *
- * @param rate The interest rate per period.
- * @param periods The total number of payment periods in an annuity.
- * @param payment The payment made each period and cannot change over the life of the annuity.
- * @param future The future value, or a cash balance you want to attain after the last payment is made.
- * @param taxRate The tax rate applied to gains (as a decimal, e.g., 0.25 for 25%).
- * @param type The number `0` or `1` and indicates when payments are due.
- *   Set type equal to `0` if payments are due *at the end* of the period; set to `1` if payments are due *at the beginning* of the period.
- */
-export function pvAccumulatingTaxed(
-  rate: number,
-  periods: number,
-  payment: number,
-  future: number,
-  taxRate: number,
-  type: 0 | 1 = 0,
-): number {
-  if (rate === 0) {
-    return -(future + payment * periods)
-  }
-
-  const pow = (1 + rate) ** periods
-  const denominator =
-    ((pow - 1) / rate) * (1 + rate * type) * (1 - taxRate) + periods * taxRate
-
-  const pvCoeff = pow * (1 - taxRate) + taxRate
-  const pv = -(future + payment * denominator) / pvCoeff
-
-  return pv
 }
 
 /**
@@ -158,107 +91,6 @@ export function nper(
 ): number {
   const result = NPER(ir, pmt, pv, fv, type)
   return handleFormulaResult(result)
-}
-
-/**
- * Returns the number of periods for an investment based on periodic, constant payments and a constant interest rate,
- * with taxes applied only to gains at the end (**accumulating distribution**).
- *
- * @param ir The interest rate per period.
- * @param pmt The payment made each period.
- * @param pv The present value, or the lump-sum amount that a series of future payments is worth right now.
- * @param fv The future value, or a cash balance you want to attain after the last payment is made.
- * @param taxRate The tax rate applied to gains (as a decimal, e.g., 0.25 for 25%).
- * @param type The number `0` or `1` and indicates when payments are due.
- *   Set type equal to `0` if payments are due *at the end* of the period; set to `1` if payments are due *at the beginning* of the period.
- */
-/* v8 ignore next -- @preserve */
-export function nperAccumulatingTaxed(
-  ir: number,
-  pmt: number,
-  pv: number,
-  fv: number,
-  taxRate: number,
-  type: 0 | 1 = 0,
-): number {
-  // Fast-path for zero tax
-  if (taxRate === 0) {
-    return nper(ir, pmt, pv, fv, type)
-  }
-  // Work with non-negative magnitudes
-  const cpv = Math.abs(pv)
-  const cpmt = Math.abs(pmt)
-  if (cpv >= fv) return 0 // No periods needed if current value already meets target
-  if (ir === 0) {
-    // Zero-interest closed-form
-    if (cpmt === 0) return Number.NaN
-    return Math.max(0, (fv - cpv) / cpmt)
-  }
-
-  function calculateNetFvForPeriods(periods: number): number {
-    const fvInitial = cpv * (1 + ir) ** periods
-
-    let fvPayments = 0
-    if (cpmt > 0) {
-      if (type === 1) {
-        // In-advance payments earn full‐period interest
-        fvPayments = cpmt * (((1 + ir) ** periods - 1) / ir) * (1 + ir)
-      } else {
-        // In-arrears payments
-        fvPayments = cpmt * (((1 + ir) ** periods - 1) / ir)
-      }
-    }
-
-    const totalFv = fvInitial + fvPayments
-    const totalContributions = cpv + cpmt * periods
-    const taxableGains = Math.max(0, totalFv - totalContributions)
-    return totalFv - taxableGains * taxRate
-  }
-
-  // Use binary search to find the number of periods
-  let low = 0
-  let high = 100 // Will expand if needed
-  const tolerance = 1e-6
-  const maxIterations = 200
-
-  // Expand upper bound until target is bracketed or overflow
-  for (let expansion = 0; expansion < 10; expansion++) {
-    const testFv = calculateNetFvForPeriods(high)
-    if (testFv >= fv) {
-      break // Found a suitable upper bound
-    }
-    /* v8 ignore next -- @preserve */
-    if (!Number.isFinite(testFv)) {
-      break // Overflowed
-    }
-    high *= 10 // Expand search range
-  }
-  const upper = calculateNetFvForPeriods(high)
-  if (!Number.isFinite(upper) || upper < fv) {
-    return Number.NaN // Unattainable target
-  }
-
-  // Binary search within bracket
-  for (let i = 0; i < maxIterations; i++) {
-    const mid = (low + high) / 2
-    const netFv = calculateNetFvForPeriods(mid)
-
-    if (Math.abs(netFv - fv) < tolerance) {
-      return mid
-    }
-
-    if (netFv < fv) {
-      low = mid
-    } else {
-      high = mid
-    }
-
-    if (Math.abs(high - low) < tolerance) {
-      break // Converged
-    }
-  }
-
-  return (low + high) / 2
 }
 
 /**
