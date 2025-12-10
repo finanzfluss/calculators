@@ -12,7 +12,7 @@ import { BigDecimal } from '../utils/Lohnsteuer/shims/BigDecimal'
 const schema = z.object({
   output: z.literal('grossToNetCalc').optional(),
   inputAccountingYear: z
-    .enum(['2019', '2020', '2021', '2022', '2023', '2024', '2025'])
+    .enum(['2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026'])
     .transform(Number), // YEAR
   inputTaxClass: z.coerce.number(), // STKL
   inputTaxAllowance: z.coerce.number(), // LZZFREIB
@@ -77,6 +77,7 @@ function calculate({
   const ZAHL59850 = BigDecimal.valueOf(59850)
   const ZAHL62100 = BigDecimal.valueOf(62100)
   const ZAHL66150 = BigDecimal.valueOf(66150)
+  const ZAHL69750 = BigDecimal.valueOf(69750)
 
   const SOCIAL_THRESHOLDS: Record<string, BigDecimal> = {
     2019: ZAHL54450,
@@ -86,6 +87,7 @@ function calculate({
     2023: ZAHL59850,
     2024: ZAHL62100,
     2025: ZAHL66150,
+    2026: ZAHL69750,
   }
 
   const GROSS_WAGE =
