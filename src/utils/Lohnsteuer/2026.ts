@@ -5,7 +5,7 @@
 
 import { BigDecimal } from './shims/BigDecimal'
 
-function Lohnsteuer2026(params) {
+export function Lohnsteuer2026(params = {}) {
 
     /* Input variables */
 

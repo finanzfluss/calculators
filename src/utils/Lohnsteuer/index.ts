@@ -6,6 +6,7 @@ import { Lohnsteuer2022 } from './2022'
 import { Lohnsteuer2023 } from './2023'
 import { Lohnsteuer2024 } from './2024'
 import { Lohnsteuer2025 } from './2025'
+import { Lohnsteuer2026 } from './2026'
 
 type LohnsteuerInstance = (new () => GenericLohnsteuer) & GenericLohnsteuer
 
@@ -17,4 +18,5 @@ export const INCOME_TAX_CLASSES = {
   2023: Lohnsteuer2023 as unknown as LohnsteuerInstance,
   2024: Lohnsteuer2024 as unknown as LohnsteuerInstance,
   2025: Lohnsteuer2025 as unknown as LohnsteuerInstance,
+  2026: Lohnsteuer2026 as unknown as LohnsteuerInstance,
 } as const
