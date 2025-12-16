@@ -391,6 +391,18 @@ describe('tax year 2025', () => {
   })
 })
 
+describe('tax year 2026', () => {
+  it('should return specific result for tax year 2026', () => {
+    const result = grossToNet.validateAndCalculate(
+      fakeTestValues({
+        accountingYear: '2026',
+      }),
+    )
+
+    expect(result).toMatchSnapshot()
+  })
+})
+
 function fakeTestValues(options = {}) {
   return {
     inputGrossWage: getOrDefault(options, 'grossWage'), // Bruttogehalt
