@@ -155,9 +155,16 @@ function calculate({
     healthInsurance = new BigDecimal(inputPkvContribution).multiply(ZAHL12)
     if (inputEmployerSubsidy === 1) {
       let maxEmployerGrant =
-        inputAccountingYear === 2019
-          ? new BigDecimal(351.66)
-          : new BigDecimal(367.97)
+        {
+          2019: new BigDecimal(351.66),
+          2020: new BigDecimal(367.97),
+          2021: new BigDecimal(384.58),
+          2022: new BigDecimal(384.58),
+          2023: new BigDecimal(403.99),
+          2024: new BigDecimal(421.76),
+          2025: new BigDecimal(471.32),
+          2026: new BigDecimal(580.59),
+        }[inputAccountingYear] ?? new BigDecimal(580.59)
       maxEmployerGrant = maxEmployerGrant.multiply(ZAHL12)
 
       healthInsurance = healthInsurance.divide(
