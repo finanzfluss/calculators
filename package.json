@@ -2,7 +2,7 @@
   "name": "@finanzfluss/calculators",
   "type": "module",
   "version": "1.2.7",
-  "packageManager": "pnpm@10.15.1",
+  "packageManager": "pnpm@10.30.3",
   "description": "Financial calculators for Finanzfluss",
   "author": "Finflow GmbH",
   "license": "AGPL-3.0",
@@ -22,15 +22,15 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
     },
     "./utils": {
-      "types": "./dist/utils/index.d.ts",
-      "default": "./dist/utils/index.js"
+      "types": "./dist/utils/index.d.mts",
+      "default": "./dist/utils/index.mjs"
     }
   },
-  "types": "./dist/index.d.ts",
+  "types": "./dist/index.d.mts",
   "files": [
     "dist"
   ],
@@ -52,16 +52,16 @@
     "zod": "^4.1.5"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^5.3.0",
+    "@antfu/eslint-config": "^7.6.1",
     "@types/dinero.js": "^1.9.4",
     "@vitest/coverage-v8": "4.0.1",
     "@vitest/ui": "4.0.1",
-    "bumpp": "^10.2.3",
-    "eslint": "^9.35.0",
-    "prettier": "^3.6.2",
-    "tsdown": "^0.15.0",
-    "typescript": "^5.9.2",
-    "ufo": "^1.6.1",
-    "vitest": "^4.0.1"
+    "bumpp": "^10.4.1",
+    "eslint": "^10.0.2",
+    "prettier": "^3.8.1",
+    "tsdown": "^0.20.3",
+    "typescript": "^5.9.3",
+    "ufo": "^1.6.3",
+    "vitest": "^4.0.18"
   }
 }
