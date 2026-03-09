@@ -23,11 +23,7 @@ const schema = z.object({
     .int()
     .max(100)
     .transform((years) => years * 12),
-  taxAllowance: z.coerce
-    .number()
-    .nonnegative()
-    .max(MAX_EURO)
-    .transform(toDinero),
+  taxAllowance: z.coerce.number().nonnegative().max(2_000).transform(toDinero),
   additionalIncome: z.coerce
     .number()
     .nonnegative()
