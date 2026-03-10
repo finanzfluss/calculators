@@ -415,8 +415,8 @@ describe('tax year 2026', () => {
         additionalContribution: 2.9,
       }),
     )
-    expect(result.outputResIncomeTaxMonth).toMatchInlineSnapshot(`"1.443,50€"`)
-    expect(result.outputResChurchTaxMonth).toMatchInlineSnapshot(`"129,91€"`)
+    expect(result.outputResIncomeTaxMonth).toMatchInlineSnapshot(`"1.448,33€"`)
+    expect(result.outputResChurchTaxMonth).toMatchInlineSnapshot(`"130,35€"`)
   })
 })
 

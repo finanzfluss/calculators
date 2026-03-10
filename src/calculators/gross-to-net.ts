@@ -331,13 +331,11 @@ function calculate({
     lst.setPvz(0) // AN zahlt keinen Zuschuss zur Sozialen Pflegeversicherung
   }
   if (inputChildTaxAllowance > 0) {
-    lst.setZkf(new BigDecimal(inputChildTaxAllowance)) // Kinder
+    lst.setZkf(new BigDecimal(inputChildTaxAllowance)) // Kinderfreibeträge
   }
   // `setPva` is only available in Lohnsteuer 2024+
   if (lst.setPva) {
-    // Set the default value to `BigDecimal`
-    // See: https://app.asana.com/0/1203046358489956/1206908743344200
-    lst.setPva(new BigDecimal(0))
+    lst.setPva(new BigDecimal(Math.max(0, inputChildren - 1))) // Beitragsabschläge in der Sozialen Pflegeversicherung
   }
   lst.MAIN()
 
