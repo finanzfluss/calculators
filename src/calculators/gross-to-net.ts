@@ -19,7 +19,7 @@ const schema = z.object({
   inputChurchTax: z.coerce.number(), // R
   inputState: z.string(),
   inputYearOfBirth: z.coerce.number(),
-  inputChildren: z.coerce.number().default(0),
+  inputChildren: z.coerce.number().nonnegative().int().max(5).default(0),
   inputChildTaxAllowance: z.coerce.number(), // ZKF
   inputPkvContribution: z.coerce.number(),
   inputEmployerSubsidy: z.coerce.number(),
@@ -331,13 +331,11 @@ function calculate({
     lst.setPvz(0) // AN zahlt keinen Zuschuss zur Sozialen Pflegeversicherung
   }
   if (inputChildTaxAllowance > 0) {
-    lst.setZkf(new BigDecimal(inputChildTaxAllowance)) // Kinder
+    lst.setZkf(new BigDecimal(inputChildTaxAllowance)) // Kinderfreibeträge
   }
   // `setPva` is only available in Lohnsteuer 2024+
   if (lst.setPva) {
-    // Set the default value to `BigDecimal`
-    // See: https://app.asana.com/0/1203046358489956/1206908743344200
-    lst.setPva(new BigDecimal(0))
+    lst.setPva(new BigDecimal(Math.max(0, inputChildren - 1))) // Beitragsabschläge in der Sozialen Pflegeversicherung
   }
   lst.MAIN()
 

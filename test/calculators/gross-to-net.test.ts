@@ -401,6 +401,23 @@ describe('tax year 2026', () => {
 
     expect(result).toMatchSnapshot()
   })
+
+  it('should account for new care insurance contribution', () => {
+    const result = grossToNet.validateAndCalculate(
+      fakeTestValues({
+        accountingYear: '2026',
+        grossWage: 8900,
+        children: 2,
+        childTaxAllowance: 0,
+        taxClass: 3,
+        state: STATE_BERLIN,
+        churchTax: 1,
+        additionalContribution: 2.9,
+      }),
+    )
+    expect(result.outputResIncomeTaxMonth).toMatchInlineSnapshot(`"1.448,33€"`)
+    expect(result.outputResChurchTaxMonth).toMatchInlineSnapshot(`"130,35€"`)
+  })
 })
 
 function fakeTestValues(options = {}) {
