@@ -19,7 +19,7 @@ const schema = z.object({
   inputChurchTax: z.coerce.number(), // R
   inputState: z.string(),
   inputYearOfBirth: z.coerce.number(),
-  inputChildren: z.coerce.number().default(0),
+  inputChildren: z.coerce.number().nonnegative().int().max(5).default(0),
   inputChildTaxAllowance: z.coerce.number(), // ZKF
   inputPkvContribution: z.coerce.number(),
   inputEmployerSubsidy: z.coerce.number(),
