@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  roundToTwoDecimals,
   toDinero,
   toDineroMultiplier,
   toMonthly,
@@ -13,6 +14,25 @@ import {
   toUnits,
   trimScale,
 } from 'dinero.js/bigint'
+
+describe('roundToTwoDecimals', () => {
+  it('should round to two decimal places', () => {
+    expect(roundToTwoDecimals(1.234)).toBe(1.23)
+    expect(roundToTwoDecimals(1.235)).toBe(1.24)
+    expect(roundToTwoDecimals(1.999)).toBe(2)
+    expect(roundToTwoDecimals(0.1 + 0.2)).toBe(0.3)
+  })
+
+  it('should handle whole numbers', () => {
+    expect(roundToTwoDecimals(5)).toBe(5)
+    expect(roundToTwoDecimals(0)).toBe(0)
+  })
+
+  it('should handle negative values', () => {
+    expect(roundToTwoDecimals(-1.234)).toBe(-1.23)
+    expect(roundToTwoDecimals(-1.235)).toBe(-1.24)
+  })
+})
 
 describe('toMonthly', () => {
   it('should convert yearly to monthly', () => {

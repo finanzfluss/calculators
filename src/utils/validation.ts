@@ -19,6 +19,10 @@ export function toDinero(euros: number) {
   })
 }
 
+export function roundToTwoDecimals(value: number) {
+  return Math.round(value * 100) / 100
+}
+
 export function toDineroMultiplier(rate: number) {
   return {
     amount: Math.round(rate * 10 ** 6),
