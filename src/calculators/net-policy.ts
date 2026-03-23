@@ -1,17 +1,11 @@
-import {
-  add,
-  maximum,
-  multiply,
-  subtract,
-  toDecimal,
-  transformScale,
-} from 'dinero.js'
+import { add, maximum, multiply, subtract, transformScale } from 'dinero.js'
 import type { Dinero } from 'dinero.js'
 import { z } from 'zod'
 import { CORRECTION_VALUES } from '../constants/net-policy'
 import { defineCalculator } from '../utils/calculator'
 import { formatInput, formatResult } from '../utils/formatters'
 import {
+  dineroToNumber,
   toDinero,
   toDineroMultiplier,
   toMonthly,
@@ -188,7 +182,10 @@ function simulateOverPeriod(parsedInput: CalculatorInput) {
     // for policy
     const policyInterest = multiply(policyBalance, expectedInterest)
     const policyBalanceCost = multiply(policyBalance, balanceCosts)
-    let policyCostAdministration = add(multiply(policyBalance, ter), maximum([policyBalanceCost, minimumCosts]))
+    let policyCostAdministration = add(
+      multiply(policyBalance, ter),
+      maximum([policyBalanceCost, minimumCosts]),
+    )
     policyCostAdministration = add(policyCostAdministration, fixedCosts)
     const policyCostSaving = multiply(savingRate, savingRateCosts)
     policyBalance = add(policyBalance, savingRate)
@@ -234,8 +231,8 @@ function calcTableData(
   const policyTax = appliesPolicy12YearRule
     ? toDinero(
         calcPolicyTax(
-          Number(toDecimal(policyGross)),
-          Number(toDecimal(additionalIncome)),
+          dineroToNumber(policyGross),
+          dineroToNumber(additionalIncome),
         ),
       )
     : multiply(policyTaxableGross, capitalGainsTax)

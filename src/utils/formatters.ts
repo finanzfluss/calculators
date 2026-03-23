@@ -1,4 +1,5 @@
-import { toDecimal, toUnits, transformScale, type Dinero } from 'dinero.js'
+import { transformScale, type Dinero } from 'dinero.js'
+import { dineroToNumber } from './validation'
 import { getLocale } from './i18n'
 
 const SUPERSCRIPTS = ['⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹']
@@ -12,9 +13,7 @@ export function formatResultWithTwoOptionalDecimals(
   suffix = '€',
 ) {
   const amount =
-    typeof value === 'number'
-      ? value
-      : Number(toDecimal(transformScale(value, 2)))
+    typeof value === 'number' ? value : dineroToNumber(transformScale(value, 2))
   const decimalsRequired =
     Math.abs(amount) - Number.parseInt(amount.toString()) > 0
   const decimalCount = decimalsRequired ? 2 : 0
@@ -27,9 +26,7 @@ export function formatResult(
   suffix = '€',
 ) {
   const amount =
-    typeof value === 'number'
-      ? value
-      : Number(toDecimal(transformScale(value, 2)))
+    typeof value === 'number' ? value : dineroToNumber(transformScale(value, 2))
   const decimalCount = Math.abs(amount) < 1000 ? 2 : 0
   const formattedAmount = formatNumber(amount, decimalCount)
   return `${formattedAmount}${suffix}`

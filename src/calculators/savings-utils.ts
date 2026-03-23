@@ -1,7 +1,11 @@
-import { add, dinero, EUR, subtract, multiply, toDecimal, transformScale } from 'dinero.js'
+import { add, dinero, EUR, subtract, multiply, transformScale } from 'dinero.js'
 import type { Dinero } from 'dinero.js'
 import { z } from 'zod'
-import { formatResultWithTwoOptionalDecimals, toDineroMultiplier } from '../utils'
+import {
+  dineroToNumber,
+  formatResultWithTwoOptionalDecimals,
+  toDineroMultiplier,
+} from '../utils'
 
 export const savingsBaseSchema = z.object({
   endValue: z.coerce.number().nonnegative(),
@@ -249,18 +253,20 @@ export function calcDiagramData(savings: z.output<typeof savingsBaseSchema>): {
     const lastInterest = accInterestList[listLength - 1]!
     const totalCapital = add(lastCapital, lastInterest)
     const tax = toPreciseDinero(
-      calculateAccumulatingTax(Number(toDecimal(totalCapital)), savings),
+      calculateAccumulatingTax(dineroToNumber(totalCapital), savings),
     )
-    accInterestList[listLength - 1] =
-      subtract(accInterestList[listLength - 1]!, tax)
+    accInterestList[listLength - 1] = subtract(
+      accInterestList[listLength - 1]!,
+      tax,
+    )
   }
 
   const lastCapital = capitalList[listLength - 1]!
   const lastInterest = accInterestList[listLength - 1]!
   const totalCapital = add(lastCapital, lastInterest)
   return {
-    CAPITAL_LIST: capitalList.map((d) => Number(toDecimal(d))),
-    INTEREST_LIST: accInterestList.map((d) => Number(toDecimal(d))),
+    CAPITAL_LIST: capitalList.map(dineroToNumber),
+    INTEREST_LIST: accInterestList.map(dineroToNumber),
     LAST_CAPITAL: formatResultWithTwoOptionalDecimals(lastCapital),
     LAST_INTEREST: formatResultWithTwoOptionalDecimals(lastInterest),
     TOTAL_CAPITAL: formatResultWithTwoOptionalDecimals(totalCapital),
