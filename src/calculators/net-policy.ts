@@ -1,10 +1,19 @@
-import Dinero from 'dinero.js'
+import {
+  add,
+  maximum,
+  multiply,
+  subtract,
+  toDecimal,
+  transformScale,
+} from 'dinero.js'
+import type { Dinero } from 'dinero.js'
 import { z } from 'zod'
 import { CORRECTION_VALUES } from '../constants/net-policy'
 import { defineCalculator } from '../utils/calculator'
 import { formatInput, formatResult } from '../utils/formatters'
 import {
   toDinero,
+  toDineroMultiplier,
   toMonthly,
   toMonthlyConformalRate,
   toPercentRate,
@@ -33,7 +42,8 @@ const schema = z.object({
     .number()
     .nonnegative()
     .max(MAX_PERCENT)
-    .transform(toPercentRate),
+    .transform(toPercentRate)
+    .transform(toDineroMultiplier),
 
   // Policy inputs
   placementCommission: z.coerce
@@ -55,7 +65,8 @@ const schema = z.object({
     .optional()
     .default(0)
     .transform(toPercentRate)
-    .transform(toMonthly),
+    .transform(toMonthly)
+    .transform(toDineroMultiplier),
   fixedCosts: z.coerce
     .number()
     .nonnegative()
@@ -79,12 +90,14 @@ const schema = z.object({
     .nonnegative()
     .max(MAX_PERCENT)
     .transform(toPercentRate)
-    .transform(toMonthly),
+    .transform(toMonthly)
+    .transform(toDineroMultiplier),
   expectedInterest: z.coerce
     .number()
     .nonnegative()
     .max(MAX_PERCENT)
-    .transform(toMonthlyConformalRate),
+    .transform(toMonthlyConformalRate)
+    .transform(toDineroMultiplier),
   partialExemption: z.coerce
     .number()
     .nonnegative()
@@ -106,7 +119,8 @@ const schema = z.object({
     .max(MAX_PERCENT)
     .optional()
     .default(0)
-    .transform(toPercentRate),
+    .transform(toPercentRate)
+    .transform(toDineroMultiplier),
 })
 
 type CalculatorInput = z.output<typeof schema>
@@ -150,48 +164,47 @@ function simulateOverPeriod(parsedInput: CalculatorInput) {
     // reallocation
     let tax = toDinero(0)
     if (reallocationOccurrence > 0 && month % reallocationOccurrence === 0) {
-      const realizedGain = etfGain.multiply(reallocationRate)
-      const taxableAmount = Dinero.maximum([
+      const realizedGain = multiply(etfGain, reallocationRate)
+      const taxableAmount = maximum([
         toDinero(0),
-        realizedGain.multiply(partialExemption).subtract(taxAllowance),
+        subtract(multiply(realizedGain, partialExemption), taxAllowance),
       ])
-      tax = taxableAmount.multiply(capitalGainsTax)
-      etfGain = etfGain.subtract(realizedGain)
+      tax = multiply(taxableAmount, capitalGainsTax)
+      etfGain = subtract(etfGain, realizedGain)
     }
 
     // for etf
-    const etfCost = etfBalance.multiply(ter)
-    const etfInterest = etfBalance.multiply(expectedInterest)
-    etfGain = etfGain.add(etfInterest).subtract(etfCost)
-    etfBalance = etfBalance
-      .add(savingRate)
-      .subtract(tax)
-      .add(etfInterest)
-      .subtract(etfCost)
-    if (month === 1) etfBalance = etfBalance.add(placementCommission)
+    const etfCost = multiply(etfBalance, ter)
+    const etfInterest = multiply(etfBalance, expectedInterest)
+    etfGain = add(etfGain, etfInterest)
+    etfGain = subtract(etfGain, etfCost)
+    etfBalance = add(etfBalance, savingRate)
+    etfBalance = subtract(etfBalance, tax)
+    etfBalance = add(etfBalance, etfInterest)
+    etfBalance = subtract(etfBalance, etfCost)
+    if (month === 1) etfBalance = add(etfBalance, placementCommission)
+    etfBalance = transformScale(etfBalance, 3)
 
     // for policy
-    const policyInterest = policyBalance.multiply(expectedInterest)
-    const policyBalanceCost = policyBalance.multiply(balanceCosts)
-    const policyCostAdministration = policyBalance
-      .multiply(ter)
-      .add(Dinero.maximum([policyBalanceCost, minimumCosts]))
-      .add(fixedCosts)
-    const policyCostSaving = savingRate.multiply(savingRateCosts)
-    policyBalance = policyBalance
-      .add(savingRate)
-      .add(policyInterest)
-      .subtract(policyCostAdministration)
-      .subtract(policyCostSaving)
+    const policyInterest = multiply(policyBalance, expectedInterest)
+    const policyBalanceCost = multiply(policyBalance, balanceCosts)
+    let policyCostAdministration = add(multiply(policyBalance, ter), maximum([policyBalanceCost, minimumCosts]))
+    policyCostAdministration = add(policyCostAdministration, fixedCosts)
+    const policyCostSaving = multiply(savingRate, savingRateCosts)
+    policyBalance = add(policyBalance, savingRate)
+    policyBalance = add(policyBalance, policyInterest)
+    policyBalance = subtract(policyBalance, policyCostAdministration)
+    policyBalance = subtract(policyBalance, policyCostSaving)
+    policyBalance = transformScale(policyBalance, 3)
   }
 
   return { policyBalance, etfBalance, etfGain }
 }
 
 function calcTableData(
-  policyGrossWorth: Dinero.Dinero,
-  etfGrossWorth: Dinero.Dinero,
-  etfGain: Dinero.Dinero,
+  policyGrossWorth: Dinero<number, 'EUR'>,
+  etfGrossWorth: Dinero<number, 'EUR'>,
+  etfGain: Dinero<number, 'EUR'>,
   parsedInput: CalculatorInput,
 ) {
   const {
@@ -204,21 +217,28 @@ function calcTableData(
     additionalIncome,
   } = parsedInput
 
-  const etfGross = Dinero.maximum([
+  const etfGross = maximum([
     toDinero(0),
-    etfGain.multiply(partialExemption).subtract(taxAllowance),
+    subtract(multiply(etfGain, partialExemption), taxAllowance),
   ])
-  const totalSavings = savingRate.multiply(duration)
-  const policyGain = policyGrossWorth.subtract(totalSavings)
+  const totalSavings = multiply(savingRate, duration)
+  const policyGain = subtract(policyGrossWorth, totalSavings)
   const appliesPolicy12YearRule = duration >= 12 * 12 // 12 years in months
 
   const policyGross = appliesPolicy12YearRule
-    ? policyGain.multiply(0.85 / 2)
-    : policyGain.multiply(0.85)
+    ? multiply(policyGain, toDineroMultiplier(0.85 / 2))
+    : multiply(policyGain, toDineroMultiplier(0.85))
 
+  const etfTax = multiply(etfGross, capitalGainsTax)
+  const policyTaxableGross = subtract(policyGross, taxAllowance)
   const policyTax = appliesPolicy12YearRule
-    ? toDinero(calcPolicyTax(policyGross.toUnit(), additionalIncome.toUnit()))
-    : policyGross.subtract(taxAllowance).multiply(capitalGainsTax)
+    ? toDinero(
+        calcPolicyTax(
+          Number(toDecimal(policyGross)),
+          Number(toDecimal(additionalIncome)),
+        ),
+      )
+    : multiply(policyTaxableGross, capitalGainsTax)
 
   return {
     grossWorth: {
@@ -227,7 +247,7 @@ function calcTableData(
     },
     totalPayments: {
       policy: formatResult(totalSavings, ''),
-      etf: formatResult(totalSavings.add(placementCommission), ''),
+      etf: formatResult(add(totalSavings, placementCommission), ''),
     },
     gain: {
       policy: formatResult(policyGain, ''),
@@ -239,14 +259,11 @@ function calcTableData(
     },
     tax: {
       policy: formatResult(policyTax, ''),
-      etf: formatResult(etfGross.multiply(capitalGainsTax), ''),
+      etf: formatResult(etfTax, ''),
     },
     netWorth: {
-      policy: formatResult(policyGrossWorth.subtract(policyTax), ''),
-      etf: formatResult(
-        etfGrossWorth.subtract(etfGross.multiply(capitalGainsTax)),
-        '',
-      ),
+      policy: formatResult(subtract(policyGrossWorth, policyTax), ''),
+      etf: formatResult(subtract(etfGrossWorth, etfTax), ''),
     },
   }
 }

@@ -37,8 +37,8 @@ describe('calculators/net-policy', () => {
       fixedCosts: 12,
     })
 
-    expect(data.tableData.grossWorth.policy).toMatchInlineSnapshot('"374.366"')
-    expect(data.tableData.netWorth.policy).toMatchInlineSnapshot(`"335.467"`)
+    expect(data.tableData.grossWorth.policy).toMatchInlineSnapshot(`"374.384"`)
+    expect(data.tableData.netWorth.policy).toMatchInlineSnapshot(`"335.482"`)
   })
 
   it('should use different calculation for durations under 12 years', () => {
@@ -47,7 +47,7 @@ describe('calculators/net-policy', () => {
       duration: 10,
     })
 
-    expect(data.tableData.gain.policy).toMatchInlineSnapshot(`"10.114"`)
+    expect(data.tableData.gain.policy).toMatchInlineSnapshot(`"10.115"`)
     expect(data.tableData.gross.policy).toMatchInlineSnapshot(`"8.597"`)
     expect(data.tableData.tax.policy).toMatchInlineSnapshot(`"2.004"`)
     expect(data.tableData.netWorth.policy).toMatchInlineSnapshot(`"38.111"`)
