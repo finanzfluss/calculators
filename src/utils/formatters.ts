@@ -1,3 +1,4 @@
+import { toDecimal, toUnits, transformScale, type Dinero } from 'dinero.js'
 import { getLocale } from './i18n'
 
 const SUPERSCRIPTS = ['⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹']
@@ -7,10 +8,13 @@ export function pad(value: number) {
 }
 
 export function formatResultWithTwoOptionalDecimals(
-  value: number | { toUnit: () => number },
+  value: number | Dinero<number, string>,
   suffix = '€',
 ) {
-  const amount = typeof value === 'number' ? value : value.toUnit()
+  const amount =
+    typeof value === 'number'
+      ? value
+      : Number(toDecimal(transformScale(value, 2)))
   const decimalsRequired =
     Math.abs(amount) - Number.parseInt(amount.toString()) > 0
   const decimalCount = decimalsRequired ? 2 : 0
@@ -19,10 +23,13 @@ export function formatResultWithTwoOptionalDecimals(
 }
 
 export function formatResult(
-  value: number | { toUnit: () => number },
+  value: number | Dinero<number, string>,
   suffix = '€',
 ) {
-  const amount = typeof value === 'number' ? value : value.toUnit()
+  const amount =
+    typeof value === 'number'
+      ? value
+      : Number(toDecimal(transformScale(value, 2)))
   const decimalCount = Math.abs(amount) < 1000 ? 2 : 0
   const formattedAmount = formatNumber(amount, decimalCount)
   return `${formattedAmount}${suffix}`

@@ -1,4 +1,4 @@
-import Dinero from 'dinero.js'
+import { dinero, EUR } from 'dinero.js'
 
 export function toMonthly(valuePerYear: number) {
   return valuePerYear / 12
@@ -13,8 +13,15 @@ export function toMonthlyConformalRate(valuePerYear: number) {
 }
 
 export function toDinero(euros: number) {
-  return Dinero({
+  return dinero({
     amount: Math.round(euros * 100),
-    currency: 'EUR',
+    currency: EUR,
   })
+}
+
+export function toDineroMultiplier(rate: number) {
+  return {
+    amount: Math.round(rate * 10 ** 6),
+    scale: 6,
+  }
 }
