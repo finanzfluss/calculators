@@ -1,5 +1,4 @@
 import type z from 'zod'
-import { toDinero } from '../utils'
 import { defineCalculator } from '../utils/calculator'
 import { fv } from '../utils/financial'
 import {
@@ -111,7 +110,7 @@ function calculateWithCompoundInterest(parsedInput: CalculatorInput) {
     result = endValue
   }
 
-  return toDinero(result).toUnit()
+  return Math.round(result * 100) / 100
 }
 
 function calculateWithSimpleInterest(parsedInput: CalculatorInput) {
@@ -146,5 +145,5 @@ function calculateWithSimpleInterest(parsedInput: CalculatorInput) {
   const totalInterest = interestOnInitial + interestOnSavings
   const totalDeposits = startValue + savingRate * numberOfPeriods
   const total = totalDeposits + totalInterest
-  return toDinero(total).toUnit()
+  return Math.round(total * 100) / 100
 }

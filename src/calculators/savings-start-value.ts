@@ -1,5 +1,4 @@
 import type { z } from 'zod'
-import { toDinero } from '../utils'
 import { defineCalculator } from '../utils/calculator'
 import { pv } from '../utils/financial'
 import { bisectByEndValue } from './savings-end-value'
@@ -44,7 +43,7 @@ function calculateWithCompoundInterest(parsedInput: CalculatorInput) {
   } else {
     startValue = -pv(rate, numberOfPeriods, -payments, endValue, fvType)
   }
-  return toDinero(startValue).toUnit()
+  return Math.round(startValue * 100) / 100
 }
 
 function calculateWithSimpleInterest(parsedInput: CalculatorInput) {
@@ -82,5 +81,5 @@ function calculateWithSimpleInterest(parsedInput: CalculatorInput) {
   const startValue =
     remainingToReach / (1 + effectiveInterestRate * numberOfPeriods)
 
-  return toDinero(startValue).toUnit()
+  return Math.round(startValue * 100) / 100
 }

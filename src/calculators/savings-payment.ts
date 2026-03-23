@@ -1,5 +1,4 @@
 import type { z } from 'zod'
-import { toDinero } from '../utils'
 import { defineCalculator } from '../utils/calculator'
 import { pmt } from '../utils/financial'
 import { bisectByEndValue } from './savings-end-value'
@@ -42,13 +41,13 @@ function calculateWithCompoundInterest(parsedInput: CalculatorInput) {
       paramName: 'savingRate',
       searchRange: { lower: 0, upper: endValue },
     })
-    return toDinero(payment).toUnit()
+    return Math.round(payment * 100) / 100
   } else {
     payment = -pmt(rate, numberOfPeriods, -startValue, endValue, fvType)
   }
 
   const result = payment * getPaymentAdjustmentFactor(parsedInput)
-  return toDinero(result).toUnit()
+  return Math.round(result * 100) / 100
 }
 
 function getPaymentAdjustmentFactor(parsedInput: CalculatorInput): number {
@@ -105,5 +104,5 @@ function calculateWithSimpleInterest(parsedInput: CalculatorInput) {
     remainingToReach /
     (numberOfPeriods + totalInterestPeriods * effectiveInterestRate)
 
-  return toDinero(savingRate).toUnit()
+  return Math.round(savingRate * 100) / 100
 }
