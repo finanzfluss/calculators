@@ -1,4 +1,4 @@
-import Dinero from 'dinero.js'
+import { dinero, EUR } from 'dinero.js'
 import { beforeAll, describe, expect, it } from 'vitest'
 import {
   formatInput,
@@ -73,8 +73,8 @@ describe('formatting methods', () => {
         expect(formatResult(1.299999e21)).toBe('1,2×10²¹€')
       })
       it('should handle Dinero objects', () => {
-        const dinero = Dinero({ amount: 12345, currency: 'EUR' })
-        expect(formatResult(dinero)).toBe('123,45€')
+        const dineroObj = dinero({ amount: 12345, currency: EUR })
+        expect(formatResult(dineroObj)).toBe('123,45€')
       })
     })
 
@@ -94,10 +94,10 @@ describe('formatting methods', () => {
         )
       })
       it('should handle Dinero objects', () => {
-        const dinero = Dinero({ amount: 9900, currency: 'EUR' })
-        expect(formatResultWithTwoOptionalDecimals(dinero)).toBe('99€')
+        const dineroObj = dinero({ amount: 9900, currency: EUR })
+        expect(formatResultWithTwoOptionalDecimals(dineroObj)).toBe('99€')
 
-        const dineroWithFraction = Dinero({ amount: 9950, currency: 'EUR' })
+        const dineroWithFraction = dinero({ amount: 9950, currency: EUR })
         expect(formatResultWithTwoOptionalDecimals(dineroWithFraction)).toBe(
           '99,50€',
         )

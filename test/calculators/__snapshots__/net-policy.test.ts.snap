@@ -3,24 +3,24 @@
 exports[`calculators/net-policy > should have correct table data 1`] = `
 {
   "gain": {
-    "etf": "203.786",
-    "policy": "270.937",
+    "etf": "203.774",
+    "policy": "270.955",
   },
   "gross": {
-    "etf": "141.650",
-    "policy": "115.148",
+    "etf": "141.642",
+    "policy": "115.156",
   },
   "grossWorth": {
-    "etf": "385.401",
-    "policy": "375.937",
+    "etf": "385.385",
+    "policy": "375.955",
   },
   "netWorth": {
-    "etf": "348.041",
-    "policy": "336.729",
+    "etf": "348.027",
+    "policy": "336.744",
   },
   "tax": {
-    "etf": "37.360",
-    "policy": "39.208",
+    "etf": "37.358",
+    "policy": "39.211",
   },
   "totalPayments": {
     "etf": "105.299",

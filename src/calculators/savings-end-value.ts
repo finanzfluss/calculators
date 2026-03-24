@@ -1,7 +1,7 @@
 import type z from 'zod'
-import { toDinero } from '../utils'
 import { defineCalculator } from '../utils/calculator'
 import { fv } from '../utils/financial'
+import { roundToTwoDecimals } from '../utils/validation'
 import {
   calculateAccumulatingTax,
   getFinancialFunctionParameters,
@@ -111,7 +111,7 @@ function calculateWithCompoundInterest(parsedInput: CalculatorInput) {
     result = endValue
   }
 
-  return toDinero(result).toUnit()
+  return roundToTwoDecimals(result)
 }
 
 function calculateWithSimpleInterest(parsedInput: CalculatorInput) {
@@ -146,5 +146,5 @@ function calculateWithSimpleInterest(parsedInput: CalculatorInput) {
   const totalInterest = interestOnInitial + interestOnSavings
   const totalDeposits = startValue + savingRate * numberOfPeriods
   const total = totalDeposits + totalInterest
-  return toDinero(total).toUnit()
+  return roundToTwoDecimals(total)
 }
