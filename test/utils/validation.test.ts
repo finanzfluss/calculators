@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest'
 import { dinero, EUR } from 'dinero.js'
+import { describe, expect, it } from 'vitest'
 import { dineroToNumber } from '../../src/utils/validation'
 
 function eur(cents: number) {

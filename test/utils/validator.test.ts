@@ -1,3 +1,10 @@
+import {
+  multiply,
+  toDecimal,
+  toSnapshot,
+  toUnits,
+  trimScale,
+} from 'dinero.js/bigint'
 import { describe, expect, it } from 'vitest'
 import {
   roundToTwoDecimals,
@@ -7,13 +14,6 @@ import {
   toMonthlyConformalRate,
   toPercentRate,
 } from '../../src/utils/validation'
-import {
-  multiply,
-  toDecimal,
-  toSnapshot,
-  toUnits,
-  trimScale,
-} from 'dinero.js/bigint'
 
 describe('roundToTwoDecimals', () => {
   it('should round to two decimal places', () => {

@@ -1,6 +1,7 @@
-import { transformScale, type Dinero } from 'dinero.js'
-import { dineroToNumber } from './validation'
+import type { Dinero } from 'dinero.js'
+import { transformScale } from 'dinero.js'
 import { getLocale } from './i18n'
+import { dineroToNumber } from './validation'
 
 const SUPERSCRIPTS = ['⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹']
 

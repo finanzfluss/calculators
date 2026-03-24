@@ -1,5 +1,5 @@
-import { dinero, EUR, toDecimal } from 'dinero.js'
 import type { Dinero } from 'dinero.js'
+import { dinero, EUR, toDecimal } from 'dinero.js'
 
 export function toMonthly(valuePerYear: number) {
   return valuePerYear / 12

@@ -1,5 +1,5 @@
-import { add, maximum, multiply, subtract, transformScale } from 'dinero.js'
 import type { Dinero } from 'dinero.js'
+import { add, maximum, multiply, subtract, transformScale } from 'dinero.js'
 import { z } from 'zod'
 import { CORRECTION_VALUES } from '../constants/net-policy'
 import { defineCalculator } from '../utils/calculator'
