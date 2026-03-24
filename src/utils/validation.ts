@@ -1,4 +1,4 @@
-import type { Dinero } from 'dinero.js'
+import type { Dinero, DineroScaledAmount } from 'dinero.js'
 import { dinero, EUR, toDecimal } from 'dinero.js'
 
 export function toMonthly(valuePerYear: number) {
@@ -28,7 +28,7 @@ export function roundToTwoDecimals(value: number) {
   return Math.round(value * 100) / 100
 }
 
-export function toDineroMultiplier(rate: number) {
+export function toDineroMultiplier(rate: number): DineroScaledAmount<number> {
   return {
     amount: Math.round(rate * 10 ** 6),
     scale: 6,
