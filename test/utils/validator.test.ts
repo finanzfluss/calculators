@@ -1,12 +1,15 @@
 import {
+  dinero,
+  EUR,
   multiply,
   toDecimal,
   toSnapshot,
   toUnits,
   trimScale,
-} from 'dinero.js/bigint'
+} from 'dinero.js'
 import { describe, expect, it } from 'vitest'
 import {
+  dineroToNumber,
   roundToTwoDecimals,
   toDinero,
   toDineroMultiplier,
@@ -75,7 +78,7 @@ describe('toDinero', () => {
     expect(toDecimal(negativeValue)).toEqual('-5.00')
   })
 
-  it('should handle francional euros', () => {
+  it('should handle fractional euros', () => {
     const fractionalValue = toDinero(10.42)
     expect(toDecimal(fractionalValue)).toEqual('10.42')
   })
@@ -121,5 +124,26 @@ describe('toDineroMultiplier', () => {
     expect(toDecimal(result)).not.toEqual(toDecimal(expectedResult))
     result = trimScale(result)
     expect(toDecimal(result)).toEqual(toDecimal(expectedResult))
+  })
+})
+
+describe('dineroToNumber', () => {
+  function eur(cents: number) {
+    return dinero({ amount: cents, currency: EUR })
+  }
+  it('should convert whole-euro amounts', () => {
+    expect(dineroToNumber(eur(10000))).toBe(100)
+  })
+
+  it('should convert amounts with cents', () => {
+    expect(dineroToNumber(eur(10050))).toBe(100.5)
+  })
+
+  it('should convert zero', () => {
+    expect(dineroToNumber(eur(0))).toBe(0)
+  })
+
+  it('should convert negative amounts', () => {
+    expect(dineroToNumber(eur(-500))).toBe(-5)
   })
 })
