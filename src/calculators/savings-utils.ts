@@ -1,10 +1,7 @@
-import type { Dinero } from 'dinero.js'
-import { add, dinero, EUR, multiply, subtract, transformScale } from 'dinero.js'
 import { z } from 'zod'
 import {
-  dineroToNumber,
   formatResultWithTwoOptionalDecimals,
-  toDineroMultiplier,
+  roundToTwoDecimals,
 } from '../utils'
 
 export const savingsBaseSchema = z.object({
@@ -166,18 +163,17 @@ export function calcDiagramData(savings: z.output<typeof savingsBaseSchema>): {
     interestIntervalType,
     partialExemption,
     saveIntervalType,
-    savingRate: savingRateNumber,
+    savingRate,
     startValue,
     yearlyDuration,
     yearlyInterest,
   } = savings
 
-  const capitalList: Dinero<number, string>[] = []
-  const accInterestList: Dinero<number, string>[] = []
+  const capitalList: number[] = []
+  const accInterestList: number[] = []
 
-  let capitalAmount = toPreciseDinero(startValue)
-  let accInterestAmount = toPreciseDinero(0)
-  const savingRate = toPreciseDinero(savingRateNumber)
+  let capitalAmount = startValue
+  let accInterestAmount = 0
   const taxFactor = 1 - (capitalGainsTax / 100) * (1 - partialExemption / 100)
   const effectiveInterest =
     considerCapitalGainsTax && distributionType === 'distributing'
@@ -192,49 +188,30 @@ export function calcDiagramData(savings: z.output<typeof savingsBaseSchema>): {
       saveIntervalType === 'monthly' ||
       (saveIntervalType === 'yearly' && month % 12 === 1)
     ) {
-      capitalAmount = add(capitalAmount, savingRate)
+      capitalAmount += savingRate
     }
-    const balance = add(capitalAmount, accInterestAmount)
+    const balance = capitalAmount + accInterestAmount
 
     if (interestIntervalType === 'monthly') {
-      accInterestAmount = add(
-        accInterestAmount,
-        multiply(balance, toDineroMultiplier(monthlyInterestRate)),
-      )
+      accInterestAmount += balance * monthlyInterestRate
     } else if (interestIntervalType === 'yearly' && month % 12 === 0) {
       if (saveIntervalType === 'yearly') {
-        accInterestAmount = add(
-          accInterestAmount,
-          multiply(balance, toDineroMultiplier(yearlyInterestRate)),
-        )
+        accInterestAmount += balance * yearlyInterestRate
       } else {
-        const averageBalance = subtract(
-          balance,
-          multiply(savingRate, toDineroMultiplier(5.5)),
-        )
-        accInterestAmount = add(
-          accInterestAmount,
-          multiply(averageBalance, toDineroMultiplier(yearlyInterestRate)),
-        )
+        const averageBalance = balance - savingRate * 5.5
+        accInterestAmount += averageBalance * yearlyInterestRate
       }
     } else if (interestIntervalType === 'quarterly' && month % 3 === 0) {
       if (saveIntervalType === 'yearly') {
-        accInterestAmount = add(
-          accInterestAmount,
-          multiply(balance, toDineroMultiplier(quarterlyInterestRate)),
-        )
+        accInterestAmount += balance * quarterlyInterestRate
       } else {
-        const averageBalance = subtract(balance, savingRate)
-        accInterestAmount = add(
-          accInterestAmount,
-          multiply(averageBalance, toDineroMultiplier(quarterlyInterestRate)),
-        )
+        const averageBalance = balance - savingRate
+        accInterestAmount += averageBalance * quarterlyInterestRate
       }
     }
 
-    accInterestAmount = transformScale(accInterestAmount, 3)
-    accInterestList.push(transformScale(accInterestAmount, 2))
-    capitalList.push(transformScale(capitalAmount, 2))
+    accInterestList.push(roundToTwoDecimals(accInterestAmount))
+    capitalList.push(roundToTwoDecimals(capitalAmount))
   }
 
   const listLength = Math.min(capitalList.length, accInterestList.length)
@@ -251,32 +228,21 @@ export function calcDiagramData(savings: z.output<typeof savingsBaseSchema>): {
   if (considerCapitalGainsTax && distributionType === 'accumulating') {
     const lastCapital = capitalList[listLength - 1]!
     const lastInterest = accInterestList[listLength - 1]!
-    const totalCapital = add(lastCapital, lastInterest)
-    const tax = toPreciseDinero(
-      calculateAccumulatingTax(dineroToNumber(totalCapital), savings),
-    )
-    accInterestList[listLength - 1] = subtract(
-      accInterestList[listLength - 1]!,
-      tax,
+    const totalCapital = lastCapital + lastInterest
+    const tax = calculateAccumulatingTax(totalCapital, savings)
+    accInterestList[listLength - 1] = roundToTwoDecimals(
+      accInterestList[listLength - 1]! - tax,
     )
   }
 
   const lastCapital = capitalList[listLength - 1]!
   const lastInterest = accInterestList[listLength - 1]!
-  const totalCapital = add(lastCapital, lastInterest)
+  const totalCapital = lastCapital + lastInterest
   return {
-    CAPITAL_LIST: capitalList.map(dineroToNumber),
-    INTEREST_LIST: accInterestList.map(dineroToNumber),
+    CAPITAL_LIST: capitalList,
+    INTEREST_LIST: accInterestList,
     LAST_CAPITAL: formatResultWithTwoOptionalDecimals(lastCapital),
     LAST_INTEREST: formatResultWithTwoOptionalDecimals(lastInterest),
     TOTAL_CAPITAL: formatResultWithTwoOptionalDecimals(totalCapital),
   }
-}
-
-function toPreciseDinero(euros: number) {
-  return dinero({
-    amount: Math.round(euros * 1000),
-    currency: EUR,
-    scale: 3, // three decimal places (0.001 EUR = 0.1 cent)
-  })
 }
