@@ -51,7 +51,8 @@ const schema = z.object({
     .max(MAX_PERCENT)
     .optional()
     .default(0)
-    .transform(toPercentRate),
+    .transform(toPercentRate)
+    .transform(toDineroMultiplier),
   balanceCosts: z.coerce
     .number()
     .nonnegative()
@@ -97,7 +98,8 @@ const schema = z.object({
     .nonnegative()
     .max(MAX_PERCENT)
     .transform(toPercentRate)
-    .transform((rate) => 1 - rate),
+    .transform((rate) => 1 - rate)
+    .transform(toDineroMultiplier),
 
   // Reallocation inputs
   reallocationOccurrence: z.coerce
@@ -172,6 +174,8 @@ function simulateOverPeriod(parsedInput: CalculatorInput) {
     const etfInterest = multiply(etfBalance, expectedInterest)
     etfGain = add(etfGain, etfInterest)
     etfGain = subtract(etfGain, etfCost)
+    etfGain = transformScale(etfGain, 3)
+
     etfBalance = add(etfBalance, savingRate)
     etfBalance = subtract(etfBalance, tax)
     etfBalance = add(etfBalance, etfInterest)
