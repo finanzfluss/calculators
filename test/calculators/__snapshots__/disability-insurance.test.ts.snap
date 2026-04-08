@@ -1,0 +1,10 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`/calculators/disability-insurance > should return correct levels 1`] = `
+{
+  "level1": "1.031€",
+  "level2": "1.362€",
+  "level3": "2.400€",
+  "levelCustom": undefined,
+}
+`;

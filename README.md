@@ -204,6 +204,40 @@ console.log(result.tableData.netWorth) // Projected net worth over time
 
 <br />
 
+### Disability Insurance Calculator
+
+The Berufsunfähigkeitsversicherung-Rechner ([https://finanzfluss.de/rechner/berufsunfaehigkeitsversicherung](https://www.finanzfluss.de/rechner/berufsunfaehigkeitsversicherung/)) helps users determine how much disability insurance coverage they need. It compares three standard coverage levels against their current income and models the income gap during different stages of disability.
+
+#### Key Features:
+
+- **Three DIN 77230 coverage levels** based on the German standard for private household financial analysis: securing basic existence (avoiding social welfare), maintaining your current standard of living, and enabling an improved standard of living that covers additional goals like property, family, or wealth building
+- **Income timeline modeling** showing actual take-home at each stage: working, short-term sick leave, prolonged illness (Krankengeld), and full disability (Erwerbsminderungsrente)
+- **Custom coverage input** supporting a user-defined target pension amount alongside the three standard levels
+- **Visual data output** providing both tabular level comparisons and interval-based coverage data for charts
+
+```ts
+import { disabilityInsurance } from '@finanzfluss/calculators'
+
+const input = {
+  grossIncome: 4000,
+  netIncome: 2600,
+  useCustomHalfDisabilityPension: false, // set to true to override the estimated value
+  customHalfDisabilityPension: 0,
+  numberOfChildren: 1, // affects care insurance contribution rate (0–4)
+  useCustomPensionAmount: false,
+  customPensionAmount: 0,
+}
+
+// Validate input and calculate disability insurance result
+const result = disabilityInsurance.validateAndCalculate(input)
+
+result.tableData.level1 // Level 1: basic existence security (DIN 77230 Stufe 1)
+result.tableData.level2 // Level 2: maintaining current standard of living (DIN 77230 Stufe 2)
+result.tableData.level3 // Level 3: improved standard of living (DIN 77230 Stufe 3)
+```
+
+<br />
+
 ## Testing
 
 Run the test suite:
