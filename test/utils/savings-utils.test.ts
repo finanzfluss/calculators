@@ -396,7 +396,7 @@ describe('/calculators/savings-utils', () => {
           interestIntervalType,
           expectedValue,
         ] of expected) {
-          it(`should return correct values for ${saveIntervalType} / ${interestIntervalType}`, () => {
+          it(`returns correct values for ${saveIntervalType} / ${interestIntervalType}`, () => {
             const result = savingsEndValue.validateAndCalculate({
               ...input,
               saveIntervalType,
@@ -428,7 +428,7 @@ describe('/calculators/savings-utils', () => {
             input._savingRatePerYear,
           )
 
-          it(`should return correct values for ${saveIntervalType} / ${interestIntervalType}`, () => {
+          it(`returns correct values for ${saveIntervalType} / ${interestIntervalType}`, () => {
             const result = savingsPayment.validateAndCalculate({
               ...input,
               saveIntervalType,
@@ -464,7 +464,7 @@ describe('/calculators/savings-utils', () => {
             input._savingRatePerYear,
           )
 
-          it(`should return correct values for ${saveIntervalType} / ${interestIntervalType}`, () => {
+          it(`returns correct values for ${saveIntervalType} / ${interestIntervalType}`, () => {
             const result = savingsStartValue.validateAndCalculate({
               ...input,
               saveIntervalType,
@@ -502,7 +502,7 @@ describe('/calculators/savings-utils', () => {
             input._savingRatePerYear,
           )
 
-          it(`should return correct values for ${saveIntervalType} / ${interestIntervalType}`, () => {
+          it(`returns correct values for ${saveIntervalType} / ${interestIntervalType}`, () => {
             const result = savingsDuration.validateAndCalculate({
               ...input,
               saveIntervalType,
@@ -535,7 +535,7 @@ describe('/calculators/savings-utils', () => {
             input._savingRatePerYear,
           )
 
-          it(`should return correct values for ${saveIntervalType} / ${interestIntervalType}`, () => {
+          it(`returns correct values for ${saveIntervalType} / ${interestIntervalType}`, () => {
             const result =
               100 *
               savingsInterestRate.validateAndCalculate({
@@ -577,7 +577,7 @@ describe('/calculators/savings-utils', () => {
       useCompoundInterest: false,
     } as const
 
-    it('should delay interest calculation until first full year with yearly/yearly intervals', () => {
+    it('delays interest calculation until first full year with yearly/yearly intervals', () => {
       const result = calcDiagramData({
         ...baseConfig,
         saveIntervalType: 'yearly',
@@ -589,7 +589,7 @@ describe('/calculators/savings-utils', () => {
       expect(interests[12]).toBeGreaterThan(0)
     })
 
-    it('should delay interest calculation until first quarter with yearly/quarterly intervals', () => {
+    it('delays interest calculation until first quarter with yearly/quarterly intervals', () => {
       const result = calcDiagramData({
         ...baseConfig,
         saveIntervalType: 'yearly',
@@ -601,7 +601,7 @@ describe('/calculators/savings-utils', () => {
       expect(interests[3]).toBeGreaterThan(0)
     })
 
-    it('should delay interest calculation until first quarter with monthly/quarterly intervals', () => {
+    it('delays interest calculation until first quarter with monthly/quarterly intervals', () => {
       const result = calcDiagramData({
         ...baseConfig,
         saveIntervalType: 'monthly',
@@ -613,7 +613,7 @@ describe('/calculators/savings-utils', () => {
       expect(interests[3]).toBeGreaterThan(0)
     })
 
-    it('should calculate interest immediately with yearly/monthly intervals', () => {
+    it('calculates interest immediately with yearly/monthly intervals', () => {
       const result = calcDiagramData({
         ...baseConfig,
         saveIntervalType: 'yearly',
@@ -624,7 +624,7 @@ describe('/calculators/savings-utils', () => {
       expect(interests[0]).toBeGreaterThan(0)
     })
 
-    it('should return empty interest list when duration is zero', () => {
+    it('returns empty interest list when duration is zero', () => {
       const result = calcDiagramData({
         ...baseConfig,
         yearlyDuration: 0,
