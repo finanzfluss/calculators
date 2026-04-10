@@ -401,7 +401,7 @@ describe('calculators/gross-to-net', () => {
       expect(result).toMatchSnapshot()
     })
 
-    it('accounts for new care insurance contribution', () => {
+    it('returns expected income tax and church tax for multiple children under 2026 care insurance rules', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           accountingYear: '2026',
