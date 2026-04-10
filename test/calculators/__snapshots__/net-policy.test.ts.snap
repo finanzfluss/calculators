@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`calculators/net-policy > should have correct table data 1`] = `
+exports[`calculators/net-policy > has correct table data 1`] = `
 {
   "gain": {
     "etf": "203.774",

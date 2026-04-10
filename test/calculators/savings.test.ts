@@ -3,7 +3,7 @@ import { savings } from '../../src/calculators/savings'
 
 describe('/calculators/savings', () => {
   describe('endValue', () => {
-    it('should return right results for yearly yearly', async () => {
+    it('returns right results for yearly yearly', async () => {
       const data = savings.validateAndCalculate({
         output: 'endValue',
         startValue: '5000',
@@ -20,7 +20,7 @@ describe('/calculators/savings', () => {
 
       expect(data).toMatchSnapshot()
     })
-    it('should return right results for monthly monthly', async () => {
+    it('returns right results for monthly monthly', async () => {
       const data = savings.validateAndCalculate({
         output: 'endValue',
         startValue: '5000',
@@ -36,7 +36,7 @@ describe('/calculators/savings', () => {
       })
       expect(data).toMatchSnapshot()
     })
-    it('should return right results for monthly yearly', async () => {
+    it('returns right results for monthly yearly', async () => {
       const data = savings.validateAndCalculate({
         output: 'endValue',
         startValue: '5000',
@@ -52,7 +52,7 @@ describe('/calculators/savings', () => {
       })
       expect(data).toMatchSnapshot()
     })
-    it('should return right results for monthly monthly without start capital', async () => {
+    it('returns right results for monthly monthly without start capital', async () => {
       const data = savings.validateAndCalculate({
         output: 'endValue',
         startValue: '0',
@@ -71,7 +71,7 @@ describe('/calculators/savings', () => {
   })
 
   describe('startValue', () => {
-    it('should return right results for yearly yearly', async () => {
+    it('returns right results for yearly yearly', async () => {
       const data = savings.validateAndCalculate({
         output: 'startValue',
         endValue: '20000',
@@ -87,7 +87,7 @@ describe('/calculators/savings', () => {
       })
       expect(data).toMatchSnapshot()
     })
-    it('should return right results for monthly monthly', async () => {
+    it('returns right results for monthly monthly', async () => {
       const data = savings.validateAndCalculate({
         output: 'startValue',
         endValue: '20000',
@@ -103,7 +103,7 @@ describe('/calculators/savings', () => {
       })
       expect(data).toMatchSnapshot()
     })
-    it('should return right results for monthly yearly', async () => {
+    it('returns right results for monthly yearly', async () => {
       const data = savings.validateAndCalculate({
         output: 'startValue',
         endValue: '20000',
@@ -122,7 +122,7 @@ describe('/calculators/savings', () => {
   })
 
   describe('yearlyInterest', () => {
-    it('should return right results for yearly yearly', async () => {
+    it('returns right results for yearly yearly', async () => {
       const data = savings.validateAndCalculate({
         output: 'yearlyInterest',
         endValue: '30000',
@@ -138,7 +138,7 @@ describe('/calculators/savings', () => {
       })
       expect(data).toMatchSnapshot()
     })
-    it('should return right results for monthly monthly', async () => {
+    it('returns right results for monthly monthly', async () => {
       const data = savings.validateAndCalculate({
         output: 'yearlyInterest',
         endValue: '30000',
@@ -154,7 +154,7 @@ describe('/calculators/savings', () => {
       })
       expect(data).toMatchSnapshot()
     })
-    it('should return right results for monthly yearly', async () => {
+    it('returns right results for monthly yearly', async () => {
       const data = savings.validateAndCalculate({
         output: 'yearlyInterest',
         endValue: '30000',
@@ -173,7 +173,7 @@ describe('/calculators/savings', () => {
   })
 
   describe('monthlyDuration', () => {
-    it('should return right results for yearly yearly', async () => {
+    it('returns right results for yearly yearly', async () => {
       const data = savings.validateAndCalculate({
         output: 'monthlyDuration',
         yearlyInterest: '3',
@@ -189,7 +189,7 @@ describe('/calculators/savings', () => {
       })
       expect(data).toMatchSnapshot()
     })
-    it('should return right results for monthly monthly', async () => {
+    it('returns right results for monthly monthly', async () => {
       const data = savings.validateAndCalculate({
         output: 'monthlyDuration',
         yearlyInterest: '3',
@@ -205,7 +205,7 @@ describe('/calculators/savings', () => {
       })
       expect(data).toMatchSnapshot()
     })
-    it('should return right results for monthly yearly', async () => {
+    it('returns right results for monthly yearly', async () => {
       const data = savings.validateAndCalculate({
         output: 'monthlyDuration',
         yearlyInterest: '3',
@@ -224,7 +224,7 @@ describe('/calculators/savings', () => {
   })
 
   describe('savingRate', () => {
-    it('should return right results for yearly yearly', async () => {
+    it('returns right results for yearly yearly', async () => {
       const data = savings.validateAndCalculate({
         output: 'savingRate',
         startValue: '5000',
@@ -240,7 +240,7 @@ describe('/calculators/savings', () => {
       })
       expect(data).toMatchSnapshot()
     })
-    it('should return right results for monthly monthly', async () => {
+    it('returns right results for monthly monthly', async () => {
       const data = savings.validateAndCalculate({
         output: 'savingRate',
         startValue: '5000',
@@ -256,7 +256,7 @@ describe('/calculators/savings', () => {
       })
       expect(data).toMatchSnapshot()
     })
-    it('should return right results for monthly yearly', async () => {
+    it('returns right results for monthly yearly', async () => {
       const data = savings.validateAndCalculate({
         output: 'savingRate',
         startValue: '5000',
@@ -272,7 +272,7 @@ describe('/calculators/savings', () => {
       })
       expect(data).toMatchSnapshot()
     })
-    it('should return right results for accumulating', async () => {
+    it('returns right results for accumulating', async () => {
       const data = savings.validateAndCalculate({
         output: 'savingRate',
         startValue: '5000',

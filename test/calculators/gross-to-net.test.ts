@@ -241,7 +241,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('reduced health insurance', () => {
-    it('should return specific result for user made input', () => {
+    it('returns correct result for reduced health insurance', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           healthInsurance: REDUCED_HEALTH_INSURANCE,
@@ -254,7 +254,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('without pension insurance', () => {
-    it('should return specific result for user made input', () => {
+    it('returns correct result without pension insurance', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           pensionInsurance: NO_PENSION_INSURANCE,
@@ -311,7 +311,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('tax year 2019', () => {
-    it('should return specific result for tax year 2019', () => {
+    it('returns specific result for tax year 2019', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           accountingYear: '2019',
@@ -323,7 +323,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('tax year 2020', () => {
-    it('should return specific result for tax year 2020', () => {
+    it('returns specific result for tax year 2020', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           accountingYear: '2020',
@@ -335,7 +335,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('tax year 2021', () => {
-    it('should return specific result for tax year 2021', () => {
+    it('returns specific result for tax year 2021', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           accountingYear: '2021',
@@ -347,7 +347,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('tax year 2022', () => {
-    it('should return specific result for tax year 2022', () => {
+    it('returns specific result for tax year 2022', () => {
       const result = grossToNet.validateAndCalculate(fakeTestValues())
 
       expect(result).toMatchSnapshot()
@@ -355,7 +355,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('tax year 2023', () => {
-    it('should return specific result for tax year 2023', () => {
+    it('returns specific result for tax year 2023', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           accountingYear: '2023',
@@ -367,7 +367,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('tax year 2024', () => {
-    it('should return specific result for tax year 2024', () => {
+    it('returns specific result for tax year 2024', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           accountingYear: '2024',
@@ -377,46 +377,48 @@ describe('calculators/gross-to-net', () => {
       expect(result).toMatchSnapshot()
     })
   })
-})
 
-describe('tax year 2025', () => {
-  it('should return specific result for tax year 2025', () => {
-    const result = grossToNet.validateAndCalculate(
-      fakeTestValues({
-        accountingYear: '2025',
-      }),
-    )
+  describe('tax year 2025', () => {
+    it('returns specific result for tax year 2025', () => {
+      const result = grossToNet.validateAndCalculate(
+        fakeTestValues({
+          accountingYear: '2025',
+        }),
+      )
 
-    expect(result).toMatchSnapshot()
-  })
-})
-
-describe('tax year 2026', () => {
-  it('should return specific result for tax year 2026', () => {
-    const result = grossToNet.validateAndCalculate(
-      fakeTestValues({
-        accountingYear: '2026',
-      }),
-    )
-
-    expect(result).toMatchSnapshot()
+      expect(result).toMatchSnapshot()
+    })
   })
 
-  it('should account for new care insurance contribution', () => {
-    const result = grossToNet.validateAndCalculate(
-      fakeTestValues({
-        accountingYear: '2026',
-        grossWage: 8900,
-        children: 2,
-        childTaxAllowance: 0,
-        taxClass: 3,
-        state: STATE_BERLIN,
-        churchTax: 1,
-        additionalContribution: 2.9,
-      }),
-    )
-    expect(result.outputResIncomeTaxMonth).toMatchInlineSnapshot(`"1.448,33€"`)
-    expect(result.outputResChurchTaxMonth).toMatchInlineSnapshot(`"130,35€"`)
+  describe('tax year 2026', () => {
+    it('returns specific result for tax year 2026', () => {
+      const result = grossToNet.validateAndCalculate(
+        fakeTestValues({
+          accountingYear: '2026',
+        }),
+      )
+
+      expect(result).toMatchSnapshot()
+    })
+
+    it('accounts for new care insurance contribution', () => {
+      const result = grossToNet.validateAndCalculate(
+        fakeTestValues({
+          accountingYear: '2026',
+          grossWage: 8900,
+          children: 2,
+          childTaxAllowance: 0,
+          taxClass: 3,
+          state: STATE_BERLIN,
+          churchTax: 1,
+          additionalContribution: 2.9,
+        }),
+      )
+      expect(result.outputResIncomeTaxMonth).toMatchInlineSnapshot(
+        `"1.448,33€"`,
+      )
+      expect(result.outputResChurchTaxMonth).toMatchInlineSnapshot(`"130,35€"`)
+    })
   })
 })
 

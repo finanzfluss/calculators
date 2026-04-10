@@ -354,7 +354,7 @@ exports[`calculators/gross-to-net > private health insurance > without employer 
 }
 `;
 
-exports[`calculators/gross-to-net > reduced health insurance > should return specific result for user made input 1`] = `
+exports[`calculators/gross-to-net > reduced health insurance > returns correct result for reduced health insurance 1`] = `
 {
   "outputDisableResCareInsurance": false,
   "outputEmployerTotalInsurances": "485€",
@@ -413,7 +413,7 @@ exports[`calculators/gross-to-net > reduced health insurance > should return spe
 }
 `;
 
-exports[`calculators/gross-to-net > tax year 2019 > should return specific result for tax year 2019 1`] = `
+exports[`calculators/gross-to-net > tax year 2019 > returns specific result for tax year 2019 1`] = `
 {
   "outputDisableResCareInsurance": false,
   "outputEmployerTotalInsurances": "506,25€",
@@ -472,7 +472,7 @@ exports[`calculators/gross-to-net > tax year 2019 > should return specific resul
 }
 `;
 
-exports[`calculators/gross-to-net > tax year 2020 > should return specific result for tax year 2020 1`] = `
+exports[`calculators/gross-to-net > tax year 2020 > returns specific result for tax year 2020 1`] = `
 {
   "outputDisableResCareInsurance": false,
   "outputEmployerTotalInsurances": "506,25€",
@@ -531,7 +531,7 @@ exports[`calculators/gross-to-net > tax year 2020 > should return specific resul
 }
 `;
 
-exports[`calculators/gross-to-net > tax year 2021 > should return specific result for tax year 2021 1`] = `
+exports[`calculators/gross-to-net > tax year 2021 > returns specific result for tax year 2021 1`] = `
 {
   "outputDisableResCareInsurance": false,
   "outputEmployerTotalInsurances": "506,25€",
@@ -590,7 +590,7 @@ exports[`calculators/gross-to-net > tax year 2021 > should return specific resul
 }
 `;
 
-exports[`calculators/gross-to-net > tax year 2022 > should return specific result for tax year 2022 1`] = `
+exports[`calculators/gross-to-net > tax year 2022 > returns specific result for tax year 2022 1`] = `
 {
   "outputDisableResCareInsurance": false,
   "outputEmployerTotalInsurances": "506,25€",
@@ -649,7 +649,7 @@ exports[`calculators/gross-to-net > tax year 2022 > should return specific resul
 }
 `;
 
-exports[`calculators/gross-to-net > tax year 2023 > should return specific result for tax year 2023 1`] = `
+exports[`calculators/gross-to-net > tax year 2023 > returns specific result for tax year 2023 1`] = `
 {
   "outputDisableResCareInsurance": false,
   "outputEmployerTotalInsurances": "506,25€",
@@ -708,7 +708,7 @@ exports[`calculators/gross-to-net > tax year 2023 > should return specific resul
 }
 `;
 
-exports[`calculators/gross-to-net > tax year 2024 > should return specific result for tax year 2024 1`] = `
+exports[`calculators/gross-to-net > tax year 2024 > returns specific result for tax year 2024 1`] = `
 {
   "outputDisableResCareInsurance": false,
   "outputEmployerTotalInsurances": "506,25€",
@@ -764,6 +764,124 @@ exports[`calculators/gross-to-net > tax year 2024 > should return specific resul
   "outputTotalInsurancesYear": "6.255€",
   "outputTotalTaxes": "176,33€",
   "outputTotalTaxesYear": "2.115,96€",
+}
+`;
+
+exports[`calculators/gross-to-net > tax year 2025 > returns specific result for tax year 2025 1`] = `
+{
+  "outputDisableResCareInsurance": false,
+  "outputEmployerTotalInsurances": "506,25€",
+  "outputEmployerTotalInsurancesYear": "6.075€",
+  "outputResCareInsuranceMonth": "60€",
+  "outputResCareInsurancePercentage": "2,40%",
+  "outputResCareInsuranceYear": "720€",
+  "outputResChurchTaxMonth": "0€",
+  "outputResChurchTaxPercentage": " (8% der Lohnsteuer)",
+  "outputResChurchTaxYear": "0€",
+  "outputResEmployerCareInsuranceMonth": "45€",
+  "outputResEmployerCareInsurancePercentage": "1,80%",
+  "outputResEmployerCareInsuranceYear": "540€",
+  "outputResEmployerGrossWageMonth": "3.007,75€",
+  "outputResEmployerGrossWageYear": "36.093€",
+  "outputResEmployerHealthInsuranceMonth": "196,25€",
+  "outputResEmployerHealthInsurancePercentage": "7,85%",
+  "outputResEmployerHealthInsuranceYear": "2.355€",
+  "outputResEmployerLevyOneMonth": "0€",
+  "outputResEmployerLevyOneYear": "0€",
+  "outputResEmployerLevyThreeMonth": "1,50€",
+  "outputResEmployerLevyThreeYear": "18€",
+  "outputResEmployerLevyTotal": "1,50€",
+  "outputResEmployerLevyTotalYear": "18€",
+  "outputResEmployerLevyTwoMonth": "0€",
+  "outputResEmployerLevyTwoYear": "0€",
+  "outputResEmployerPensionInsuranceMonth": "232,50€",
+  "outputResEmployerPensionInsurancePercentage": "9,30%",
+  "outputResEmployerPensionInsuranceYear": "2.790€",
+  "outputResEmployerUnemploymentInsuranceMonth": "32,50€",
+  "outputResEmployerUnemploymentInsurancePercentage": "1,30%",
+  "outputResEmployerUnemploymentInsuranceYear": "390€",
+  "outputResGrossWageMonth": "2.500€",
+  "outputResGrossWageYear": "30.000€",
+  "outputResHealthInsuranceMonth": "196,25€",
+  "outputResHealthInsurancePercentage": "7,85%",
+  "outputResHealthInsuranceYear": "2.355€",
+  "outputResIncomeTaxMonth": "199,25€",
+  "outputResIncomeTaxYear": "2.391€",
+  "outputResNetWageMonth": "1.779,50€",
+  "outputResNetWageYear": "21.354€",
+  "outputResPensionInsuranceMonth": "232,50€",
+  "outputResPensionInsurancePercentage": "9,30%",
+  "outputResPensionInsuranceYear": "2.790€",
+  "outputResPrivateHealthInsuranceEmployerMonth": "0€",
+  "outputResPrivateHealthInsuranceEmployerYear": "0€",
+  "outputResSolidaritySurchargeMonth": "0€",
+  "outputResSolidaritySurchargeYear": "0€",
+  "outputResUnemploymentInsuranceMonth": "32,50€",
+  "outputResUnemploymentInsurancePercentage": "1,30%",
+  "outputResUnemploymentInsuranceYear": "390€",
+  "outputTotalInsurances": "521,25€",
+  "outputTotalInsurancesYear": "6.255€",
+  "outputTotalTaxes": "199,25€",
+  "outputTotalTaxesYear": "2.391€",
+}
+`;
+
+exports[`calculators/gross-to-net > tax year 2026 > returns specific result for tax year 2026 1`] = `
+{
+  "outputDisableResCareInsurance": false,
+  "outputEmployerTotalInsurances": "506,25€",
+  "outputEmployerTotalInsurancesYear": "6.075€",
+  "outputResCareInsuranceMonth": "60€",
+  "outputResCareInsurancePercentage": "2,40%",
+  "outputResCareInsuranceYear": "720€",
+  "outputResChurchTaxMonth": "0€",
+  "outputResChurchTaxPercentage": " (8% der Lohnsteuer)",
+  "outputResChurchTaxYear": "0€",
+  "outputResEmployerCareInsuranceMonth": "45€",
+  "outputResEmployerCareInsurancePercentage": "1,80%",
+  "outputResEmployerCareInsuranceYear": "540€",
+  "outputResEmployerGrossWageMonth": "3.007,75€",
+  "outputResEmployerGrossWageYear": "36.093€",
+  "outputResEmployerHealthInsuranceMonth": "196,25€",
+  "outputResEmployerHealthInsurancePercentage": "7,85%",
+  "outputResEmployerHealthInsuranceYear": "2.355€",
+  "outputResEmployerLevyOneMonth": "0€",
+  "outputResEmployerLevyOneYear": "0€",
+  "outputResEmployerLevyThreeMonth": "1,50€",
+  "outputResEmployerLevyThreeYear": "18€",
+  "outputResEmployerLevyTotal": "1,50€",
+  "outputResEmployerLevyTotalYear": "18€",
+  "outputResEmployerLevyTwoMonth": "0€",
+  "outputResEmployerLevyTwoYear": "0€",
+  "outputResEmployerPensionInsuranceMonth": "232,50€",
+  "outputResEmployerPensionInsurancePercentage": "9,30%",
+  "outputResEmployerPensionInsuranceYear": "2.790€",
+  "outputResEmployerUnemploymentInsuranceMonth": "32,50€",
+  "outputResEmployerUnemploymentInsurancePercentage": "1,30%",
+  "outputResEmployerUnemploymentInsuranceYear": "390€",
+  "outputResGrossWageMonth": "2.500€",
+  "outputResGrossWageYear": "30.000€",
+  "outputResHealthInsuranceMonth": "196,25€",
+  "outputResHealthInsurancePercentage": "7,85%",
+  "outputResHealthInsuranceYear": "2.355€",
+  "outputResIncomeTaxMonth": "193,08€",
+  "outputResIncomeTaxYear": "2.316,96€",
+  "outputResNetWageMonth": "1.785,67€",
+  "outputResNetWageYear": "21.428,04€",
+  "outputResPensionInsuranceMonth": "232,50€",
+  "outputResPensionInsurancePercentage": "9,30%",
+  "outputResPensionInsuranceYear": "2.790€",
+  "outputResPrivateHealthInsuranceEmployerMonth": "0€",
+  "outputResPrivateHealthInsuranceEmployerYear": "0€",
+  "outputResSolidaritySurchargeMonth": "0€",
+  "outputResSolidaritySurchargeYear": "0€",
+  "outputResUnemploymentInsuranceMonth": "32,50€",
+  "outputResUnemploymentInsurancePercentage": "1,30%",
+  "outputResUnemploymentInsuranceYear": "390€",
+  "outputTotalInsurances": "521,25€",
+  "outputTotalInsurancesYear": "6.255€",
+  "outputTotalTaxes": "193,08€",
+  "outputTotalTaxesYear": "2.316,96€",
 }
 `;
 
@@ -1475,7 +1593,7 @@ exports[`calculators/gross-to-net > with page defaults > taxClass 6 1`] = `
 }
 `;
 
-exports[`calculators/gross-to-net > without pension insurance > should return specific result for user made input 1`] = `
+exports[`calculators/gross-to-net > without pension insurance > returns correct result without pension insurance 1`] = `
 {
   "outputDisableResCareInsurance": false,
   "outputEmployerTotalInsurances": "351,10€",
@@ -1531,123 +1649,5 @@ exports[`calculators/gross-to-net > without pension insurance > should return sp
   "outputTotalInsurancesYear": "4.393,20€",
   "outputTotalTaxes": "266,25€",
   "outputTotalTaxesYear": "3.195€",
-}
-`;
-
-exports[`tax year 2025 > should return specific result for tax year 2025 1`] = `
-{
-  "outputDisableResCareInsurance": false,
-  "outputEmployerTotalInsurances": "506,25€",
-  "outputEmployerTotalInsurancesYear": "6.075€",
-  "outputResCareInsuranceMonth": "60€",
-  "outputResCareInsurancePercentage": "2,40%",
-  "outputResCareInsuranceYear": "720€",
-  "outputResChurchTaxMonth": "0€",
-  "outputResChurchTaxPercentage": " (8% der Lohnsteuer)",
-  "outputResChurchTaxYear": "0€",
-  "outputResEmployerCareInsuranceMonth": "45€",
-  "outputResEmployerCareInsurancePercentage": "1,80%",
-  "outputResEmployerCareInsuranceYear": "540€",
-  "outputResEmployerGrossWageMonth": "3.007,75€",
-  "outputResEmployerGrossWageYear": "36.093€",
-  "outputResEmployerHealthInsuranceMonth": "196,25€",
-  "outputResEmployerHealthInsurancePercentage": "7,85%",
-  "outputResEmployerHealthInsuranceYear": "2.355€",
-  "outputResEmployerLevyOneMonth": "0€",
-  "outputResEmployerLevyOneYear": "0€",
-  "outputResEmployerLevyThreeMonth": "1,50€",
-  "outputResEmployerLevyThreeYear": "18€",
-  "outputResEmployerLevyTotal": "1,50€",
-  "outputResEmployerLevyTotalYear": "18€",
-  "outputResEmployerLevyTwoMonth": "0€",
-  "outputResEmployerLevyTwoYear": "0€",
-  "outputResEmployerPensionInsuranceMonth": "232,50€",
-  "outputResEmployerPensionInsurancePercentage": "9,30%",
-  "outputResEmployerPensionInsuranceYear": "2.790€",
-  "outputResEmployerUnemploymentInsuranceMonth": "32,50€",
-  "outputResEmployerUnemploymentInsurancePercentage": "1,30%",
-  "outputResEmployerUnemploymentInsuranceYear": "390€",
-  "outputResGrossWageMonth": "2.500€",
-  "outputResGrossWageYear": "30.000€",
-  "outputResHealthInsuranceMonth": "196,25€",
-  "outputResHealthInsurancePercentage": "7,85%",
-  "outputResHealthInsuranceYear": "2.355€",
-  "outputResIncomeTaxMonth": "199,25€",
-  "outputResIncomeTaxYear": "2.391€",
-  "outputResNetWageMonth": "1.779,50€",
-  "outputResNetWageYear": "21.354€",
-  "outputResPensionInsuranceMonth": "232,50€",
-  "outputResPensionInsurancePercentage": "9,30%",
-  "outputResPensionInsuranceYear": "2.790€",
-  "outputResPrivateHealthInsuranceEmployerMonth": "0€",
-  "outputResPrivateHealthInsuranceEmployerYear": "0€",
-  "outputResSolidaritySurchargeMonth": "0€",
-  "outputResSolidaritySurchargeYear": "0€",
-  "outputResUnemploymentInsuranceMonth": "32,50€",
-  "outputResUnemploymentInsurancePercentage": "1,30%",
-  "outputResUnemploymentInsuranceYear": "390€",
-  "outputTotalInsurances": "521,25€",
-  "outputTotalInsurancesYear": "6.255€",
-  "outputTotalTaxes": "199,25€",
-  "outputTotalTaxesYear": "2.391€",
-}
-`;
-
-exports[`tax year 2026 > should return specific result for tax year 2026 1`] = `
-{
-  "outputDisableResCareInsurance": false,
-  "outputEmployerTotalInsurances": "506,25€",
-  "outputEmployerTotalInsurancesYear": "6.075€",
-  "outputResCareInsuranceMonth": "60€",
-  "outputResCareInsurancePercentage": "2,40%",
-  "outputResCareInsuranceYear": "720€",
-  "outputResChurchTaxMonth": "0€",
-  "outputResChurchTaxPercentage": " (8% der Lohnsteuer)",
-  "outputResChurchTaxYear": "0€",
-  "outputResEmployerCareInsuranceMonth": "45€",
-  "outputResEmployerCareInsurancePercentage": "1,80%",
-  "outputResEmployerCareInsuranceYear": "540€",
-  "outputResEmployerGrossWageMonth": "3.007,75€",
-  "outputResEmployerGrossWageYear": "36.093€",
-  "outputResEmployerHealthInsuranceMonth": "196,25€",
-  "outputResEmployerHealthInsurancePercentage": "7,85%",
-  "outputResEmployerHealthInsuranceYear": "2.355€",
-  "outputResEmployerLevyOneMonth": "0€",
-  "outputResEmployerLevyOneYear": "0€",
-  "outputResEmployerLevyThreeMonth": "1,50€",
-  "outputResEmployerLevyThreeYear": "18€",
-  "outputResEmployerLevyTotal": "1,50€",
-  "outputResEmployerLevyTotalYear": "18€",
-  "outputResEmployerLevyTwoMonth": "0€",
-  "outputResEmployerLevyTwoYear": "0€",
-  "outputResEmployerPensionInsuranceMonth": "232,50€",
-  "outputResEmployerPensionInsurancePercentage": "9,30%",
-  "outputResEmployerPensionInsuranceYear": "2.790€",
-  "outputResEmployerUnemploymentInsuranceMonth": "32,50€",
-  "outputResEmployerUnemploymentInsurancePercentage": "1,30%",
-  "outputResEmployerUnemploymentInsuranceYear": "390€",
-  "outputResGrossWageMonth": "2.500€",
-  "outputResGrossWageYear": "30.000€",
-  "outputResHealthInsuranceMonth": "196,25€",
-  "outputResHealthInsurancePercentage": "7,85%",
-  "outputResHealthInsuranceYear": "2.355€",
-  "outputResIncomeTaxMonth": "193,08€",
-  "outputResIncomeTaxYear": "2.316,96€",
-  "outputResNetWageMonth": "1.785,67€",
-  "outputResNetWageYear": "21.428,04€",
-  "outputResPensionInsuranceMonth": "232,50€",
-  "outputResPensionInsurancePercentage": "9,30%",
-  "outputResPensionInsuranceYear": "2.790€",
-  "outputResPrivateHealthInsuranceEmployerMonth": "0€",
-  "outputResPrivateHealthInsuranceEmployerYear": "0€",
-  "outputResSolidaritySurchargeMonth": "0€",
-  "outputResSolidaritySurchargeYear": "0€",
-  "outputResUnemploymentInsuranceMonth": "32,50€",
-  "outputResUnemploymentInsurancePercentage": "1,30%",
-  "outputResUnemploymentInsuranceYear": "390€",
-  "outputTotalInsurances": "521,25€",
-  "outputTotalInsurancesYear": "6.255€",
-  "outputTotalTaxes": "193,08€",
-  "outputTotalTaxesYear": "2.316,96€",
 }
 `;

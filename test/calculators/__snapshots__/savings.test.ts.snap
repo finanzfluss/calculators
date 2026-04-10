@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`/calculators/savings > endValue > should return right results for monthly monthly 1`] = `
+exports[`/calculators/savings > endValue > returns right results for monthly monthly 1`] = `
 {
   "deposits": "23.000€",
   "diagramData": {
@@ -262,7 +262,7 @@ exports[`/calculators/savings > endValue > should return right results for month
 }
 `;
 
-exports[`/calculators/savings > endValue > should return right results for monthly monthly without start capital 1`] = `
+exports[`/calculators/savings > endValue > returns right results for monthly monthly without start capital 1`] = `
 {
   "deposits": "12.000€",
   "diagramData": {
@@ -524,7 +524,7 @@ exports[`/calculators/savings > endValue > should return right results for month
 }
 `;
 
-exports[`/calculators/savings > endValue > should return right results for monthly yearly 1`] = `
+exports[`/calculators/savings > endValue > returns right results for monthly yearly 1`] = `
 {
   "deposits": "23.000€",
   "diagramData": {
@@ -786,7 +786,7 @@ exports[`/calculators/savings > endValue > should return right results for month
 }
 `;
 
-exports[`/calculators/savings > endValue > should return right results for yearly yearly 1`] = `
+exports[`/calculators/savings > endValue > returns right results for yearly yearly 1`] = `
 {
   "deposits": "23.000€",
   "diagramData": {
@@ -1048,7 +1048,7 @@ exports[`/calculators/savings > endValue > should return right results for yearl
 }
 `;
 
-exports[`/calculators/savings > monthlyDuration > should return right results for monthly monthly 1`] = `
+exports[`/calculators/savings > monthlyDuration > returns right results for monthly monthly 1`] = `
 {
   "deposits": "17.447,99€",
   "diagramData": {
@@ -1234,7 +1234,7 @@ exports[`/calculators/savings > monthlyDuration > should return right results fo
 }
 `;
 
-exports[`/calculators/savings > monthlyDuration > should return right results for monthly yearly 1`] = `
+exports[`/calculators/savings > monthlyDuration > returns right results for monthly yearly 1`] = `
 {
   "deposits": "17.864,67€",
   "diagramData": {
@@ -1426,7 +1426,7 @@ exports[`/calculators/savings > monthlyDuration > should return right results fo
 }
 `;
 
-exports[`/calculators/savings > monthlyDuration > should return right results for yearly yearly 1`] = `
+exports[`/calculators/savings > monthlyDuration > returns right results for yearly yearly 1`] = `
 {
   "deposits": "17.743,32€",
   "diagramData": {
@@ -1616,7 +1616,7 @@ exports[`/calculators/savings > monthlyDuration > should return right results fo
 }
 `;
 
-exports[`/calculators/savings > savingRate > should return right results for accumulating 1`] = `
+exports[`/calculators/savings > savingRate > returns right results for accumulating 1`] = `
 {
   "deposits": "9.364,50€",
   "diagramData": {
@@ -1806,7 +1806,7 @@ exports[`/calculators/savings > savingRate > should return right results for acc
 }
 `;
 
-exports[`/calculators/savings > savingRate > should return right results for monthly monthly 1`] = `
+exports[`/calculators/savings > savingRate > returns right results for monthly monthly 1`] = `
 {
   "deposits": "9.358,76€",
   "diagramData": {
@@ -1996,7 +1996,7 @@ exports[`/calculators/savings > savingRate > should return right results for mon
 }
 `;
 
-exports[`/calculators/savings > savingRate > should return right results for monthly yearly 1`] = `
+exports[`/calculators/savings > savingRate > returns right results for monthly yearly 1`] = `
 {
   "deposits": "9.393,20€",
   "diagramData": {
@@ -2186,7 +2186,7 @@ exports[`/calculators/savings > savingRate > should return right results for mon
 }
 `;
 
-exports[`/calculators/savings > savingRate > should return right results for yearly yearly 1`] = `
+exports[`/calculators/savings > savingRate > returns right results for yearly yearly 1`] = `
 {
   "deposits": "9.191,60€",
   "diagramData": {
@@ -2376,7 +2376,7 @@ exports[`/calculators/savings > savingRate > should return right results for yea
 }
 `;
 
-exports[`/calculators/savings > startValue > should return right results for monthly monthly 1`] = `
+exports[`/calculators/savings > startValue > returns right results for monthly monthly 1`] = `
 {
   "deposits": "17.862,46€",
   "diagramData": {
@@ -2566,7 +2566,7 @@ exports[`/calculators/savings > startValue > should return right results for mon
 }
 `;
 
-exports[`/calculators/savings > startValue > should return right results for monthly yearly 1`] = `
+exports[`/calculators/savings > startValue > returns right results for monthly yearly 1`] = `
 {
   "deposits": "18.068,87€",
   "diagramData": {
@@ -2756,7 +2756,7 @@ exports[`/calculators/savings > startValue > should return right results for mon
 }
 `;
 
-exports[`/calculators/savings > startValue > should return right results for yearly yearly 1`] = `
+exports[`/calculators/savings > startValue > returns right results for yearly yearly 1`] = `
 {
   "deposits": "17.310,89€",
   "diagramData": {
@@ -2946,7 +2946,7 @@ exports[`/calculators/savings > startValue > should return right results for yea
 }
 `;
 
-exports[`/calculators/savings > yearlyInterest > should return right results for monthly monthly 1`] = `
+exports[`/calculators/savings > yearlyInterest > returns right results for monthly monthly 1`] = `
 {
   "deposits": "23.000€",
   "diagramData": {
@@ -3208,7 +3208,7 @@ exports[`/calculators/savings > yearlyInterest > should return right results for
 }
 `;
 
-exports[`/calculators/savings > yearlyInterest > should return right results for monthly yearly 1`] = `
+exports[`/calculators/savings > yearlyInterest > returns right results for monthly yearly 1`] = `
 {
   "deposits": "23.000€",
   "diagramData": {
@@ -3470,7 +3470,7 @@ exports[`/calculators/savings > yearlyInterest > should return right results for
 }
 `;
 
-exports[`/calculators/savings > yearlyInterest > should return right results for yearly yearly 1`] = `
+exports[`/calculators/savings > yearlyInterest > returns right results for yearly yearly 1`] = `
 {
   "deposits": "23.000€",
   "diagramData": {

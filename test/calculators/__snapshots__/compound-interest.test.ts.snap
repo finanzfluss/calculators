@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`calculators/compound-interest > should return diagram data 1`] = `
+exports[`calculators/compound-interest > returns diagram data 1`] = `
 {
   "CAPITAL_LIST": [
     5100,
@@ -252,7 +252,7 @@ exports[`calculators/compound-interest > should return diagram data 1`] = `
 }
 `;
 
-exports[`calculators/compound-interest > should return finalCapital, totalPayments and totalInterest on monthly interest base 1`] = `
+exports[`calculators/compound-interest > returns finalCapital, totalPayments and totalInterest on monthly interest base 1`] = `
 {
   "finalCapital": "23.828€",
   "totalInterest": "6.828€",
@@ -260,7 +260,7 @@ exports[`calculators/compound-interest > should return finalCapital, totalPaymen
 }
 `;
 
-exports[`calculators/compound-interest > should return finalCapital, totalPayments and totalInterest on monthly interest base without start capital 1`] = `
+exports[`calculators/compound-interest > returns finalCapital, totalPayments and totalInterest on monthly interest base without start capital 1`] = `
 {
   "finalCapital": "15.593€",
   "totalInterest": "3.593€",
@@ -268,7 +268,7 @@ exports[`calculators/compound-interest > should return finalCapital, totalPaymen
 }
 `;
 
-exports[`calculators/compound-interest > should return finalCapital, totalPayments and totalInterest on quarterly interest base 1`] = `
+exports[`calculators/compound-interest > returns finalCapital, totalPayments and totalInterest on quarterly interest base 1`] = `
 {
   "finalCapital": "55.805€",
   "totalInterest": "16.805€",
@@ -276,7 +276,7 @@ exports[`calculators/compound-interest > should return finalCapital, totalPaymen
 }
 `;
 
-exports[`calculators/compound-interest > should return finalCapital, totalPayments and totalInterest on yearly interest base 1`] = `
+exports[`calculators/compound-interest > returns finalCapital, totalPayments and totalInterest on yearly interest base 1`] = `
 {
   "finalCapital": "55.438€",
   "totalInterest": "16.438€",

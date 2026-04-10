@@ -21,7 +21,7 @@ const SHARED_INPUT = {
 }
 
 describe('calculators/net-policy', () => {
-  it('should have correct table data', () => {
+  it('has correct table data', () => {
     const data = netPolicy.validateAndCalculate({
       ...SHARED_INPUT,
       duration: 35,
@@ -30,7 +30,7 @@ describe('calculators/net-policy', () => {
     expect(data.tableData).toMatchSnapshot()
   })
 
-  it('should work with fixed costs', () => {
+  it('works with fixed costs', () => {
     const data = netPolicy.validateAndCalculate({
       ...SHARED_INPUT,
       duration: 35,
@@ -41,7 +41,7 @@ describe('calculators/net-policy', () => {
     expect(data.tableData.netWorth.policy).toMatchInlineSnapshot(`"335.482"`)
   })
 
-  it('should use different calculation for durations under 12 years', () => {
+  it('uses different calculation for durations under 12 years', () => {
     const data = netPolicy.validateAndCalculate({
       ...SHARED_INPUT,
       duration: 10,
