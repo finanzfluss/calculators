@@ -21,7 +21,7 @@ const SHARED_INPUT = {
 }
 
 describe('calculators/net-policy', () => {
-  it('has correct table data', () => {
+  it('returns table data comparing policy vs ETF over 35 years', () => {
     const data = netPolicy.validateAndCalculate({
       ...SHARED_INPUT,
       duration: 35,
@@ -30,7 +30,7 @@ describe('calculators/net-policy', () => {
     expect(data.tableData).toMatchSnapshot()
   })
 
-  it('works with fixed costs', () => {
+  it('subtracts fixedCosts from gross worth and net worth', () => {
     const data = netPolicy.validateAndCalculate({
       ...SHARED_INPUT,
       duration: 35,
@@ -41,7 +41,7 @@ describe('calculators/net-policy', () => {
     expect(data.tableData.netWorth.policy).toMatchInlineSnapshot(`"335.482"`)
   })
 
-  it('uses different calculation for durations under 12 years', () => {
+  it('applies the pre-12-year tax rule for short durations', () => {
     const data = netPolicy.validateAndCalculate({
       ...SHARED_INPUT,
       duration: 10,

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { compoundInterest } from '../../src/calculators/compound-interest'
 
 describe('calculators/compound-interest', () => {
-  it('returns finalCapital, totalPayments and totalInterest on monthly interest base', () => {
+  it('compounds monthly with start capital', () => {
     const result = compoundInterest.validateAndCalculate({
       startCapital: 5000,
       monthlyPayment: 100,
@@ -15,7 +15,7 @@ describe('calculators/compound-interest', () => {
     expect({ finalCapital, totalPayments, totalInterest }).toMatchSnapshot()
   })
 
-  it('returns finalCapital, totalPayments and totalInterest on monthly interest base without start capital', () => {
+  it('compounds monthly without start capital', () => {
     const result = compoundInterest.validateAndCalculate({
       startCapital: 0,
       monthlyPayment: 100,
@@ -28,7 +28,7 @@ describe('calculators/compound-interest', () => {
     expect({ finalCapital, totalPayments, totalInterest }).toMatchSnapshot()
   })
 
-  it('returns finalCapital, totalPayments and totalInterest on quarterly interest base', () => {
+  it('compounds quarterly with start capital', () => {
     const result = compoundInterest.validateAndCalculate({
       startCapital: 15000,
       monthlyPayment: 200,
@@ -41,7 +41,7 @@ describe('calculators/compound-interest', () => {
     expect({ finalCapital, totalPayments, totalInterest }).toMatchSnapshot()
   })
 
-  it('returns finalCapital, totalPayments and totalInterest on yearly interest base', () => {
+  it('compounds yearly with start capital', () => {
     const result = compoundInterest.validateAndCalculate({
       startCapital: 15000,
       monthlyPayment: 200,
@@ -54,7 +54,7 @@ describe('calculators/compound-interest', () => {
     expect({ finalCapital, totalPayments, totalInterest }).toMatchSnapshot()
   })
 
-  it('returns diagram data', () => {
+  it('exposes per-year diagram data alongside the totals', () => {
     const result = compoundInterest.validateAndCalculate({
       startCapital: 5000,
       monthlyPayment: 100,

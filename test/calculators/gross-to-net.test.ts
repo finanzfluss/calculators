@@ -241,7 +241,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('reduced health insurance', () => {
-    it('returns correct result for reduced health insurance', () => {
+    it('uses the reduced GKV rate (14%) without additional contribution', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           healthInsurance: REDUCED_HEALTH_INSURANCE,
@@ -254,7 +254,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('without pension insurance', () => {
-    it('returns correct result without pension insurance', () => {
+    it('skips pension insurance contributions when opted out', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           pensionInsurance: NO_PENSION_INSURANCE,
@@ -289,7 +289,7 @@ describe('calculators/gross-to-net', () => {
       expect(result).toMatchSnapshot()
     })
 
-    it('input period 0', () => {
+    it('coerces invalid period 0 to monthly', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           period: 0, // Invalid period
@@ -311,7 +311,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('tax year 2019', () => {
-    it('returns specific result for tax year 2019', () => {
+    it('applies 2019 tax tables and brackets', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           accountingYear: '2019',
@@ -323,7 +323,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('tax year 2020', () => {
-    it('returns specific result for tax year 2020', () => {
+    it('applies 2020 tax tables and brackets', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           accountingYear: '2020',
@@ -335,7 +335,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('tax year 2021', () => {
-    it('returns specific result for tax year 2021', () => {
+    it('applies 2021 tax tables and brackets', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           accountingYear: '2021',
@@ -347,7 +347,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('tax year 2022', () => {
-    it('returns specific result for tax year 2022', () => {
+    it('applies 2022 tax tables and brackets', () => {
       const result = grossToNet.validateAndCalculate(fakeTestValues())
 
       expect(result).toMatchSnapshot()
@@ -355,7 +355,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('tax year 2023', () => {
-    it('returns specific result for tax year 2023', () => {
+    it('applies 2023 tax tables and brackets', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           accountingYear: '2023',
@@ -367,7 +367,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('tax year 2024', () => {
-    it('returns specific result for tax year 2024', () => {
+    it('applies 2024 tax tables and brackets', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           accountingYear: '2024',
@@ -379,7 +379,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('tax year 2025', () => {
-    it('returns specific result for tax year 2025', () => {
+    it('applies 2025 tax tables and brackets', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           accountingYear: '2025',
@@ -391,7 +391,7 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('tax year 2026', () => {
-    it('returns specific result for tax year 2026', () => {
+    it('applies 2026 tax tables and brackets', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
           accountingYear: '2026',

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { disabilityInsurance } from '../../src/calculators/disability-insurance'
 
 describe('/calculators/disability-insurance', () => {
-  it('returns correct levels', async () => {
+  it('returns coverage levels for default inputs', async () => {
     const result = disabilityInsurance.validateAndCalculate({
       grossIncome: 4000,
       netIncome: 2602,
@@ -22,7 +22,7 @@ describe('/calculators/disability-insurance', () => {
     expect(result.tableData.levelCustom).toBe('500,00€')
   })
 
-  it('calculates half disability pension correctly', () => {
+  it('falls back to 18% of gross income when useCustomHalfDisabilityPension is false', () => {
     const resultWithCustom = disabilityInsurance.validateAndCalculate({
       grossIncome: 4000,
       netIncome: 2602,
@@ -40,7 +40,7 @@ describe('/calculators/disability-insurance', () => {
     )
   })
 
-  it('parses query-style flag values correctly', () => {
+  it('coerces stringified "0" flag from query params to false', () => {
     const result = disabilityInsurance.validateAndCalculate({
       grossIncome: 4000,
       netIncome: 2602,
