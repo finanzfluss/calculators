@@ -13,15 +13,15 @@ describe('i18n', () => {
     setLocale('de')
   })
 
-  it('has a fallback locale', () => {
+  it('exposes "de" as the fallback locale', () => {
     expect(fallbackLocale).toBe('de')
   })
 
-  it('has a current locale', () => {
+  it('returns the active locale via getLocale()', () => {
     expect(getLocale()).toBe('de')
   })
 
-  it('has a list of locales', () => {
+  it('exports the supported locales list', () => {
     expect(locales).toMatchInlineSnapshot(`
       [
         "de",
@@ -30,18 +30,18 @@ describe('i18n', () => {
     `)
   })
 
-  it('has a function to check if a locale is valid', () => {
+  it('isValidLocale recognizes "de" and "fr" but rejects "en"', () => {
     expect(isValidLocale('de')).toBe(true)
     expect(isValidLocale('fr')).toBe(true)
     expect(isValidLocale('en')).toBe(false)
   })
 
-  it('has a function to set the locale', () => {
+  it('setLocale switches the active locale', () => {
     setLocale('fr')
     expect(getLocale()).toBe('fr')
   })
 
-  it('has a function to set the locale if it is valid', () => {
+  it('setMaybeLocale ignores unsupported locales and keeps the current one', () => {
     setMaybeLocale('fr')
     expect(getLocale()).toBe('fr')
     setMaybeLocale('ko')
