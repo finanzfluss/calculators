@@ -396,7 +396,7 @@ describe('/calculators/savings-utils', () => {
           interestIntervalType,
           expectedValue,
         ] of expected) {
-          it(`returns correct values for ${saveIntervalType} / ${interestIntervalType}`, () => {
+          it(`computes ${expectedValue}€ end value for ${saveIntervalType} saving / ${interestIntervalType} interest`, () => {
             const result = savingsEndValue.validateAndCalculate({
               ...input,
               saveIntervalType,
@@ -428,7 +428,7 @@ describe('/calculators/savings-utils', () => {
             input._savingRatePerYear,
           )
 
-          it(`returns correct values for ${saveIntervalType} / ${interestIntervalType}`, () => {
+          it(`recovers savingRate for ${saveIntervalType} saving / ${interestIntervalType} interest`, () => {
             const result = savingsPayment.validateAndCalculate({
               ...input,
               saveIntervalType,
@@ -464,7 +464,7 @@ describe('/calculators/savings-utils', () => {
             input._savingRatePerYear,
           )
 
-          it(`returns correct values for ${saveIntervalType} / ${interestIntervalType}`, () => {
+          it(`recovers startValue for ${saveIntervalType} saving / ${interestIntervalType} interest`, () => {
             const result = savingsStartValue.validateAndCalculate({
               ...input,
               saveIntervalType,
@@ -502,7 +502,7 @@ describe('/calculators/savings-utils', () => {
             input._savingRatePerYear,
           )
 
-          it(`returns correct values for ${saveIntervalType} / ${interestIntervalType}`, () => {
+          it(`recovers yearlyDuration for ${saveIntervalType} saving / ${interestIntervalType} interest`, () => {
             const result = savingsDuration.validateAndCalculate({
               ...input,
               saveIntervalType,
@@ -535,7 +535,7 @@ describe('/calculators/savings-utils', () => {
             input._savingRatePerYear,
           )
 
-          it(`returns correct values for ${saveIntervalType} / ${interestIntervalType}`, () => {
+          it(`recovers yearlyInterest for ${saveIntervalType} saving / ${interestIntervalType} interest`, () => {
             const result =
               100 *
               savingsInterestRate.validateAndCalculate({

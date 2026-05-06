@@ -17,59 +17,59 @@ describe('formatting methods', () => {
     })
 
     describe('pad', () => {
-      it('pads numbers < 10', () => {
+      it('left-pads single-digit numbers with "0"', () => {
         expect(pad(1)).toBe('01')
       })
-      it('does not pad numbers >= 10', () => {
+      it('leaves numbers >= 10 unchanged', () => {
         expect(pad(10)).toBe('10')
       })
     })
 
     describe('formatInput', () => {
-      it('removes dots and spaces', () => {
+      it('strips spaces and dots used as thousand separators', () => {
         expect(formatInput('123 4567.890')).toBe(1234567890)
       })
-      it('removes multiple dots', () => {
+      it('strips repeated dot separators', () => {
         expect(formatInput('1.234.567.890')).toBe(1234567890)
       })
-      it('removes multiple spaces', () => {
+      it('strips repeated space separators', () => {
         expect(formatInput('1 234 567 890')).toBe(1234567890)
       })
-      it('replaces commata with dot', () => {
+      it('treats comma as the decimal separator', () => {
         expect(formatInput('123,456')).toBe(123.456)
       })
-      it('is inverse of formatNumber()', () => {
+      it('round-trips through formatNumber for de-formatted strings', () => {
         const input = '1.234,56'
         expect(formatNumber(formatInput(input), 2)).toBe(input)
       })
     })
 
     describe('formatResult', () => {
-      it('returns decimal value if under 1000', () => {
+      it('shows two decimals when |value| < 1000', () => {
         expect(formatResult(512.25)).toBe('512,25€')
       })
-      it('appends decimal value if under 1000', () => {
+      it('pads whole numbers below 1000 with two decimals', () => {
         expect(formatResult(1)).toBe('1,00€')
       })
-      it('returns no decimal value if above 1000', () => {
+      it('omits decimals when |value| > 1000', () => {
         expect(formatResult(1234)).toBe('1.234€')
       })
-      it('returns no decimal value if equal 1000', () => {
+      it('omits decimals when |value| equals 1000', () => {
         expect(formatResult(1000)).toBe('1.000€')
       })
-      it('formats negative numbers', () => {
+      it('formats negative numbers with the leading minus sign', () => {
         expect(formatResult(-9.99)).toBe('-9,99€')
       })
-      it('rounds up', () => {
+      it('rounds half-up to the nearest euro for values >= 1000', () => {
         expect(formatResult(1234.56)).toBe('1.235€')
       })
-      it('returns pow format for large numbers', () => {
+      it('switches to exponential notation for whole values >= 1e21', () => {
         expect(formatResult(1 * 10 ** 21)).toBe('1×10²¹€')
       })
-      it('returns pow format with decimal for large numbers', () => {
+      it('keeps one decimal in the mantissa for fractional values >= 1e21', () => {
         expect(formatResult(1.2 * 10 ** 21)).toBe('1,2×10²¹€')
       })
-      it('returns pow format with cropped decimal for large numbers', () => {
+      it('truncates the mantissa to one decimal for high-precision values >= 1e21', () => {
         expect(formatResult(1.299999e21)).toBe('1,2×10²¹€')
       })
       it('handles Dinero objects', () => {
@@ -79,21 +79,21 @@ describe('formatting methods', () => {
     })
 
     describe('formatResultWithTwoOptionalDecimals', () => {
-      it('shows decimals when number has fractional part', () => {
+      it('shows two decimals for fractional values', () => {
         expect(formatResultWithTwoOptionalDecimals(99.5)).toBe('99,50€')
       })
-      it('does not show decimals for whole numbers', () => {
+      it('omits decimals for whole numbers', () => {
         expect(formatResultWithTwoOptionalDecimals(99)).toBe('99€')
       })
-      it('supports custom suffix', () => {
+      it('supports a custom suffix in place of "€"', () => {
         expect(formatResultWithTwoOptionalDecimals(99, ' EUR')).toBe('99 EUR')
       })
-      it('handles exponential numbers', () => {
+      it('switches to exponential notation for very large values', () => {
         expect(formatResultWithTwoOptionalDecimals(1.2 * 10 ** 21)).toBe(
           '1,2×10²¹€',
         )
       })
-      it('handles Dinero objects', () => {
+      it('formats Dinero amounts and respects optional decimals', () => {
         const dineroObj = dinero({ amount: 9900, currency: EUR })
         expect(formatResultWithTwoOptionalDecimals(dineroObj)).toBe('99€')
 
@@ -105,31 +105,31 @@ describe('formatting methods', () => {
     })
 
     describe('formatPercent', () => {
-      it('rounds up', () => {
+      it('formats with three decimals by default and rounds half-up', () => {
         expect(formatPercent(12.4437)).toBe('12,444%')
       })
     })
 
     describe('formatNumber', () => {
-      it('rounds to whole number', () => {
+      it('rounds half-up to a whole number when decimalCount = 0', () => {
         expect(formatNumber(12.66)).toBe('13')
       })
-      it('rounds down', () => {
+      it('rounds half-down to a whole number for fractions < 0.5', () => {
         expect(formatNumber(12.01)).toBe('12')
       })
-      it('rounds trunc', () => {
+      it('returns "1,55" for 1.555 due to floating-point representation', () => {
         expect(formatNumber(1.555, 2)).toBe('1,55')
       })
-      it('sets correct decimal points and naming', () => {
+      it('rounds to the requested decimal count using locale separators', () => {
         expect(formatNumber(13.547, 2)).toBe('13,55')
       })
-      it('returns pow format for large numbers', () => {
+      it('switches to exponential notation for values >= 1e21', () => {
         expect(formatNumber(1e40)).toBe('1×10⁴⁰')
       })
-      it('throws error for negative precision', () => {
+      it('throws when decimalCount is negative', () => {
         expect(() => formatNumber(1, -2)).toThrowError()
       })
-      it('throws error for non-finite values', () => {
+      it('throws for NaN and infinite values', () => {
         expect(() => formatNumber(Number.NaN)).toThrowError(
           'NaN is not a valid number',
         )
@@ -149,13 +149,13 @@ describe('formatting methods', () => {
     })
 
     describe('formatResult', () => {
-      it('returns decimal value if under 1000', () => {
+      it('shows two decimals when |value| < 1000', () => {
         expect(formatResult(512.25)).toBe('512,25€')
       })
-      it('returns no decimal value above 1000', () => {
+      it('uses narrow non-breaking space as thousand separator above 1000', () => {
         expect(formatResult(1234.46)).toBe('1 234€')
       })
-      it('rounds up', () => {
+      it('rounds half-up to the nearest euro for values >= 1000', () => {
         expect(formatResult(1234.56)).toBe('1 235€')
       })
     })

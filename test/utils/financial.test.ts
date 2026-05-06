@@ -4,12 +4,12 @@ import { fv, nper, pmt, pv, rate, xirr } from '../../src/utils/financial'
 
 describe('financial functions', () => {
   describe('pmt', () => {
-    it('returns excel rmz/pmt', () => {
+    it('matches Excel rmz/pmt for end-of-period payments', () => {
       const expectedResult = 602.95
       const calculation = pmt(0.03, 180, -20000, 0)
       expect(formatResult(calculation)).toBe(formatResult(expectedResult))
     })
-    it('returns excel rmz/pmt type 1', () => {
+    it('matches Excel rmz/pmt for annuity-due payments (type 1)', () => {
       const expectedResult = 585.39
       const calculation = pmt(0.03, 180, -20000, 0, 1)
       expect(formatResult(calculation)).toBe(formatResult(expectedResult))
@@ -17,12 +17,12 @@ describe('financial functions', () => {
   })
 
   describe('pv', () => {
-    it('returns excel pv/bw', () => {
+    it('matches Excel pv/bw for end-of-period payments', () => {
       const expectedResult = -3463.73
       const calculation = pv(0.03, 180, 100, 30000)
       expect(formatResult(calculation)).toBe(formatResult(expectedResult))
     })
-    it('returns excel pv/bw type 1', () => {
+    it('matches Excel pv/bw for annuity-due payments (type 1)', () => {
       const expectedResult = -3563.24
       const calculation = pv(0.03, 180, 100, 30000, 1)
       expect(formatResult(calculation)).toBe(formatResult(expectedResult))
@@ -30,12 +30,12 @@ describe('financial functions', () => {
   })
 
   describe('fv', () => {
-    it('returns excel fv/zw', () => {
+    it('matches Excel fv/zw for end-of-period payments', () => {
       const expectedResult = 21506.45
       const calculation = fv(0.03 / 12, 180, -150, 8000)
       expect(formatResult(calculation)).toBe(formatResult(expectedResult))
     })
-    it('returns excel fv/zw type 1', () => {
+    it('matches Excel fv/zw for annuity-due payments (type 1)', () => {
       const expectedResult = 21591.56
       const calculation = fv(0.03 / 12, 180, -150, 8000, 1)
       expect(formatResult(calculation)).toBe(formatResult(expectedResult))
@@ -43,12 +43,12 @@ describe('financial functions', () => {
   })
 
   describe('nper', () => {
-    it('returns excel nper/zzr', () => {
+    it('matches Excel nper/zzr for end-of-period payments', () => {
       const expectedResult = 179.8
       const calculation = nper(3 / 12 / 100, -150, 0, 34000)
       expect(formatResult(calculation)).toBe(formatResult(expectedResult))
     })
-    it('returns excel nper/zzr type 1', () => {
+    it('matches Excel nper/zzr for annuity-due payments (type 1)', () => {
       const expectedResult = 179.44
       const calculation = nper(3 / 12 / 100, -150, 0, 34000, 1)
       expect(formatResult(calculation)).toBe(formatResult(expectedResult))
@@ -56,17 +56,17 @@ describe('financial functions', () => {
   })
 
   describe('rate', () => {
-    it('returns excel rate/zins', () => {
+    it('matches Excel rate/zins for end-of-period payments', () => {
       const expectedResult = 14.167
       const calculation = rate(15, 1800, 0, -80000) * 100
       expect(formatPercent(calculation)).toBe(formatPercent(expectedResult))
     })
-    it('returns excel rate/zins type 1', () => {
+    it('matches Excel rate/zins for annuity-due payments (type 1)', () => {
       const expectedResult = 12.697
       const calculation = rate(15, 1800, 0, -80000, 1) * 100
       expect(formatPercent(calculation)).toBe(formatPercent(expectedResult))
     })
-    it('returns excel rate/zins with 0 payment', () => {
+    it('matches Excel rate/zins when payment is zero', () => {
       const expectedResult = 58.489
       const calculation = rate(15, 0, -1000, 1000000, 1) * 100
       expect(formatPercent(calculation)).toBe(formatPercent(expectedResult))
@@ -74,7 +74,7 @@ describe('financial functions', () => {
   })
 
   describe('xirr', () => {
-    it('returns correct excel xirr/xintzinsfuss', () => {
+    it('matches Excel xirr/xintzinsfuss for irregular cash flows', () => {
       const values = [-10000, 2750, 4250, 3250, 2750]
       const dates = [
         new Date('2008-01-01'),

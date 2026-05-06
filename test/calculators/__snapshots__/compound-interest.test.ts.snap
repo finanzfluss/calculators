@@ -1,6 +1,38 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`calculators/compound-interest > returns diagram data 1`] = `
+exports[`calculators/compound-interest > compounds monthly with start capital 1`] = `
+{
+  "finalCapital": "23.828€",
+  "totalInterest": "6.828€",
+  "totalPayments": "17.000€",
+}
+`;
+
+exports[`calculators/compound-interest > compounds monthly without start capital 1`] = `
+{
+  "finalCapital": "15.593€",
+  "totalInterest": "3.593€",
+  "totalPayments": "12.000€",
+}
+`;
+
+exports[`calculators/compound-interest > compounds quarterly with start capital 1`] = `
+{
+  "finalCapital": "55.805€",
+  "totalInterest": "16.805€",
+  "totalPayments": "39.000€",
+}
+`;
+
+exports[`calculators/compound-interest > compounds yearly with start capital 1`] = `
+{
+  "finalCapital": "55.438€",
+  "totalInterest": "16.438€",
+  "totalPayments": "39.000€",
+}
+`;
+
+exports[`calculators/compound-interest > exposes per-year diagram data alongside the totals 1`] = `
 {
   "CAPITAL_LIST": [
     5100,
@@ -249,37 +281,5 @@ exports[`calculators/compound-interest > returns diagram data 1`] = `
   "LAST_CAPITAL": "17.000€",
   "LAST_INTEREST": "6.827,98€",
   "TOTAL_CAPITAL": "23.827,98€",
-}
-`;
-
-exports[`calculators/compound-interest > returns finalCapital, totalPayments and totalInterest on monthly interest base 1`] = `
-{
-  "finalCapital": "23.828€",
-  "totalInterest": "6.828€",
-  "totalPayments": "17.000€",
-}
-`;
-
-exports[`calculators/compound-interest > returns finalCapital, totalPayments and totalInterest on monthly interest base without start capital 1`] = `
-{
-  "finalCapital": "15.593€",
-  "totalInterest": "3.593€",
-  "totalPayments": "12.000€",
-}
-`;
-
-exports[`calculators/compound-interest > returns finalCapital, totalPayments and totalInterest on quarterly interest base 1`] = `
-{
-  "finalCapital": "55.805€",
-  "totalInterest": "16.805€",
-  "totalPayments": "39.000€",
-}
-`;
-
-exports[`calculators/compound-interest > returns finalCapital, totalPayments and totalInterest on yearly interest base 1`] = `
-{
-  "finalCapital": "55.438€",
-  "totalInterest": "16.438€",
-  "totalPayments": "39.000€",
 }
 `;

@@ -3,7 +3,7 @@ import { savings } from '../../src/calculators/savings'
 
 describe('/calculators/savings', () => {
   describe('endValue', () => {
-    it('returns right results for yearly yearly', async () => {
+    it('computes endValue for yearly saving / yearly interest with tax and 30% exemption', async () => {
       const data = savings.validateAndCalculate({
         output: 'endValue',
         startValue: '5000',
@@ -20,7 +20,7 @@ describe('/calculators/savings', () => {
 
       expect(data).toMatchSnapshot()
     })
-    it('returns right results for monthly monthly', async () => {
+    it('computes endValue for monthly saving / monthly interest with tax and 15% exemption', async () => {
       const data = savings.validateAndCalculate({
         output: 'endValue',
         startValue: '5000',
@@ -36,7 +36,7 @@ describe('/calculators/savings', () => {
       })
       expect(data).toMatchSnapshot()
     })
-    it('returns right results for monthly yearly', async () => {
+    it('computes endValue for monthly saving / yearly interest without tax', async () => {
       const data = savings.validateAndCalculate({
         output: 'endValue',
         startValue: '5000',
@@ -52,7 +52,7 @@ describe('/calculators/savings', () => {
       })
       expect(data).toMatchSnapshot()
     })
-    it('returns right results for monthly monthly without start capital', async () => {
+    it('computes endValue for monthly saving / monthly interest with no start capital', async () => {
       const data = savings.validateAndCalculate({
         output: 'endValue',
         startValue: '0',
@@ -71,7 +71,7 @@ describe('/calculators/savings', () => {
   })
 
   describe('startValue', () => {
-    it('returns right results for yearly yearly', async () => {
+    it('computes startValue for yearly saving / yearly interest without tax', async () => {
       const data = savings.validateAndCalculate({
         output: 'startValue',
         endValue: '20000',
@@ -87,7 +87,7 @@ describe('/calculators/savings', () => {
       })
       expect(data).toMatchSnapshot()
     })
-    it('returns right results for monthly monthly', async () => {
+    it('computes startValue for monthly saving / monthly interest with tax and 30% exemption', async () => {
       const data = savings.validateAndCalculate({
         output: 'startValue',
         endValue: '20000',
@@ -103,7 +103,7 @@ describe('/calculators/savings', () => {
       })
       expect(data).toMatchSnapshot()
     })
-    it('returns right results for monthly yearly', async () => {
+    it('computes startValue for monthly saving / yearly interest with tax and no exemption', async () => {
       const data = savings.validateAndCalculate({
         output: 'startValue',
         endValue: '20000',
@@ -122,7 +122,7 @@ describe('/calculators/savings', () => {
   })
 
   describe('yearlyInterest', () => {
-    it('returns right results for yearly yearly', async () => {
+    it('solves for yearlyInterest given yearly saving / yearly interest with tax and 15% exemption', async () => {
       const data = savings.validateAndCalculate({
         output: 'yearlyInterest',
         endValue: '30000',
@@ -138,7 +138,7 @@ describe('/calculators/savings', () => {
       })
       expect(data).toMatchSnapshot()
     })
-    it('returns right results for monthly monthly', async () => {
+    it('solves for yearlyInterest given monthly saving / monthly interest with tax and 30% exemption', async () => {
       const data = savings.validateAndCalculate({
         output: 'yearlyInterest',
         endValue: '30000',
@@ -154,7 +154,7 @@ describe('/calculators/savings', () => {
       })
       expect(data).toMatchSnapshot()
     })
-    it('returns right results for monthly yearly', async () => {
+    it('solves for yearlyInterest given monthly saving / yearly interest without tax', async () => {
       const data = savings.validateAndCalculate({
         output: 'yearlyInterest',
         endValue: '30000',
@@ -173,7 +173,7 @@ describe('/calculators/savings', () => {
   })
 
   describe('monthlyDuration', () => {
-    it('returns right results for yearly yearly', async () => {
+    it('solves for monthlyDuration given yearly saving / yearly interest with tax and 30% exemption', async () => {
       const data = savings.validateAndCalculate({
         output: 'monthlyDuration',
         yearlyInterest: '3',
@@ -189,7 +189,7 @@ describe('/calculators/savings', () => {
       })
       expect(data).toMatchSnapshot()
     })
-    it('returns right results for monthly monthly', async () => {
+    it('solves for monthlyDuration given monthly saving / monthly interest without tax', async () => {
       const data = savings.validateAndCalculate({
         output: 'monthlyDuration',
         yearlyInterest: '3',
@@ -205,7 +205,7 @@ describe('/calculators/savings', () => {
       })
       expect(data).toMatchSnapshot()
     })
-    it('returns right results for monthly yearly', async () => {
+    it('solves for monthlyDuration given monthly saving / yearly interest with tax and 30% exemption', async () => {
       const data = savings.validateAndCalculate({
         output: 'monthlyDuration',
         yearlyInterest: '3',
@@ -224,7 +224,7 @@ describe('/calculators/savings', () => {
   })
 
   describe('savingRate', () => {
-    it('returns right results for yearly yearly', async () => {
+    it('solves for savingRate given yearly saving / yearly interest without tax', async () => {
       const data = savings.validateAndCalculate({
         output: 'savingRate',
         startValue: '5000',
@@ -240,7 +240,7 @@ describe('/calculators/savings', () => {
       })
       expect(data).toMatchSnapshot()
     })
-    it('returns right results for monthly monthly', async () => {
+    it('solves for savingRate given monthly saving / monthly interest with tax and 30% exemption', async () => {
       const data = savings.validateAndCalculate({
         output: 'savingRate',
         startValue: '5000',
@@ -256,7 +256,7 @@ describe('/calculators/savings', () => {
       })
       expect(data).toMatchSnapshot()
     })
-    it('returns right results for monthly yearly', async () => {
+    it('solves for savingRate given monthly saving / yearly interest with tax and 15% exemption', async () => {
       const data = savings.validateAndCalculate({
         output: 'savingRate',
         startValue: '5000',
@@ -272,7 +272,7 @@ describe('/calculators/savings', () => {
       })
       expect(data).toMatchSnapshot()
     })
-    it('returns right results for accumulating', async () => {
+    it('solves for savingRate with accumulating distribution and capital gains tax', async () => {
       const data = savings.validateAndCalculate({
         output: 'savingRate',
         startValue: '5000',

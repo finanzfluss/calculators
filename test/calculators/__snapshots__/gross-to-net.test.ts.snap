@@ -118,7 +118,7 @@ exports[`calculators/gross-to-net > edge cases > care insurance special case for
 }
 `;
 
-exports[`calculators/gross-to-net > edge cases > input period 0 1`] = `
+exports[`calculators/gross-to-net > edge cases > coerces invalid period 0 to monthly 1`] = `
 {
   "outputDisableResCareInsurance": false,
   "outputEmployerTotalInsurances": "506,25€",
@@ -354,7 +354,7 @@ exports[`calculators/gross-to-net > private health insurance > without employer 
 }
 `;
 
-exports[`calculators/gross-to-net > reduced health insurance > returns correct result for reduced health insurance 1`] = `
+exports[`calculators/gross-to-net > reduced health insurance > uses the reduced GKV rate (14%) without additional contribution 1`] = `
 {
   "outputDisableResCareInsurance": false,
   "outputEmployerTotalInsurances": "485€",
@@ -413,7 +413,7 @@ exports[`calculators/gross-to-net > reduced health insurance > returns correct r
 }
 `;
 
-exports[`calculators/gross-to-net > tax year 2019 > returns specific result for tax year 2019 1`] = `
+exports[`calculators/gross-to-net > tax year 2019 > applies 2019 tax tables and brackets 1`] = `
 {
   "outputDisableResCareInsurance": false,
   "outputEmployerTotalInsurances": "506,25€",
@@ -472,7 +472,7 @@ exports[`calculators/gross-to-net > tax year 2019 > returns specific result for 
 }
 `;
 
-exports[`calculators/gross-to-net > tax year 2020 > returns specific result for tax year 2020 1`] = `
+exports[`calculators/gross-to-net > tax year 2020 > applies 2020 tax tables and brackets 1`] = `
 {
   "outputDisableResCareInsurance": false,
   "outputEmployerTotalInsurances": "506,25€",
@@ -531,7 +531,7 @@ exports[`calculators/gross-to-net > tax year 2020 > returns specific result for 
 }
 `;
 
-exports[`calculators/gross-to-net > tax year 2021 > returns specific result for tax year 2021 1`] = `
+exports[`calculators/gross-to-net > tax year 2021 > applies 2021 tax tables and brackets 1`] = `
 {
   "outputDisableResCareInsurance": false,
   "outputEmployerTotalInsurances": "506,25€",
@@ -590,7 +590,7 @@ exports[`calculators/gross-to-net > tax year 2021 > returns specific result for 
 }
 `;
 
-exports[`calculators/gross-to-net > tax year 2022 > returns specific result for tax year 2022 1`] = `
+exports[`calculators/gross-to-net > tax year 2022 > applies 2022 tax tables and brackets 1`] = `
 {
   "outputDisableResCareInsurance": false,
   "outputEmployerTotalInsurances": "506,25€",
@@ -649,7 +649,7 @@ exports[`calculators/gross-to-net > tax year 2022 > returns specific result for 
 }
 `;
 
-exports[`calculators/gross-to-net > tax year 2023 > returns specific result for tax year 2023 1`] = `
+exports[`calculators/gross-to-net > tax year 2023 > applies 2023 tax tables and brackets 1`] = `
 {
   "outputDisableResCareInsurance": false,
   "outputEmployerTotalInsurances": "506,25€",
@@ -708,7 +708,7 @@ exports[`calculators/gross-to-net > tax year 2023 > returns specific result for 
 }
 `;
 
-exports[`calculators/gross-to-net > tax year 2024 > returns specific result for tax year 2024 1`] = `
+exports[`calculators/gross-to-net > tax year 2024 > applies 2024 tax tables and brackets 1`] = `
 {
   "outputDisableResCareInsurance": false,
   "outputEmployerTotalInsurances": "506,25€",
@@ -767,7 +767,7 @@ exports[`calculators/gross-to-net > tax year 2024 > returns specific result for 
 }
 `;
 
-exports[`calculators/gross-to-net > tax year 2025 > returns specific result for tax year 2025 1`] = `
+exports[`calculators/gross-to-net > tax year 2025 > applies 2025 tax tables and brackets 1`] = `
 {
   "outputDisableResCareInsurance": false,
   "outputEmployerTotalInsurances": "506,25€",
@@ -826,7 +826,7 @@ exports[`calculators/gross-to-net > tax year 2025 > returns specific result for 
 }
 `;
 
-exports[`calculators/gross-to-net > tax year 2026 > returns specific result for tax year 2026 1`] = `
+exports[`calculators/gross-to-net > tax year 2026 > applies 2026 tax tables and brackets 1`] = `
 {
   "outputDisableResCareInsurance": false,
   "outputEmployerTotalInsurances": "506,25€",
@@ -1593,7 +1593,7 @@ exports[`calculators/gross-to-net > with page defaults > taxClass 6 1`] = `
 }
 `;
 
-exports[`calculators/gross-to-net > without pension insurance > returns correct result without pension insurance 1`] = `
+exports[`calculators/gross-to-net > without pension insurance > skips pension insurance contributions when opted out 1`] = `
 {
   "outputDisableResCareInsurance": false,
   "outputEmployerTotalInsurances": "351,10€",

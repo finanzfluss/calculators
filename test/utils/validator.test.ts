@@ -19,26 +19,26 @@ import {
 } from '../../src/utils/validation'
 
 describe('roundToTwoDecimals', () => {
-  it('rounds to two decimal places', () => {
+  it('rounds half-up to two decimal places', () => {
     expect(roundToTwoDecimals(1.234)).toBe(1.23)
     expect(roundToTwoDecimals(1.235)).toBe(1.24)
     expect(roundToTwoDecimals(1.999)).toBe(2)
     expect(roundToTwoDecimals(0.1 + 0.2)).toBe(0.3)
   })
 
-  it('handles whole numbers', () => {
+  it('returns whole numbers unchanged', () => {
     expect(roundToTwoDecimals(5)).toBe(5)
     expect(roundToTwoDecimals(0)).toBe(0)
   })
 
-  it('handles negative values', () => {
+  it('rounds negative values away from zero at the .005 boundary', () => {
     expect(roundToTwoDecimals(-1.234)).toBe(-1.23)
     expect(roundToTwoDecimals(-1.235)).toBe(-1.24)
   })
 })
 
 describe('toMonthly', () => {
-  it('converts yearly to monthly', () => {
+  it('divides a yearly amount by 12', () => {
     expect(toMonthly(12)).toBe(1)
     expect(toMonthly(120)).toBe(10)
     expect(toMonthly(0)).toBe(0)
@@ -46,7 +46,7 @@ describe('toMonthly', () => {
 })
 
 describe('toPercentRate', () => {
-  it('converts percent to rate', () => {
+  it('divides a percent value by 100 to produce a rate', () => {
     expect(toPercentRate(50)).toBe(0.5)
     expect(toPercentRate(0)).toBe(0)
     expect(toPercentRate(-50)).toBe(-0.5)
@@ -54,7 +54,7 @@ describe('toPercentRate', () => {
 })
 
 describe('toMonthlyConformalRate', () => {
-  it('converts yearly percent to monthly conformal rate', () => {
+  it('returns the 12th-root conformal monthly rate from a yearly percent', () => {
     expect(toMonthlyConformalRate(0)).toBe(0)
     expect(toMonthlyConformalRate(12.68)).toBeCloseTo(0.01, 5)
     expect(toMonthlyConformalRate(213.84)).toBeCloseTo(0.1, 5)
@@ -62,7 +62,7 @@ describe('toMonthlyConformalRate', () => {
 })
 
 describe('toDinero', () => {
-  it('converts euros to Dinero object', () => {
+  it('wraps a euro number as a Dinero<EUR> object with cent precision', () => {
     const dineroValue = toDinero(10)
     expect(dineroValue).not.toBeInstanceOf(Number)
     expect(toDecimal(dineroValue)).toEqual('10.00')
@@ -70,7 +70,7 @@ describe('toDinero', () => {
     expect(toSnapshot(dineroValue).currency.code).toBe('EUR')
   })
 
-  it('handles zero and negative values', () => {
+  it('wraps zero and negative euros', () => {
     const zeroValue = toDinero(0)
     expect(toDecimal(zeroValue)).toEqual('0.00')
 
@@ -78,34 +78,34 @@ describe('toDinero', () => {
     expect(toDecimal(negativeValue)).toEqual('-5.00')
   })
 
-  it('handles fractional euros', () => {
+  it('wraps fractional euros at cent precision', () => {
     const fractionalValue = toDinero(10.42)
     expect(toDecimal(fractionalValue)).toEqual('10.42')
   })
 
-  it('rounds to nearest cent', () => {
+  it('rounds sub-cent fractions half-up', () => {
     const dineroValue = toDinero(10.005)
     expect(toDecimal(dineroValue)).toEqual('10.01')
   })
 })
 
 describe('toDineroMultiplier', () => {
-  it('converts rate to Dinero multiplier', () => {
+  it('expands a rate into a {amount, scale: 6} multiplier', () => {
     const multiplier = toDineroMultiplier(1)
     expect(multiplier).toEqual({ amount: 1_000_000, scale: 6 }) // 1 * 10^6 = 1_000_000
   })
 
-  it('handles zero and negative rates', () => {
+  it('handles zero rate as {amount: 0, scale: 6}', () => {
     const zeroMultiplier = toDineroMultiplier(0)
     expect(zeroMultiplier).toEqual({ amount: 0, scale: 6 })
   })
 
-  it('handles fractional rates', () => {
+  it('expands fractional rates to the matching micro-amount', () => {
     const fractionalMultiplier = toDineroMultiplier(0.05)
     expect(fractionalMultiplier).toEqual({ amount: 50_000, scale: 6 })
   })
 
-  it('rounds to nearest millionth', () => {
+  it('rounds rates smaller than one millionth to zero', () => {
     const smallMultiplier = toDineroMultiplier(0.0000005)
     expect(smallMultiplier).toEqual({ amount: 1, scale: 6 })
 
@@ -113,7 +113,7 @@ describe('toDineroMultiplier', () => {
     expect(tinyMultiplier).toEqual({ amount: 0, scale: 6 })
   })
 
-  it('works with Dinero calculations', () => {
+  it('multiplies a Dinero amount and trims trailing zero scale', () => {
     const multiplier = toDineroMultiplier(0.1) // 10% -> 0.1
     const baseAmount = toDinero(100) // 100 euros
     const expectedResult = toDinero(10) // 10 euros (10% of 100)
@@ -131,19 +131,19 @@ describe('dineroToNumber', () => {
   function eur(cents: number) {
     return dinero({ amount: cents, currency: EUR })
   }
-  it('converts whole-euro amounts', () => {
+  it('unwraps whole-euro amounts to their numeric value', () => {
     expect(dineroToNumber(eur(10000))).toBe(100)
   })
 
-  it('converts amounts with cents', () => {
+  it('unwraps cent fractions as fractional euros', () => {
     expect(dineroToNumber(eur(10050))).toBe(100.5)
   })
 
-  it('converts zero', () => {
+  it('unwraps zero as 0', () => {
     expect(dineroToNumber(eur(0))).toBe(0)
   })
 
-  it('converts negative amounts', () => {
+  it('unwraps negative amounts as negative euros', () => {
     expect(dineroToNumber(eur(-500))).toBe(-5)
   })
 })
