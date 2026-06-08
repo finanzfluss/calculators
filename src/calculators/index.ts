@@ -1,6 +1,7 @@
 export * from './compound-interest'
 export * from './disability-insurance'
 export * from './gross-to-net'
+export * from './income-tax'
 export * from './net-policy'
 export * from './savings'
 export * from './savings-duration'
