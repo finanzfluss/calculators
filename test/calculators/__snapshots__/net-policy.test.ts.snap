@@ -16,11 +16,11 @@ exports[`calculators/net-policy > returns table data comparing policy vs ETF ove
   },
   "netWorth": {
     "etf": "348.027",
-    "policy": "336.744",
+    "policy": "336.717",
   },
   "tax": {
     "etf": "37.358",
-    "policy": "39.211",
+    "policy": "39.238",
   },
   "totalPayments": {
     "etf": "105.299",
