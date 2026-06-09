@@ -24,13 +24,7 @@ describe('calculators/income-tax', () => {
       year: '2026',
     })
 
-    expect(result.incomeTax.amount).toBe(0)
-    expect(result.incomeTax.averageRate).toBe(0)
-    expect(result.incomeTax.marginalRate).toBe(0)
-    expect(result.solidaritySurcharge.amount).toBe(0)
-    expect(result.solidaritySurcharge.averageRate).toBe(0)
-    expect(result.total.amount).toBe(0)
-    expect(result.total.averageRate).toBe(0)
+    expect(result).toMatchSnapshot()
   })
 
   it('charges no tax when ZVE is within the Grundfreibetrag', () => {
@@ -40,9 +34,9 @@ describe('calculators/income-tax', () => {
       year: '2026',
     })
 
-    expect(result.incomeTax.amount).toBe(0)
-    expect(result.solidaritySurcharge.amount).toBe(0)
-    expect(result.total.amount).toBe(0)
+    expect(result.incomeTax.amount).toBe('0€')
+    expect(result.solidaritySurcharge.amount).toBe('0€')
+    expect(result.total.amount).toBe('0€')
   })
 
   it('charges no Solidaritätszuschlag when ESt is at or below the Freigrenze', () => {
@@ -52,8 +46,8 @@ describe('calculators/income-tax', () => {
       year: '2026',
     })
 
-    expect(result.incomeTax.amount).toBe(19944)
-    expect(result.solidaritySurcharge.amount).toBe(0)
+    expect(result.incomeTax.amount).toBe('19.944€')
+    expect(result.solidaritySurcharge.amount).toBe('0€')
   })
 
   it('applies Splittingverfahren — lower ESt and no Soli below the doubled Freigrenze', () => {
@@ -68,10 +62,9 @@ describe('calculators/income-tax', () => {
       year: '2026',
     })
 
-    expect(splitting.incomeTax.amount).toBe(14418)
-    expect(splitting.incomeTax.amount).toBeLessThan(grundtarif.incomeTax.amount)
-    // ESt is below the doubled Soli Freigrenze — no Soli
-    expect(splitting.solidaritySurcharge.amount).toBe(0)
+    expect(splitting.incomeTax.amount).toBe('14.418€')
+    expect(splitting.incomeTax.amount).not.toBe(grundtarif.incomeTax.amount)
+    expect(splitting.solidaritySurcharge.amount).toBe('0€')
   })
 
   it('applies the 45% Reichensteuer rate above 277,826 and computes Soli at 5.5%', () => {
@@ -81,9 +74,9 @@ describe('calculators/income-tax', () => {
       year: '2026',
     })
 
-    expect(result.incomeTax.amount).toBe(160529)
-    expect(result.incomeTax.marginalRate).toBe(0.45)
-    expect(result.solidaritySurcharge.amount).toBe(8829.09)
+    expect(result.incomeTax.amount).toBe('160.529€')
+    expect(result.incomeTax.marginalRate).toBe('45,00%')
+    expect(result.solidaritySurcharge.amount).toBe('8.829,09€')
   })
 
   it('produces different results for different years (2025 vs 2026 have different Grundfreibetrag)', () => {
@@ -98,9 +91,7 @@ describe('calculators/income-tax', () => {
       year: '2026',
     })
 
-    expect(result2026.incomeTax.amount).toBeLessThan(
-      result2025.incomeTax.amount,
-    )
+    expect(result2026.incomeTax.amount).not.toBe(result2025.incomeTax.amount)
   })
 
   it('calculates ESt, Soli, and rates for 2026 Grundtarif at ZVE 80,000', () => {

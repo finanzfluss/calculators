@@ -1,5 +1,9 @@
 import { z } from 'zod'
 import { defineCalculator } from '../utils/calculator'
+import {
+  formatPercent,
+  formatResultWithTwoOptionalDecimals,
+} from '../utils/formatters'
 import { INCOME_TAX_CLASSES } from '../utils/Lohnsteuer'
 import { BigDecimal } from '../utils/Lohnsteuer/shims/BigDecimal'
 
@@ -28,25 +32,24 @@ function calculate({ zve, splitting, year }: CalculatorInput) {
   const { est: estPlus } = computeEst(zve + MARGINAL_STEP, kztab, year)
   const soli = computeSoli(est, solzFrei)
 
-  const totalAmount = floor2dp(est + soli)
-  const marginalRate = round4dp((estPlus - est) / MARGINAL_STEP)
-  const averageRateEst = zve === 0 ? 0 : round4dp(est / zve)
-  const averageRateSoli = zve === 0 ? 0 : round4dp(soli / zve)
-  const averageRateTotal = zve === 0 ? 0 : round4dp(totalAmount / zve)
+  const total = est + soli
+  const marginalRate = (estPlus - est) / MARGINAL_STEP
+  const formatRate = (ratio: number) => formatPercent(ratio * 100, 2)
+  const averageRate = (n: number) => formatRate(zve === 0 ? 0 : n / zve)
 
   return {
     incomeTax: {
-      amount: est,
-      averageRate: averageRateEst,
-      marginalRate,
+      amount: formatResultWithTwoOptionalDecimals(est),
+      averageRate: averageRate(est),
+      marginalRate: formatRate(marginalRate),
     },
     solidaritySurcharge: {
-      amount: soli,
-      averageRate: averageRateSoli,
+      amount: formatResultWithTwoOptionalDecimals(soli),
+      averageRate: averageRate(soli),
     },
     total: {
-      amount: totalAmount,
-      averageRate: averageRateTotal,
+      amount: formatResultWithTwoOptionalDecimals(total),
+      averageRate: averageRate(total),
     },
   }
 }
@@ -68,15 +71,8 @@ function computeEst(
 
 function computeSoli(est: number, solzFrei: number): number {
   if (est <= solzFrei) return 0
+  const floor2dp = (n: number) => Math.floor(n * 100) / 100
   const solzJ = floor2dp(est * 0.055)
   const solzMin = floor2dp((est - solzFrei) * 0.119)
   return Math.min(solzJ, solzMin)
-}
-
-function floor2dp(n: number): number {
-  return Math.floor(n * 100) / 100
-}
-
-function round4dp(n: number): number {
-  return Math.round(n * 10000) / 10000
 }
