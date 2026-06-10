@@ -1,0 +1,91 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`calculators/income-tax > calculates ESt, Soli, and rates for 2024 Grundtarif at ZVE 80,000 1`] = `
+{
+  "incomeTax": {
+    "amount": "22.963€",
+    "averageRate": "28,70%",
+    "marginalRate": "42,00%",
+  },
+  "solidaritySurcharge": {
+    "amount": "575,12€",
+    "averageRate": "0,72%",
+  },
+  "total": {
+    "amount": "23.538,12€",
+    "averageRate": "29,42%",
+  },
+}
+`;
+
+exports[`calculators/income-tax > calculates ESt, Soli, and rates for 2026 Grundtarif at ZVE 45,000 (zone 2, no Soli) 1`] = `
+{
+  "incomeTax": {
+    "amount": "8.835€",
+    "averageRate": "19,63%",
+    "marginalRate": "34,00%",
+  },
+  "solidaritySurcharge": {
+    "amount": "0€",
+    "averageRate": "0,00%",
+  },
+  "total": {
+    "amount": "8.835€",
+    "averageRate": "19,63%",
+  },
+}
+`;
+
+exports[`calculators/income-tax > calculates ESt, Soli, and rates for 2026 Grundtarif at ZVE 80,000 1`] = `
+{
+  "incomeTax": {
+    "amount": "22.464€",
+    "averageRate": "28,08%",
+    "marginalRate": "42,00%",
+  },
+  "solidaritySurcharge": {
+    "amount": "251,56€",
+    "averageRate": "0,31%",
+  },
+  "total": {
+    "amount": "22.715,56€",
+    "averageRate": "28,39%",
+  },
+}
+`;
+
+exports[`calculators/income-tax > calculates ESt, Soli, and rates for 2026 Splittingverfahren at ZVE 200,000 (Soli applies) 1`] = `
+{
+  "incomeTax": {
+    "amount": "61.728€",
+    "averageRate": "30,86%",
+    "marginalRate": "42,00%",
+  },
+  "solidaritySurcharge": {
+    "amount": "2.502,33€",
+    "averageRate": "1,25%",
+  },
+  "total": {
+    "amount": "64.230,33€",
+    "averageRate": "32,12%",
+  },
+}
+`;
+
+exports[`calculators/income-tax > returns all zeros when ZVE is 0 1`] = `
+{
+  "incomeTax": {
+    "amount": "0€",
+    "averageRate": "0,00%",
+    "marginalRate": "0,00%",
+  },
+  "solidaritySurcharge": {
+    "amount": "0€",
+    "averageRate": "0,00%",
+  },
+  "total": {
+    "amount": "0€",
+    "averageRate": "0,00%",
+  },
+}
+`;
