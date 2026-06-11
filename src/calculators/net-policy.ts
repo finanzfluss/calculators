@@ -1,7 +1,7 @@
 import type { Dinero } from 'dinero.js'
 import { add, maximum, multiply, subtract, transformScale } from 'dinero.js'
 import { z } from 'zod'
-import { CORRECTION_VALUES } from '../constants/net-policy'
+import { INCOME_TAX_YEAR } from '../constants/net-policy'
 import { defineCalculator } from '../utils/calculator'
 import { formatInput, formatResult } from '../utils/formatters'
 import {
@@ -12,7 +12,7 @@ import {
   toMonthlyConformalRate,
   toPercentRate,
 } from '../utils/validation'
-import { grossToNet } from './gross-to-net'
+import { incomeTax } from './income-tax'
 
 const MAX_EURO = 10_000
 const MAX_PERCENT = 100
@@ -271,41 +271,15 @@ function calcTableData(
 
 function calcPolicyTax(policyGross: number, additionalIncome: number) {
   const sharedInput = {
-    inputPeriod: 1,
-    inputAccountingYear: '2025',
-    inputTaxClass: 1,
-    inputTaxAllowance: 0,
-    inputChurchTax: 0,
-    inputState: 'Hamburg',
-    inputYearOfBirth: 1980,
-    inputChildren: 0,
-    inputChildTaxAllowance: 0,
-    inputHealthInsurance: 1,
-    inputAdditionalContribution: 0,
-    inputPkvContribution: 0,
-    inputEmployerSubsidy: 0,
-    inputPensionInsurance: 1,
-    inputLevyOne: 0,
-    inputLevyTwo: 0,
-    inputActivateLevy: 0,
-  }
-  const correction =
-    CORRECTION_VALUES.werbungskostenpauschale +
-    CORRECTION_VALUES.arbeitslosenversicherung *
-      Math.min(policyGross, CORRECTION_VALUES.beitragsbemessungsgrenze)
-  const taxesWithPolicy = grossToNet
-    .validateAndCalculate({
-      ...sharedInput,
-      inputGrossWage: policyGross + correction + additionalIncome,
-    })
-    .outputTotalTaxesYear.replace('€', '')
+    splitting: false,
+    year: String(INCOME_TAX_YEAR),
+  } as const
+  const taxFor = (zve: number) =>
+    formatInput(
+      incomeTax
+        .validateAndCalculate({ ...sharedInput, zve })
+        .total.amount.replace('€', ''),
+    )
 
-  const taxesWithoutPolicy = grossToNet
-    .validateAndCalculate({
-      ...sharedInput,
-      inputGrossWage: additionalIncome + correction,
-    })
-    .outputTotalTaxesYear.replace('€', '')
-
-  return formatInput(taxesWithPolicy) - formatInput(taxesWithoutPolicy)
+  return taxFor(additionalIncome + policyGross) - taxFor(additionalIncome)
 }

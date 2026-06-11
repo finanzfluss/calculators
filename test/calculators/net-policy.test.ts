@@ -38,7 +38,7 @@ describe('calculators/net-policy', () => {
     })
 
     expect(data.tableData.grossWorth.policy).toMatchInlineSnapshot(`"374.384"`)
-    expect(data.tableData.netWorth.policy).toMatchInlineSnapshot(`"335.482"`)
+    expect(data.tableData.netWorth.policy).toMatchInlineSnapshot(`"335.460"`)
   })
 
   it('applies the pre-12-year tax rule for short durations', () => {

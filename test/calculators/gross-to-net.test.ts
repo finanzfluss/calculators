@@ -266,6 +266,31 @@ describe('calculators/gross-to-net', () => {
   })
 
   describe('edge cases', () => {
+    it('does not include levy in employer gross wage when levy is deactivated', () => {
+      const withLevy = grossToNet.validateAndCalculate(
+        fakeTestValues({ levyOne: 1, levyTwo: 0.5, activateLevy: NO_LEVY }),
+      )
+      const withoutLevy = grossToNet.validateAndCalculate(
+        fakeTestValues({ levyOne: 1, levyTwo: 0.5, activateLevy: LEVY }),
+      )
+
+      expect(withLevy.outputResEmployerGrossWageMonth).not.toBe(
+        withoutLevy.outputResEmployerGrossWageMonth,
+      )
+    })
+
+    it('waives health, care and unemployment insurance below minijob threshold', () => {
+      const result = grossToNet.validateAndCalculate(
+        fakeTestValues({
+          grossWage: 400,
+        }),
+      )
+
+      expect(result.outputResHealthInsuranceMonth).toBe('0€')
+      expect(result.outputResCareInsuranceMonth).toBe('0€')
+      expect(result.outputResUnemploymentInsuranceMonth).toBe('0€')
+    })
+
     it('care insurance special case for Sachsen', () => {
       const result = grossToNet.validateAndCalculate(
         fakeTestValues({
