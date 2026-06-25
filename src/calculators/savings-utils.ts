@@ -1,8 +1,5 @@
 import { z } from 'zod'
-import {
-  formatResultWithTwoOptionalDecimals,
-  roundToTwoDecimals,
-} from '../utils'
+import { formatCurrencyNatural, roundToTwoDecimals } from '../utils'
 
 export const savingsBaseSchema = z.object({
   endValue: z.coerce.number().nonnegative(),
@@ -219,9 +216,9 @@ export function calcDiagramData(savings: z.output<typeof savingsBaseSchema>): {
     return {
       CAPITAL_LIST: [],
       INTEREST_LIST: [],
-      LAST_CAPITAL: formatResultWithTwoOptionalDecimals(0),
-      LAST_INTEREST: formatResultWithTwoOptionalDecimals(0),
-      TOTAL_CAPITAL: formatResultWithTwoOptionalDecimals(0),
+      LAST_CAPITAL: formatCurrencyNatural(0),
+      LAST_INTEREST: formatCurrencyNatural(0),
+      TOTAL_CAPITAL: formatCurrencyNatural(0),
     }
   }
 
@@ -241,8 +238,8 @@ export function calcDiagramData(savings: z.output<typeof savingsBaseSchema>): {
   return {
     CAPITAL_LIST: capitalList,
     INTEREST_LIST: accInterestList,
-    LAST_CAPITAL: formatResultWithTwoOptionalDecimals(lastCapital),
-    LAST_INTEREST: formatResultWithTwoOptionalDecimals(lastInterest),
-    TOTAL_CAPITAL: formatResultWithTwoOptionalDecimals(totalCapital),
+    LAST_CAPITAL: formatCurrencyNatural(lastCapital),
+    LAST_INTEREST: formatCurrencyNatural(lastInterest),
+    TOTAL_CAPITAL: formatCurrencyNatural(totalCapital),
   }
 }

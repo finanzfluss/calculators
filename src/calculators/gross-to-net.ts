@@ -4,7 +4,7 @@ import {
   CARE_INSURANCE_CONTRIBUTION_RATES_SAXONY,
 } from '../constants/gross-to-net'
 import { PENSION_VALUES } from '../constants/pension'
-import { formatPercent, formatResultWithTwoOptionalDecimals } from '../utils'
+import { formatCurrencyNatural, formatPercent } from '../utils'
 import { defineCalculator } from '../utils/calculator'
 import { INCOME_TAX_CLASSES } from '../utils/Lohnsteuer'
 import { BigDecimal } from '../utils/Lohnsteuer/shims/BigDecimal'
@@ -466,136 +466,122 @@ function calculate({
     .add(inputActivateLevy === 1 ? levyTotal : ZERO)
 
   return {
-    outputResGrossWageMonth: formatResultWithTwoOptionalDecimals(
+    outputResGrossWageMonth: formatCurrencyNatural(
       lst.RE4.divide(
         WageTaxClass.ZAHL100,
         50,
         BigDecimal.ROUND_HALF_DOWN,
       ).toNumber(),
     ),
-    outputResGrossWageYear: formatResultWithTwoOptionalDecimals(
-      lst.ZRE4J.toNumber(),
-    ),
-    outputResIncomeTaxMonth: formatResultWithTwoOptionalDecimals(
-      incomeTax.toNumber(),
-    ),
-    outputResIncomeTaxYear: formatResultWithTwoOptionalDecimals(
+    outputResGrossWageYear: formatCurrencyNatural(lst.ZRE4J.toNumber()),
+    outputResIncomeTaxMonth: formatCurrencyNatural(incomeTax.toNumber()),
+    outputResIncomeTaxYear: formatCurrencyNatural(
       incomeTax.multiply(ZAHL12).toNumber(),
     ),
-    outputResSolidaritySurchargeMonth: formatResultWithTwoOptionalDecimals(
+    outputResSolidaritySurchargeMonth: formatCurrencyNatural(
       solidaritySurcharge.toNumber(),
     ),
-    outputResSolidaritySurchargeYear: formatResultWithTwoOptionalDecimals(
+    outputResSolidaritySurchargeYear: formatCurrencyNatural(
       solidaritySurcharge.multiply(ZAHL12).toNumber(),
     ),
     outputResChurchTaxPercentage: ` (${churchTaxRate.toNumber()}% der Lohnsteuer)`,
-    outputResChurchTaxMonth: formatResultWithTwoOptionalDecimals(
-      churchTax.toNumber(),
-    ),
-    outputResChurchTaxYear: formatResultWithTwoOptionalDecimals(
+    outputResChurchTaxMonth: formatCurrencyNatural(churchTax.toNumber()),
+    outputResChurchTaxYear: formatCurrencyNatural(
       churchTax.multiply(ZAHL12).toNumber(),
     ),
-    outputTotalTaxes: formatResultWithTwoOptionalDecimals(
-      totalTaxes.toNumber(),
-    ),
-    outputTotalTaxesYear: formatResultWithTwoOptionalDecimals(
+    outputTotalTaxes: formatCurrencyNatural(totalTaxes.toNumber()),
+    outputTotalTaxesYear: formatCurrencyNatural(
       totalTaxes.multiply(ZAHL12).toNumber(),
     ),
     outputResHealthInsurancePercentage: formatPercent(
       healthInsurancePercentage,
       2,
     ),
-    outputResHealthInsuranceMonth: formatResultWithTwoOptionalDecimals(
+    outputResHealthInsuranceMonth: formatCurrencyNatural(
       healthInsurance.divide(ZAHL12, 50, BigDecimal.ROUND_HALF_DOWN).toNumber(),
     ),
-    outputResHealthInsuranceYear: formatResultWithTwoOptionalDecimals(
+    outputResHealthInsuranceYear: formatCurrencyNatural(
       healthInsurance.toNumber(),
     ),
-    outputResPrivateHealthInsuranceEmployerMonth:
-      formatResultWithTwoOptionalDecimals(
-        privateHealthInsurance
-          .divide(ZAHL12, 50, BigDecimal.ROUND_HALF_DOWN)
-          .toNumber(),
-      ),
-    outputResPrivateHealthInsuranceEmployerYear:
-      formatResultWithTwoOptionalDecimals(privateHealthInsurance.toNumber()),
+    outputResPrivateHealthInsuranceEmployerMonth: formatCurrencyNatural(
+      privateHealthInsurance
+        .divide(ZAHL12, 50, BigDecimal.ROUND_HALF_DOWN)
+        .toNumber(),
+    ),
+    outputResPrivateHealthInsuranceEmployerYear: formatCurrencyNatural(
+      privateHealthInsurance.toNumber(),
+    ),
     outputDisableResCareInsurance: noCareInsurance,
     outputResCareInsurancePercentage: formatPercent(
       employeeCareInsurancePercentage,
       2,
     ),
-    outputResCareInsuranceMonth: formatResultWithTwoOptionalDecimals(
+    outputResCareInsuranceMonth: formatCurrencyNatural(
       careInsurance.divide(ZAHL12, 50, BigDecimal.ROUND_HALF_DOWN).toNumber(),
     ),
-    outputResCareInsuranceYear: formatResultWithTwoOptionalDecimals(
-      careInsurance.toNumber(),
-    ),
+    outputResCareInsuranceYear: formatCurrencyNatural(careInsurance.toNumber()),
     outputResPensionInsurancePercentage: formatPercent(
       pensionInsurancePercentage,
       2,
     ),
-    outputResPensionInsuranceMonth: formatResultWithTwoOptionalDecimals(
+    outputResPensionInsuranceMonth: formatCurrencyNatural(
       pensionInsurance
         .divide(ZAHL12, 50, BigDecimal.ROUND_HALF_DOWN)
         .toNumber(),
     ),
-    outputResPensionInsuranceYear: formatResultWithTwoOptionalDecimals(
+    outputResPensionInsuranceYear: formatCurrencyNatural(
       pensionInsurance.toNumber(),
     ),
     outputResUnemploymentInsurancePercentage: formatPercent(
       unemploymentInsurancePercentage,
       2,
     ),
-    outputResUnemploymentInsuranceMonth: formatResultWithTwoOptionalDecimals(
+    outputResUnemploymentInsuranceMonth: formatCurrencyNatural(
       unemploymentInsurance
         .divide(ZAHL12, 50, BigDecimal.ROUND_HALF_DOWN)
         .toNumber(),
     ),
-    outputResUnemploymentInsuranceYear: formatResultWithTwoOptionalDecimals(
+    outputResUnemploymentInsuranceYear: formatCurrencyNatural(
       unemploymentInsurance.toNumber(),
     ),
-    outputTotalInsurances: formatResultWithTwoOptionalDecimals(
-      insuranceComplete.toNumber(),
-    ),
-    outputTotalInsurancesYear: formatResultWithTwoOptionalDecimals(
+    outputTotalInsurances: formatCurrencyNatural(insuranceComplete.toNumber()),
+    outputTotalInsurancesYear: formatCurrencyNatural(
       insuranceComplete.multiply(ZAHL12).toNumber(),
     ),
 
-    outputResNetWageMonth: formatResultWithTwoOptionalDecimals(
-      complete.toNumber(),
-    ),
-    outputResNetWageYear: formatResultWithTwoOptionalDecimals(
+    outputResNetWageMonth: formatCurrencyNatural(complete.toNumber()),
+    outputResNetWageYear: formatCurrencyNatural(
       complete.multiply(ZAHL12).toNumber(),
     ),
 
-    outputResEmployerHealthInsuranceMonth: formatResultWithTwoOptionalDecimals(
+    outputResEmployerHealthInsuranceMonth: formatCurrencyNatural(
       employerHealthInsuranceMonth.toNumber(),
     ),
-    outputResEmployerHealthInsuranceYear: formatResultWithTwoOptionalDecimals(
+    outputResEmployerHealthInsuranceYear: formatCurrencyNatural(
       employerHealthInsuranceYear.toNumber(),
     ),
-    outputResEmployerCareInsuranceMonth: formatResultWithTwoOptionalDecimals(
+    outputResEmployerCareInsuranceMonth: formatCurrencyNatural(
       employerCareInsuranceMonth.toNumber(),
     ),
-    outputResEmployerCareInsuranceYear: formatResultWithTwoOptionalDecimals(
+    outputResEmployerCareInsuranceYear: formatCurrencyNatural(
       employerCareInsuranceYear.toNumber(),
     ),
-    outputResEmployerPensionInsuranceMonth: formatResultWithTwoOptionalDecimals(
+    outputResEmployerPensionInsuranceMonth: formatCurrencyNatural(
       pensionInsurance
         .divide(ZAHL12, 50, BigDecimal.ROUND_HALF_DOWN)
         .toNumber(),
     ),
-    outputResEmployerPensionInsuranceYear: formatResultWithTwoOptionalDecimals(
+    outputResEmployerPensionInsuranceYear: formatCurrencyNatural(
       pensionInsurance.toNumber(),
     ),
-    outputResEmployerUnemploymentInsuranceMonth:
-      formatResultWithTwoOptionalDecimals(
-        unemploymentInsurance
-          .divide(ZAHL12, 50, BigDecimal.ROUND_HALF_DOWN)
-          .toNumber(),
-      ),
-    outputResEmployerUnemploymentInsuranceYear:
-      formatResultWithTwoOptionalDecimals(unemploymentInsurance.toNumber()),
+    outputResEmployerUnemploymentInsuranceMonth: formatCurrencyNatural(
+      unemploymentInsurance
+        .divide(ZAHL12, 50, BigDecimal.ROUND_HALF_DOWN)
+        .toNumber(),
+    ),
+    outputResEmployerUnemploymentInsuranceYear: formatCurrencyNatural(
+      unemploymentInsurance.toNumber(),
+    ),
 
     outputResEmployerHealthInsurancePercentage: formatPercent(
       healthInsurancePercentage,
@@ -614,42 +600,36 @@ function calculate({
       2,
     ),
 
-    outputEmployerTotalInsurances: formatResultWithTwoOptionalDecimals(
+    outputEmployerTotalInsurances: formatCurrencyNatural(
       employerTotalInsurances.toNumber(),
     ),
-    outputEmployerTotalInsurancesYear: formatResultWithTwoOptionalDecimals(
+    outputEmployerTotalInsurancesYear: formatCurrencyNatural(
       employerTotalInsurancesYear.toNumber(),
     ),
 
-    outputResEmployerLevyOneMonth: formatResultWithTwoOptionalDecimals(
-      levyOne.toNumber(),
-    ),
-    outputResEmployerLevyOneYear: formatResultWithTwoOptionalDecimals(
+    outputResEmployerLevyOneMonth: formatCurrencyNatural(levyOne.toNumber()),
+    outputResEmployerLevyOneYear: formatCurrencyNatural(
       levyOne.multiply(ZAHL12).toNumber(),
     ),
-    outputResEmployerLevyTwoMonth: formatResultWithTwoOptionalDecimals(
-      levyTwo.toNumber(),
-    ),
-    outputResEmployerLevyTwoYear: formatResultWithTwoOptionalDecimals(
+    outputResEmployerLevyTwoMonth: formatCurrencyNatural(levyTwo.toNumber()),
+    outputResEmployerLevyTwoYear: formatCurrencyNatural(
       levyTwo.multiply(ZAHL12).toNumber(),
     ),
-    outputResEmployerLevyThreeMonth: formatResultWithTwoOptionalDecimals(
+    outputResEmployerLevyThreeMonth: formatCurrencyNatural(
       levyThree.toNumber(),
     ),
-    outputResEmployerLevyThreeYear: formatResultWithTwoOptionalDecimals(
+    outputResEmployerLevyThreeYear: formatCurrencyNatural(
       levyThree.multiply(ZAHL12).toNumber(),
     ),
-    outputResEmployerLevyTotal: formatResultWithTwoOptionalDecimals(
-      levyTotal.toNumber(),
-    ),
-    outputResEmployerLevyTotalYear: formatResultWithTwoOptionalDecimals(
+    outputResEmployerLevyTotal: formatCurrencyNatural(levyTotal.toNumber()),
+    outputResEmployerLevyTotalYear: formatCurrencyNatural(
       levyTotal.multiply(ZAHL12).toNumber(),
     ),
 
-    outputResEmployerGrossWageMonth: formatResultWithTwoOptionalDecimals(
+    outputResEmployerGrossWageMonth: formatCurrencyNatural(
       employerGrossWageMonth.toNumber(),
     ),
-    outputResEmployerGrossWageYear: formatResultWithTwoOptionalDecimals(
+    outputResEmployerGrossWageYear: formatCurrencyNatural(
       employerGrossWageMonth.multiply(ZAHL12).toNumber(),
     ),
   }

@@ -3,7 +3,7 @@ import { add, maximum, multiply, subtract, transformScale } from 'dinero.js'
 import { z } from 'zod'
 import { INCOME_TAX_YEAR } from '../constants/net-policy'
 import { defineCalculator } from '../utils/calculator'
-import { formatInput, formatResult } from '../utils/formatters'
+import { formatNumberAdaptive, parseCurrency } from '../utils/formatters'
 import {
   dineroToNumber,
   toDinero,
@@ -243,28 +243,28 @@ function calcTableData(
 
   return {
     grossWorth: {
-      policy: formatResult(policyGrossWorth, ''),
-      etf: formatResult(etfGrossWorth, ''),
+      policy: formatNumberAdaptive(policyGrossWorth),
+      etf: formatNumberAdaptive(etfGrossWorth),
     },
     totalPayments: {
-      policy: formatResult(totalSavings, ''),
-      etf: formatResult(add(totalSavings, placementCommission), ''),
+      policy: formatNumberAdaptive(totalSavings),
+      etf: formatNumberAdaptive(add(totalSavings, placementCommission)),
     },
     gain: {
-      policy: formatResult(policyGain, ''),
-      etf: formatResult(etfGain, ''),
+      policy: formatNumberAdaptive(policyGain),
+      etf: formatNumberAdaptive(etfGain),
     },
     gross: {
-      policy: formatResult(policyGross, ''),
-      etf: formatResult(etfGross, ''),
+      policy: formatNumberAdaptive(policyGross),
+      etf: formatNumberAdaptive(etfGross),
     },
     tax: {
-      policy: formatResult(policyTax, ''),
-      etf: formatResult(etfTax, ''),
+      policy: formatNumberAdaptive(policyTax),
+      etf: formatNumberAdaptive(etfTax),
     },
     netWorth: {
-      policy: formatResult(subtract(policyGrossWorth, policyTax), ''),
-      etf: formatResult(subtract(etfGrossWorth, etfTax), ''),
+      policy: formatNumberAdaptive(subtract(policyGrossWorth, policyTax)),
+      etf: formatNumberAdaptive(subtract(etfGrossWorth, etfTax)),
     },
   }
 }
@@ -275,10 +275,8 @@ function calcPolicyTax(policyGross: number, additionalIncome: number) {
     year: String(INCOME_TAX_YEAR),
   } as const
   const taxFor = (zve: number) =>
-    formatInput(
-      incomeTax
-        .validateAndCalculate({ ...sharedInput, zve })
-        .total.amount.replace('€', ''),
+    parseCurrency(
+      incomeTax.validateAndCalculate({ ...sharedInput, zve }).total.amount,
     )
 
   return taxFor(additionalIncome + policyGross) - taxFor(additionalIncome)
