@@ -55,9 +55,8 @@ export function formatCurrencyAdaptive(value: number | Dinero<number, string>) {
 export function formatNumberNatural(value: number | Dinero<number, string>) {
   const amount =
     typeof value === 'number' ? value : dineroToNumber(transformScale(value, 2))
-  const decimalsRequired =
-    Math.abs(amount) - Number.parseInt(amount.toString()) > 0
-  const decimalCount = decimalsRequired ? 2 : 0
+  const isWholeNumber = amount % 1 === 0
+  const decimalCount = isWholeNumber ? 0 : 2
   return formatNumber(amount, decimalCount)
 }
 
