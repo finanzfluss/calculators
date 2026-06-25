@@ -6,6 +6,7 @@ import {
   formatNumber,
   formatPercent,
   pad,
+  parseCurrency,
   parseFormattedNumber,
 } from '../../src/utils/formatters'
 import { setLocale } from '../../src/utils/i18n'
@@ -22,6 +23,19 @@ describe('formatting methods', () => {
       })
       it('leaves numbers >= 10 unchanged', () => {
         expect(pad(10)).toBe('10')
+      })
+    })
+
+    describe('parseCurrency', () => {
+      it('strips the € suffix and parses the number', () => {
+        expect(parseCurrency('1.234,56€')).toBe(1234.56)
+      })
+      it('parses whole numbers without decimals', () => {
+        expect(parseCurrency('1.234€')).toBe(1234)
+      })
+      it('round-trips through formatCurrency for de-formatted strings', () => {
+        const input = '1.234,56€'
+        expect(formatCurrencyNatural(parseCurrency(input))).toBe(input)
       })
     })
 
@@ -84,6 +98,9 @@ describe('formatting methods', () => {
       })
       it('omits decimals for whole numbers', () => {
         expect(formatCurrencyNatural(99)).toBe('99€')
+      })
+      it('omits decimals for negative whole numbers', () => {
+        expect(formatCurrencyNatural(-99)).toBe('-99€')
       })
       it('switches to exponential notation for very large values', () => {
         expect(formatCurrencyNatural(1.2 * 10 ** 21)).toBe('1,2×10²¹€')
