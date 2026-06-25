@@ -1,9 +1,5 @@
 import { z } from 'zod'
-import {
-  formatNumber,
-  formatPercent,
-  formatResultWithTwoOptionalDecimals,
-} from '../utils'
+import { formatCurrencyNatural, formatNumber, formatPercent } from '../utils'
 import { defineCalculator } from '../utils/calculator'
 import { savingsDuration } from './savings-duration'
 import { savingsEndValue } from './savings-end-value'
@@ -35,16 +31,14 @@ function calculate(parsedInput: CalculatorInput) {
   const deposits = getDeposits(completed)
 
   return {
-    endValue: formatResultWithTwoOptionalDecimals(completed.endValue),
-    startCapital: formatResultWithTwoOptionalDecimals(completed.startValue),
-    savingRate: formatResultWithTwoOptionalDecimals(completed.savingRate),
+    endValue: formatCurrencyNatural(completed.endValue),
+    startCapital: formatCurrencyNatural(completed.startValue),
+    savingRate: formatCurrencyNatural(completed.savingRate),
     yearlyDuration: formatNumber(completed.yearlyDuration, 2),
     monthlyDuration: formatNumber(completed.yearlyDuration * 12, 2),
     yearlyInterest: formatPercent(completed.yearlyInterest, 2),
-    deposits: formatResultWithTwoOptionalDecimals(deposits),
-    interestAfterTax: formatResultWithTwoOptionalDecimals(
-      completed.endValue - deposits,
-    ),
+    deposits: formatCurrencyNatural(deposits),
+    interestAfterTax: formatCurrencyNatural(completed.endValue - deposits),
     diagramData: calcDiagramData(completed),
   }
 }

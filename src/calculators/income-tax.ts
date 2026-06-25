@@ -1,9 +1,6 @@
 import { z } from 'zod'
 import { defineCalculator } from '../utils/calculator'
-import {
-  formatPercent,
-  formatResultWithTwoOptionalDecimals,
-} from '../utils/formatters'
+import { formatCurrencyNatural, formatPercent } from '../utils/formatters'
 import { INCOME_TAX_CLASSES } from '../utils/Lohnsteuer'
 import { BigDecimal } from '../utils/Lohnsteuer/shims/BigDecimal'
 
@@ -39,16 +36,16 @@ function calculate({ zve, splitting, year }: CalculatorInput) {
 
   return {
     incomeTax: {
-      amount: formatResultWithTwoOptionalDecimals(est),
+      amount: formatCurrencyNatural(est),
       averageRate: averageRate(est),
       marginalRate: formatRate(marginalRate),
     },
     solidaritySurcharge: {
-      amount: formatResultWithTwoOptionalDecimals(soli),
+      amount: formatCurrencyNatural(soli),
       averageRate: averageRate(soli),
     },
     total: {
-      amount: formatResultWithTwoOptionalDecimals(total),
+      amount: formatCurrencyNatural(total),
       averageRate: averageRate(total),
     },
   }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { formatPercent, formatResult } from '../../src/utils'
+import { formatCurrencyAdaptive, formatPercent } from '../../src/utils'
 import { fv, nper, pmt, pv, rate, xirr } from '../../src/utils/financial'
 
 describe('financial functions', () => {
@@ -7,12 +7,16 @@ describe('financial functions', () => {
     it('matches Excel rmz/pmt for end-of-period payments', () => {
       const expectedResult = 602.95
       const calculation = pmt(0.03, 180, -20000, 0)
-      expect(formatResult(calculation)).toBe(formatResult(expectedResult))
+      expect(formatCurrencyAdaptive(calculation)).toBe(
+        formatCurrencyAdaptive(expectedResult),
+      )
     })
     it('matches Excel rmz/pmt for annuity-due payments (type 1)', () => {
       const expectedResult = 585.39
       const calculation = pmt(0.03, 180, -20000, 0, 1)
-      expect(formatResult(calculation)).toBe(formatResult(expectedResult))
+      expect(formatCurrencyAdaptive(calculation)).toBe(
+        formatCurrencyAdaptive(expectedResult),
+      )
     })
   })
 
@@ -20,12 +24,16 @@ describe('financial functions', () => {
     it('matches Excel pv/bw for end-of-period payments', () => {
       const expectedResult = -3463.73
       const calculation = pv(0.03, 180, 100, 30000)
-      expect(formatResult(calculation)).toBe(formatResult(expectedResult))
+      expect(formatCurrencyAdaptive(calculation)).toBe(
+        formatCurrencyAdaptive(expectedResult),
+      )
     })
     it('matches Excel pv/bw for annuity-due payments (type 1)', () => {
       const expectedResult = -3563.24
       const calculation = pv(0.03, 180, 100, 30000, 1)
-      expect(formatResult(calculation)).toBe(formatResult(expectedResult))
+      expect(formatCurrencyAdaptive(calculation)).toBe(
+        formatCurrencyAdaptive(expectedResult),
+      )
     })
   })
 
@@ -33,12 +41,16 @@ describe('financial functions', () => {
     it('matches Excel fv/zw for end-of-period payments', () => {
       const expectedResult = 21506.45
       const calculation = fv(0.03 / 12, 180, -150, 8000)
-      expect(formatResult(calculation)).toBe(formatResult(expectedResult))
+      expect(formatCurrencyAdaptive(calculation)).toBe(
+        formatCurrencyAdaptive(expectedResult),
+      )
     })
     it('matches Excel fv/zw for annuity-due payments (type 1)', () => {
       const expectedResult = 21591.56
       const calculation = fv(0.03 / 12, 180, -150, 8000, 1)
-      expect(formatResult(calculation)).toBe(formatResult(expectedResult))
+      expect(formatCurrencyAdaptive(calculation)).toBe(
+        formatCurrencyAdaptive(expectedResult),
+      )
     })
   })
 
@@ -46,12 +58,16 @@ describe('financial functions', () => {
     it('matches Excel nper/zzr for end-of-period payments', () => {
       const expectedResult = 179.8
       const calculation = nper(3 / 12 / 100, -150, 0, 34000)
-      expect(formatResult(calculation)).toBe(formatResult(expectedResult))
+      expect(formatCurrencyAdaptive(calculation)).toBe(
+        formatCurrencyAdaptive(expectedResult),
+      )
     })
     it('matches Excel nper/zzr for annuity-due payments (type 1)', () => {
       const expectedResult = 179.44
       const calculation = nper(3 / 12 / 100, -150, 0, 34000, 1)
-      expect(formatResult(calculation)).toBe(formatResult(expectedResult))
+      expect(formatCurrencyAdaptive(calculation)).toBe(
+        formatCurrencyAdaptive(expectedResult),
+      )
     })
   })
 

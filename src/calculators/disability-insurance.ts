@@ -8,7 +8,7 @@ import {
 } from '../constants/disability-insurance'
 import {
   dineroToNumber,
-  formatResult,
+  formatCurrencyAdaptive,
   toDinero,
   toDineroMultiplier,
 } from '../utils/'
@@ -90,11 +90,13 @@ function calculateTableData(parsedInput: CalculatorInput) {
   const { level1, level2, level3, levelCustom } = calculateLevels(parsedInput)
 
   return {
-    level1: formatResult(level1),
-    level2: formatResult(level2),
-    level3: formatResult(level3),
+    level1: formatCurrencyAdaptive(level1),
+    level2: formatCurrencyAdaptive(level2),
+    level3: formatCurrencyAdaptive(level3),
     levelCustom:
-      levelCustom !== undefined ? formatResult(levelCustom) : undefined,
+      levelCustom !== undefined
+        ? formatCurrencyAdaptive(levelCustom)
+        : undefined,
   }
 }
 

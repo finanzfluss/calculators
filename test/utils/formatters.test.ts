@@ -1,12 +1,12 @@
 import { dinero, EUR } from 'dinero.js'
 import { beforeAll, describe, expect, it } from 'vitest'
 import {
-  formatInput,
+  formatCurrencyAdaptive,
+  formatCurrencyNatural,
   formatNumber,
   formatPercent,
-  formatResult,
-  formatResultWithTwoOptionalDecimals,
   pad,
+  parseFormattedNumber,
 } from '../../src/utils/formatters'
 import { setLocale } from '../../src/utils/i18n'
 
@@ -25,82 +25,75 @@ describe('formatting methods', () => {
       })
     })
 
-    describe('formatInput', () => {
+    describe('parseFormattedNumber', () => {
       it('strips spaces and dots used as thousand separators', () => {
-        expect(formatInput('123 4567.890')).toBe(1234567890)
+        expect(parseFormattedNumber('123 4567.890')).toBe(1234567890)
       })
       it('strips repeated dot separators', () => {
-        expect(formatInput('1.234.567.890')).toBe(1234567890)
+        expect(parseFormattedNumber('1.234.567.890')).toBe(1234567890)
       })
       it('strips repeated space separators', () => {
-        expect(formatInput('1 234 567 890')).toBe(1234567890)
+        expect(parseFormattedNumber('1 234 567 890')).toBe(1234567890)
       })
       it('treats comma as the decimal separator', () => {
-        expect(formatInput('123,456')).toBe(123.456)
+        expect(parseFormattedNumber('123,456')).toBe(123.456)
       })
       it('round-trips through formatNumber for de-formatted strings', () => {
         const input = '1.234,56'
-        expect(formatNumber(formatInput(input), 2)).toBe(input)
+        expect(formatNumber(parseFormattedNumber(input), 2)).toBe(input)
       })
     })
 
-    describe('formatResult', () => {
+    describe('formatCurrencyAdaptive', () => {
       it('shows two decimals when |value| < 1000', () => {
-        expect(formatResult(512.25)).toBe('512,25€')
+        expect(formatCurrencyAdaptive(512.25)).toBe('512,25€')
       })
       it('pads whole numbers below 1000 with two decimals', () => {
-        expect(formatResult(1)).toBe('1,00€')
+        expect(formatCurrencyAdaptive(1)).toBe('1,00€')
       })
       it('omits decimals when |value| > 1000', () => {
-        expect(formatResult(1234)).toBe('1.234€')
+        expect(formatCurrencyAdaptive(1234)).toBe('1.234€')
       })
       it('omits decimals when |value| equals 1000', () => {
-        expect(formatResult(1000)).toBe('1.000€')
+        expect(formatCurrencyAdaptive(1000)).toBe('1.000€')
       })
       it('formats negative numbers with the leading minus sign', () => {
-        expect(formatResult(-9.99)).toBe('-9,99€')
+        expect(formatCurrencyAdaptive(-9.99)).toBe('-9,99€')
       })
       it('rounds half-up to the nearest euro for values >= 1000', () => {
-        expect(formatResult(1234.56)).toBe('1.235€')
+        expect(formatCurrencyAdaptive(1234.56)).toBe('1.235€')
       })
       it('switches to exponential notation for whole values >= 1e21', () => {
-        expect(formatResult(1 * 10 ** 21)).toBe('1×10²¹€')
+        expect(formatCurrencyAdaptive(1 * 10 ** 21)).toBe('1×10²¹€')
       })
       it('keeps one decimal in the mantissa for fractional values >= 1e21', () => {
-        expect(formatResult(1.2 * 10 ** 21)).toBe('1,2×10²¹€')
+        expect(formatCurrencyAdaptive(1.2 * 10 ** 21)).toBe('1,2×10²¹€')
       })
       it('truncates the mantissa to one decimal for high-precision values >= 1e21', () => {
-        expect(formatResult(1.299999e21)).toBe('1,2×10²¹€')
+        expect(formatCurrencyAdaptive(1.299999e21)).toBe('1,2×10²¹€')
       })
       it('handles Dinero objects', () => {
         const dineroObj = dinero({ amount: 12345, currency: EUR })
-        expect(formatResult(dineroObj)).toBe('123,45€')
+        expect(formatCurrencyAdaptive(dineroObj)).toBe('123,45€')
       })
     })
 
-    describe('formatResultWithTwoOptionalDecimals', () => {
+    describe('formatCurrencyNatural', () => {
       it('shows two decimals for fractional values', () => {
-        expect(formatResultWithTwoOptionalDecimals(99.5)).toBe('99,50€')
+        expect(formatCurrencyNatural(99.5)).toBe('99,50€')
       })
       it('omits decimals for whole numbers', () => {
-        expect(formatResultWithTwoOptionalDecimals(99)).toBe('99€')
-      })
-      it('supports a custom suffix in place of "€"', () => {
-        expect(formatResultWithTwoOptionalDecimals(99, ' EUR')).toBe('99 EUR')
+        expect(formatCurrencyNatural(99)).toBe('99€')
       })
       it('switches to exponential notation for very large values', () => {
-        expect(formatResultWithTwoOptionalDecimals(1.2 * 10 ** 21)).toBe(
-          '1,2×10²¹€',
-        )
+        expect(formatCurrencyNatural(1.2 * 10 ** 21)).toBe('1,2×10²¹€')
       })
       it('formats Dinero amounts and respects optional decimals', () => {
         const dineroObj = dinero({ amount: 9900, currency: EUR })
-        expect(formatResultWithTwoOptionalDecimals(dineroObj)).toBe('99€')
+        expect(formatCurrencyNatural(dineroObj)).toBe('99€')
 
         const dineroWithFraction = dinero({ amount: 9950, currency: EUR })
-        expect(formatResultWithTwoOptionalDecimals(dineroWithFraction)).toBe(
-          '99,50€',
-        )
+        expect(formatCurrencyNatural(dineroWithFraction)).toBe('99,50€')
       })
     })
 
@@ -148,15 +141,15 @@ describe('formatting methods', () => {
       setLocale('fr')
     })
 
-    describe('formatResult', () => {
+    describe('formatCurrencyAdaptive', () => {
       it('shows two decimals when |value| < 1000', () => {
-        expect(formatResult(512.25)).toBe('512,25€')
+        expect(formatCurrencyAdaptive(512.25)).toBe('512,25€')
       })
       it('uses narrow non-breaking space as thousand separator above 1000', () => {
-        expect(formatResult(1234.46)).toBe('1 234€')
+        expect(formatCurrencyAdaptive(1234.46)).toBe('1 234€')
       })
       it('rounds half-up to the nearest euro for values >= 1000', () => {
-        expect(formatResult(1234.56)).toBe('1 235€')
+        expect(formatCurrencyAdaptive(1234.56)).toBe('1 235€')
       })
     })
   })

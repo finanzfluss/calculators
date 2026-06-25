@@ -5,10 +5,7 @@ import { savingsInterestRate } from '../../src/calculators/savings-interest-rate
 import { savingsPayment } from '../../src/calculators/savings-payment'
 import { savingsStartValue } from '../../src/calculators/savings-start-value'
 import { calcDiagramData } from '../../src/calculators/savings-utils'
-import {
-  formatNumber,
-  formatResultWithTwoOptionalDecimals,
-} from '../../src/utils'
+import { formatCurrencyNatural, formatNumber } from '../../src/utils'
 
 describe('/calculators/savings-utils', () => {
   const sharedInput = {
@@ -406,7 +403,7 @@ describe('/calculators/savings-utils', () => {
                 (saveIntervalType === 'monthly' ? 12 : 1),
             })
 
-            const formattedResult = formatResultWithTwoOptionalDecimals(result)
+            const formattedResult = formatCurrencyNatural(result)
             expect(formattedResult).toBe(`${expectedValue}€`)
           })
         }
@@ -437,9 +434,9 @@ describe('/calculators/savings-utils', () => {
               endValue,
             })
 
-            const formattedResult = formatResultWithTwoOptionalDecimals(result)
-            const expected = formatResultWithTwoOptionalDecimals(savingRate)
-            const expectedPlus1Cent = formatResultWithTwoOptionalDecimals(
+            const formattedResult = formatCurrencyNatural(result)
+            const expected = formatCurrencyNatural(savingRate)
+            const expectedPlus1Cent = formatCurrencyNatural(
               savingRate + 0.01, // Sometimes we are off by 1 cent due to rounding issues
             )
 
@@ -473,11 +470,9 @@ describe('/calculators/savings-utils', () => {
               endValue,
             })
 
-            const formattedResult = formatResultWithTwoOptionalDecimals(result)
-            const expected = formatResultWithTwoOptionalDecimals(
-              input.startValue,
-            )
-            const expectedPlus1Cent = formatResultWithTwoOptionalDecimals(
+            const formattedResult = formatCurrencyNatural(result)
+            const expected = formatCurrencyNatural(input.startValue)
+            const expectedPlus1Cent = formatCurrencyNatural(
               input.startValue + 0.01, // Sometimes we are off by 1 cent due to rounding issues
             )
 

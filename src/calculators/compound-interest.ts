@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { formatResult } from '../utils'
+import { formatCurrencyAdaptive } from '../utils'
 import { defineCalculator } from '../utils/calculator'
 import { savingsEndValue } from './savings-end-value'
 import { calcDiagramData } from './savings-utils'
@@ -24,9 +24,9 @@ function calculate(parsedInput: CalculatorInput) {
   const totalPayments = startCapital + monthlyPayment * durationYears * 12
 
   return {
-    finalCapital: formatResult(finalCapital),
-    totalPayments: formatResult(totalPayments),
-    totalInterest: formatResult(finalCapital - totalPayments),
+    finalCapital: formatCurrencyAdaptive(finalCapital),
+    totalPayments: formatCurrencyAdaptive(totalPayments),
+    totalInterest: formatCurrencyAdaptive(finalCapital - totalPayments),
     diagramData: calcDiagramData({ ...savingsObject, endValue: finalCapital }),
   }
 }
