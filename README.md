@@ -238,6 +238,47 @@ result.tableData.level3 // Level 3: improved standard of living (DIN 77230 Stufe
 
 <br />
 
+### AV-Depot Calculator
+
+The Altersvorsorgedepot-Rechner ([https://finanzfluss.de/rechner/altersvorsorgedepot](https://www.finanzfluss.de/rechner/altersvorsorgedepot/)) compares saving into a subsidized AV-Depot (Altersvorsorgedepot) against a regular ETF brokerage depot for retirement. It models the full savings and payout phases for both accounts, accounting for state subsidies (Grundzulage, Kinderzulage, Berufseinsteigerbonus), Vorabpauschale taxation, and the tax treatment of withdrawals (Günstigerprüfung, Halbeinkünfteverfahren).
+
+#### Key Features:
+
+- **Side-by-side depot comparison** projecting year-by-year capital growth for both an AV-Depot and a normal depot under the same contributions and returns
+- **State subsidies** including Grundzulage, Kinderzulage per eligible child, and the Berufseinsteigerbonus for savers under 25
+- **Configurable tax-savings handling** letting the income-tax refund from AV contributions flow back into the AV-Depot, into a separate secondary depot, or be consumed
+- **Payout-phase modeling** covering the optional one-time lump-sum payout and the taxation of subsequent annual withdrawals for both depots
+
+```ts
+import { avDepot } from '@finanzfluss/calculators'
+
+const input = {
+  age: 35,
+  retirementAge: 67,
+  zveSavingsPhase: 50_000,
+  zveRetirement: 20_000,
+  savingsRate: 1_800,
+  etfReturnRate: 6, // percent
+  avDepotCosts: 0.2, // percent, annual AV-Depot cost drag
+  exemptionOrder: 1_000,
+  taxSavingsMode: 'avDepot', // 'avDepot' | 'secondaryDepot' | 'consume'
+  baseRate: 0, // percent, Basiszins for Vorabpauschale
+  oneTimePayout: 0, // percent taken as a lump sum at retirement
+  payoutReturnRate: 3, // percent
+  payoutUntilAge: 85,
+  childBirthYears: [], // enables Kinderzulage while children are under 18
+}
+
+// Validate input and calculate AV-Depot result
+const result = avDepot.validateAndCalculate(input)
+
+result.finalCapital.avDepot // Capital in the AV-Depot at retirement
+result.finalCapital.normalDepot // Capital in a comparable normal depot at retirement
+result.payoutTotal.net.avDepot // Total net payout from the AV-Depot
+```
+
+<br />
+
 ## Testing
 
 Run the test suite:

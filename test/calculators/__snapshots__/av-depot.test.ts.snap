@@ -1,0 +1,926 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`/calculators/av-depot > produces complete calculation output for standard inputs 1`] = `
+{
+  "finalCapital": {
+    "avDepot": "617.285€",
+    "normalDepot": "528.579€",
+  },
+  "firstPayoutYear": {
+    "gross": {
+      "avDepot": "215.255€",
+      "normalDepot": "184.693€",
+    },
+    "net": {
+      "avDepot": "162.269€",
+      "normalDepot": "166.367€",
+    },
+    "tax": {
+      "avDepot": "52.986€",
+      "normalDepot": "18.326€",
+    },
+  },
+  "payoutTotal": {
+    "gross": {
+      "avDepot": "726.434€",
+      "normalDepot": "628.716€",
+    },
+    "net": {
+      "avDepot": "589.077€",
+      "normalDepot": "570.321€",
+    },
+    "tax": {
+      "avDepot": "137.357€",
+      "normalDepot": "58.395€",
+    },
+  },
+  "regularPayoutYear": {
+    "gross": {
+      "avDepot": "30.069€",
+      "normalDepot": "26.119€",
+    },
+    "net": {
+      "avDepot": "25.106€",
+      "normalDepot": "23.762€",
+    },
+    "tax": {
+      "avDepot": "4.963€",
+      "normalDepot": "2.357€",
+    },
+  },
+  "savingsPerYear": [
+    {
+      "capitalEnd": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "capitalStart": {
+        "avDepot": "0,00€",
+        "normalDepot": "0,00€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "0,00€",
+        "normalDepot": "0,00€",
+      },
+      "vorabpauschale": {
+        "avDepot": "0,00€",
+        "normalDepot": "0,00€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "0,00€",
+      },
+      "year": 1,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "12.020€",
+        "normalDepot": "10.350€",
+      },
+      "capitalStart": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "395,76€",
+        "normalDepot": "350,00€",
+      },
+      "vorabpauschale": {
+        "avDepot": "4,00€",
+        "normalDepot": "73,50€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "0,00€",
+      },
+      "year": 2,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "18.650€",
+        "normalDepot": "16.075€",
+      },
+      "capitalStart": {
+        "avDepot": "12.020€",
+        "normalDepot": "10.350€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "818,47€",
+        "normalDepot": "724,50€",
+      },
+      "vorabpauschale": {
+        "avDepot": "8,28€",
+        "normalDepot": "152,15€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "0,00€",
+      },
+      "year": 3,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "25.732€",
+        "normalDepot": "22.200€",
+      },
+      "capitalStart": {
+        "avDepot": "18.650€",
+        "normalDepot": "16.075€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "1.270€",
+        "normalDepot": "1.125€",
+      },
+      "vorabpauschale": {
+        "avDepot": "12,85€",
+        "normalDepot": "236,30€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "0,00€",
+      },
+      "year": 4,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "33.296€",
+        "normalDepot": "28.754€",
+      },
+      "capitalStart": {
+        "avDepot": "25.732€",
+        "normalDepot": "22.200€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "1.752€",
+        "normalDepot": "1.554€",
+      },
+      "vorabpauschale": {
+        "avDepot": "17,75€",
+        "normalDepot": "326,34€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "0,00€",
+      },
+      "year": 5,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "41.376€",
+        "normalDepot": "35.766€",
+      },
+      "capitalStart": {
+        "avDepot": "33.296€",
+        "normalDepot": "28.754€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "2.267€",
+        "normalDepot": "2.013€",
+      },
+      "vorabpauschale": {
+        "avDepot": "22,99€",
+        "normalDepot": "422,68€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "0,00€",
+      },
+      "year": 6,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "50.005€",
+        "normalDepot": "43.270€",
+      },
+      "capitalStart": {
+        "avDepot": "41.376€",
+        "normalDepot": "35.766€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "2.817€",
+        "normalDepot": "2.504€",
+      },
+      "vorabpauschale": {
+        "avDepot": "28,60€",
+        "normalDepot": "525,77€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "0,00€",
+      },
+      "year": 7,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "59.222€",
+        "normalDepot": "51.299€",
+      },
+      "capitalStart": {
+        "avDepot": "50.005€",
+        "normalDepot": "43.270€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "3.405€",
+        "normalDepot": "3.029€",
+      },
+      "vorabpauschale": {
+        "avDepot": "34,60€",
+        "normalDepot": "636,07€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "0,00€",
+      },
+      "year": 8,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "69.067€",
+        "normalDepot": "59.890€",
+      },
+      "capitalStart": {
+        "avDepot": "59.222€",
+        "normalDepot": "51.299€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "4.033€",
+        "normalDepot": "3.591€",
+      },
+      "vorabpauschale": {
+        "avDepot": "41,02€",
+        "normalDepot": "754,10€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "0,00€",
+      },
+      "year": 9,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "79.582€",
+        "normalDepot": "69.082€",
+      },
+      "capitalStart": {
+        "avDepot": "69.067€",
+        "normalDepot": "59.890€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "4.703€",
+        "normalDepot": "4.192€",
+      },
+      "vorabpauschale": {
+        "avDepot": "47,89€",
+        "normalDepot": "880,38€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "0,00€",
+      },
+      "year": 10,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "90.813€",
+        "normalDepot": "78.914€",
+      },
+      "capitalStart": {
+        "avDepot": "79.582€",
+        "normalDepot": "69.082€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "5.419€",
+        "normalDepot": "4.836€",
+      },
+      "vorabpauschale": {
+        "avDepot": "55,24€",
+        "normalDepot": "1.016€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "4,09€",
+      },
+      "year": 11,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "102.809€",
+        "normalDepot": "89.396€",
+      },
+      "capitalStart": {
+        "avDepot": "90.813€",
+        "normalDepot": "78.914€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "6.184€",
+        "normalDepot": "5.524€",
+      },
+      "vorabpauschale": {
+        "avDepot": "63,11€",
+        "normalDepot": "1.160€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "42,21€",
+      },
+      "year": 12,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "115.622€",
+        "normalDepot": "100.571€",
+      },
+      "capitalStart": {
+        "avDepot": "102.809€",
+        "normalDepot": "89.396€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "7.001€",
+        "normalDepot": "6.258€",
+      },
+      "vorabpauschale": {
+        "avDepot": "71,53€",
+        "normalDepot": "1.314€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "82,85€",
+      },
+      "year": 13,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "129.307€",
+        "normalDepot": "112.484€",
+      },
+      "capitalStart": {
+        "avDepot": "115.622€",
+        "normalDepot": "100.571€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "7.873€",
+        "normalDepot": "7.040€",
+      },
+      "vorabpauschale": {
+        "avDepot": "80,53€",
+        "normalDepot": "1.478€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "126,17€",
+      },
+      "year": 14,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "143.924€",
+        "normalDepot": "125.186€",
+      },
+      "capitalStart": {
+        "avDepot": "129.307€",
+        "normalDepot": "112.484€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "8.805€",
+        "normalDepot": "7.874€",
+      },
+      "vorabpauschale": {
+        "avDepot": "90,17€",
+        "normalDepot": "1.654€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "172,37€",
+      },
+      "year": 15,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "159.536€",
+        "normalDepot": "138.727€",
+      },
+      "capitalStart": {
+        "avDepot": "143.924€",
+        "normalDepot": "125.186€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "9.801€",
+        "normalDepot": "8.763€",
+      },
+      "vorabpauschale": {
+        "avDepot": "100,48€",
+        "normalDepot": "1.840€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "221,61€",
+      },
+      "year": 16,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "176.212€",
+        "normalDepot": "153.164€",
+      },
+      "capitalStart": {
+        "avDepot": "159.536€",
+        "normalDepot": "138.727€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "10.864€",
+        "normalDepot": "9.711€",
+      },
+      "vorabpauschale": {
+        "avDepot": "111,51€",
+        "normalDepot": "2.039€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "274,11€",
+      },
+      "year": 17,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "194.023€",
+        "normalDepot": "168.555€",
+      },
+      "capitalStart": {
+        "avDepot": "176.212€",
+        "normalDepot": "153.164€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "11.999€",
+        "normalDepot": "10.721€",
+      },
+      "vorabpauschale": {
+        "avDepot": "123,31€",
+        "normalDepot": "2.252€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "330,09€",
+      },
+      "year": 18,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "213.047€",
+        "normalDepot": "184.965€",
+      },
+      "capitalStart": {
+        "avDepot": "194.023€",
+        "normalDepot": "168.555€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "13.212€",
+        "normalDepot": "11.799€",
+      },
+      "vorabpauschale": {
+        "avDepot": "135,94€",
+        "normalDepot": "2.478€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "389,76€",
+      },
+      "year": 19,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "233.367€",
+        "normalDepot": "202.459€",
+      },
+      "capitalStart": {
+        "avDepot": "213.047€",
+        "normalDepot": "184.965€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "14.508€",
+        "normalDepot": "12.948€",
+      },
+      "vorabpauschale": {
+        "avDepot": "149,46€",
+        "normalDepot": "2.719€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "453,38€",
+      },
+      "year": 20,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "255.070€",
+        "normalDepot": "221.110€",
+      },
+      "capitalStart": {
+        "avDepot": "233.367€",
+        "normalDepot": "202.459€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "15.891€",
+        "normalDepot": "14.172€",
+      },
+      "vorabpauschale": {
+        "avDepot": "163,92€",
+        "normalDepot": "2.976€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "521,21€",
+      },
+      "year": 21,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "278.251€",
+        "normalDepot": "240.994€",
+      },
+      "capitalStart": {
+        "avDepot": "255.070€",
+        "normalDepot": "221.110€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "17.369€",
+        "normalDepot": "15.478€",
+      },
+      "vorabpauschale": {
+        "avDepot": "179,39€",
+        "normalDepot": "3.250€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "593,52€",
+      },
+      "year": 22,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "303.011€",
+        "normalDepot": "262.193€",
+      },
+      "capitalStart": {
+        "avDepot": "278.251€",
+        "normalDepot": "240.994€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "18.948€",
+        "normalDepot": "16.870€",
+      },
+      "vorabpauschale": {
+        "avDepot": "195,94€",
+        "normalDepot": "3.543€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "670,61€",
+      },
+      "year": 23,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "329.457€",
+        "normalDepot": "284.793€",
+      },
+      "capitalStart": {
+        "avDepot": "303.011€",
+        "normalDepot": "262.193€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "20.634€",
+        "normalDepot": "18.353€",
+      },
+      "vorabpauschale": {
+        "avDepot": "213,66€",
+        "normalDepot": "3.854€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "752,80€",
+      },
+      "year": 24,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "357.704€",
+        "normalDepot": "308.888€",
+      },
+      "capitalStart": {
+        "avDepot": "329.457€",
+        "normalDepot": "284.793€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "22.435€",
+        "normalDepot": "19.936€",
+      },
+      "vorabpauschale": {
+        "avDepot": "232,61€",
+        "normalDepot": "4.186€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "840,43€",
+      },
+      "year": 25,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "387.874€",
+        "normalDepot": "334.577€",
+      },
+      "capitalStart": {
+        "avDepot": "357.704€",
+        "normalDepot": "308.888€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "24.358€",
+        "normalDepot": "21.622€",
+      },
+      "vorabpauschale": {
+        "avDepot": "252,89€",
+        "normalDepot": "4.541€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "933,85€",
+      },
+      "year": 26,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "420.099€",
+        "normalDepot": "361.964€",
+      },
+      "capitalStart": {
+        "avDepot": "387.874€",
+        "normalDepot": "334.577€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "26.413€",
+        "normalDepot": "23.420€",
+      },
+      "vorabpauschale": {
+        "avDepot": "274,60€",
+        "normalDepot": "4.918€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "1.033€",
+      },
+      "year": 27,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "454.518€",
+        "normalDepot": "391.162€",
+      },
+      "capitalStart": {
+        "avDepot": "420.099€",
+        "normalDepot": "361.964€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "28.607€",
+        "normalDepot": "25.337€",
+      },
+      "vorabpauschale": {
+        "avDepot": "297,82€",
+        "normalDepot": "5.321€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "1.140€",
+      },
+      "year": 28,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "491.281€",
+        "normalDepot": "422.290€",
+      },
+      "capitalStart": {
+        "avDepot": "454.518€",
+        "normalDepot": "391.162€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "30.951€",
+        "normalDepot": "27.381€",
+      },
+      "vorabpauschale": {
+        "avDepot": "322,66€",
+        "normalDepot": "5.750€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "1.253€",
+      },
+      "year": 29,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "530.548€",
+        "normalDepot": "455.477€",
+      },
+      "capitalStart": {
+        "avDepot": "491.281€",
+        "normalDepot": "422.290€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "33.455€",
+        "normalDepot": "29.560€",
+      },
+      "vorabpauschale": {
+        "avDepot": "349,25€",
+        "normalDepot": "6.208€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "1.374€",
+      },
+      "year": 30,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "572.488€",
+        "normalDepot": "490.858€",
+      },
+      "capitalStart": {
+        "avDepot": "530.548€",
+        "normalDepot": "455.477€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "36.129€",
+        "normalDepot": "31.883€",
+      },
+      "vorabpauschale": {
+        "avDepot": "377,69€",
+        "normalDepot": "6.696€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "1.502€",
+      },
+      "year": 31,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "617.285€",
+        "normalDepot": "528.579€",
+      },
+      "capitalStart": {
+        "avDepot": "572.488€",
+        "normalDepot": "490.858€",
+      },
+      "contribution": {
+        "avDepot": "5.812€",
+        "normalDepot": "5.000€",
+      },
+      "grossReturn": {
+        "avDepot": "38.985€",
+        "normalDepot": "34.360€",
+      },
+      "vorabpauschale": {
+        "avDepot": "408,13€",
+        "normalDepot": "7.216€",
+      },
+      "vorabpauschaleTax": {
+        "avDepot": "0,00€",
+        "normalDepot": "1.639€",
+      },
+      "year": 32,
+    },
+  ],
+  "totalContributions": {
+    "avDepot": "160.000€",
+    "normalDepot": "160.000€",
+  },
+  "totalVorabpauschale": {
+    "avDepot": "4.468€",
+    "normalDepot": "80.415€",
+  },
+}
+`;
