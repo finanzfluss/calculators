@@ -12,11 +12,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
       "normalDepot": "185.710€",
     },
     "net": {
-      "avDepot": "161.706€",
+      "avDepot": "161.416€",
       "normalDepot": "163.448€",
     },
     "tax": {
-      "avDepot": "52.775€",
+      "avDepot": "53.065€",
       "normalDepot": "22.263€",
     },
   },
@@ -26,11 +26,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
       "normalDepot": "632.180€",
     },
     "net": {
-      "avDepot": "586.653€",
+      "avDepot": "583.562€",
       "normalDepot": "566.959€",
     },
     "tax": {
-      "avDepot": "137.146€",
+      "avDepot": "140.237€",
       "normalDepot": "65.221€",
     },
   },
@@ -40,11 +40,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
       "normalDepot": "26.263€",
     },
     "net": {
-      "avDepot": "24.997€",
+      "avDepot": "24.832€",
       "normalDepot": "23.736€",
     },
     "tax": {
-      "avDepot": "4.963€",
+      "avDepot": "5.128€",
       "normalDepot": "2.527€",
     },
   },

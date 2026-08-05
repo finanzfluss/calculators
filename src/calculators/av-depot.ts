@@ -10,7 +10,6 @@ import {
   KINDERZULAGE_CAP,
   MIN_OWN_CONTRIBUTION,
   TAXABLE_EQUITY_FUND_FRACTION,
-  TEILFREISTELLUNG,
 } from '../constants/av-depot'
 import { formatCurrencyAdaptive, parseCurrency, pmt } from '../utils'
 import { defineCalculator } from '../utils/calculator'
@@ -149,6 +148,17 @@ interface TaxableSavingsResult {
   totalVorabpauschale: number
 }
 
+interface AvSavingsResult {
+  yearlyData: SavingsYear[]
+  finalCapital: number
+  totalContributions: number
+  totalVorabpauschale: number
+  subsidizedCapital: number
+  unsubsidizedCapital: number
+  unsubsidizedContributionBasis: number
+  secondaryDepot: TaxableDepotState
+}
+
 interface PayoutResult {
   firstYear: PayoutYear
   recurringYear: PayoutYear
@@ -169,13 +179,12 @@ function calculate(input: CalculatorInput): CalculatorOutput {
     normalDepotSavings,
   )
 
-  const avDepotSavingsFull = calculateAvDepotSavings(input)
-  const avDepotSavings = avDepotSavingsFull.result
-  const avDepotPayout = calculateAvDepotPayout(input, avDepotSavingsFull)
+  const avDepotSavings = calculateAvDepotSavings(input)
+  const avDepotPayout = calculateAvDepotPayout(input, avDepotSavings)
 
   return {
-    savingsPerYear: normalDepotSavings.yearlyData.map((normalYear, i) => {
-      const avYear = avDepotSavings.yearlyData[i]!
+    savingsPerYear: normalDepotSavings.yearlyData.map((normalYear, index) => {
+      const avYear = avDepotSavings.yearlyData[index]!
       return {
         year: normalYear.year,
         contribution: depotPair(normalYear.contribution, avYear.contribution),
@@ -220,10 +229,10 @@ function calculate(input: CalculatorInput): CalculatorOutput {
   }
 }
 
-function depotPair(normalDepot: number, avDepot: number): DepotPair {
+function depotPair(normalDepot: number, avDepotValue: number): DepotPair {
   return {
     normalDepot: formatCurrencyAdaptive(normalDepot),
-    avDepot: formatCurrencyAdaptive(avDepot),
+    avDepot: formatCurrencyAdaptive(avDepotValue),
   }
 }
 
@@ -241,22 +250,13 @@ function payoutYearResult(
 function calculateNormalDepotSavings(
   input: CalculatorInput,
 ): TaxableSavingsResult {
-  const {
-    savingsRate,
-    etfReturnRate,
-    baseRate,
-    exemptionOrder,
-    zveSavingsPhase,
-    age,
-    retirementAge,
-  } = input
-  const savingYears = retirementAge - age
+  const savingYears = getSavingYears(input)
   return calculateDepotSavings(
-    Array.from({ length: savingYears }, () => savingsRate),
-    etfReturnRate,
-    baseRate,
-    exemptionOrder,
-    zveSavingsPhase,
+    Array.from({ length: savingYears }, () => input.savingsRate),
+    input.etfReturnRate,
+    input.baseRate,
+    input.exemptionOrder,
+    input.zveSavingsPhase,
   )
 }
 
@@ -423,8 +423,8 @@ function calculateNormalDepotPayout(
   return summarizePayout(years)
 }
 
-function calculateAvDepotSavings(input: CalculatorInput) {
-  const savingYears = input.retirementAge - input.age
+function calculateAvDepotSavings(input: CalculatorInput): AvSavingsResult {
+  const savingYears = getSavingYears(input)
   const netReturnRate = input.etfReturnRate - input.avDepotCosts
   const yearlyData: SavingsYear[] = []
   const secondaryDepot = createTaxableDepot()
@@ -468,6 +468,8 @@ function calculateAvDepotSavings(input: CalculatorInput) {
     if (index < savingYears - 1) {
       const deductionBase =
         subsidizedOwnContribution + grundzulage + kinderzulage
+      // The one-time starter bonus is excluded from the § 10a
+      // Günstigerprüfung, but remains funded AV capital.
       pendingTaxSaving = calculateTaxSaving(
         deductionBase,
         grundzulage + kinderzulage,
@@ -516,30 +518,19 @@ function calculateAvDepotSavings(input: CalculatorInput) {
     })
   }
 
-  const secondaryDepotCapital = getTaxableDepotValue(secondaryDepot)
-  const secondaryDepotContributions = secondaryDepot.lots.reduce(
-    (sum, lot) => sum + lot.basis,
-    0,
-  )
-  const secondaryDepotVorabpauschale = secondaryDepot.lots.reduce(
-    (sum, lot) => sum + lot.grossVorabpauschale,
-    0,
-  )
+  const finalCapital =
+    subsidizedCapital +
+    unsubsidizedCapital +
+    getTaxableDepotValue(secondaryDepot)
 
   return {
-    result: {
-      yearlyData,
-      finalCapital:
-        subsidizedCapital + unsubsidizedCapital + secondaryDepotCapital,
-      totalContributions: input.savingsRate * savingYears,
-      totalVorabpauschale: totalSecondaryVorabpauschale,
-    },
+    yearlyData,
+    finalCapital,
+    totalContributions: input.savingsRate * savingYears,
+    totalVorabpauschale: totalSecondaryVorabpauschale,
     subsidizedCapital,
-    überzahlungCapital: unsubsidizedCapital,
-    totalÜberzahlungContributions: unsubsidizedContributionBasis,
-    secondaryDepotCapital,
-    secondaryDepotContributions,
-    secondaryDepotVorabpauschale,
+    unsubsidizedCapital,
+    unsubsidizedContributionBasis,
     secondaryDepot,
   }
 }
@@ -578,112 +569,117 @@ function calculateTaxSaving(
 
 function calculateAvDepotPayout(
   input: CalculatorInput,
-  savings: ReturnType<typeof calculateAvDepotSavings>,
-) {
-  const {
-    zveRetirement,
-    exemptionOrder,
-    payoutReturnRate,
-    payoutUntilAge,
-    retirementAge,
-    oneTimePayout,
-    age,
-    avDepotCosts,
-  } = input
-  const {
-    subsidizedCapital,
-    überzahlungCapital,
-    totalÜberzahlungContributions,
-    secondaryDepotCapital,
-    secondaryDepotContributions,
-    secondaryDepotVorabpauschale,
-  } = savings
+  savings: AvSavingsResult,
+): PayoutResult {
+  const payoutYears = input.payoutUntilAge - input.retirementAge
+  const avReturnRate = input.payoutReturnRate - input.avDepotCosts
+  const avInitialCapital =
+    savings.subsidizedCapital + savings.unsubsidizedCapital
+  const secondaryDepot = cloneTaxableDepot(savings.secondaryDepot)
+  const secondaryInitialCapital = getTaxableDepotValue(secondaryDepot)
+  const avLumpSum = avInitialCapital * input.oneTimePayout
+  const secondaryLumpSum = secondaryInitialCapital * input.oneTimePayout
+  const avAnnualPayout = calculateAnnualPayout(
+    avReturnRate,
+    payoutYears,
+    avInitialCapital - avLumpSum,
+  )
+  const secondaryAnnualPayout = calculateAnnualPayout(
+    input.payoutReturnRate,
+    payoutYears,
+    secondaryInitialCapital - secondaryLumpSum,
+  )
+  const avState = {
+    subsidizedValue: savings.subsidizedCapital,
+    unsubsidizedValue: savings.unsubsidizedCapital,
+    unsubsidizedBasis: savings.unsubsidizedContributionBasis,
+  }
+  const halfDifferenceApplies = getSavingYears(input) >= 12
+  const years: PayoutYear[] = []
+  let pendingTaxableVorabpauschale = secondaryDepot.pendingTaxableVorabpauschale
+  secondaryDepot.pendingTaxableVorabpauschale = 0
 
-  const payoutYears = payoutUntilAge - retirementAge
-  const avReturnRate = payoutReturnRate - avDepotCosts
-  const secReturnRate = payoutReturnRate
-
-  const avDepotCapital = subsidizedCapital + überzahlungCapital
-  const avRemainingCapital = avDepotCapital * (1 - oneTimePayout)
-  const secRemainingCapital = secondaryDepotCapital * (1 - oneTimePayout)
-
-  const avAnnualPMT = -pmt(avReturnRate, payoutYears, avRemainingCapital, 0, 1)
-  const secAnnualPMT =
-    secondaryDepotCapital > 0
-      ? -pmt(secReturnRate, payoutYears, secRemainingCapital, 0, 1)
-      : 0
-
-  /* v8 ignore next -- @preserve —— avDepotCapital is always positive since every savings year adds a positive contribution */
-  const subsidizedFraction =
-    avDepotCapital > 0 ? subsidizedCapital / avDepotCapital : 0
-  /* v8 ignore next -- @preserve —— avDepotCapital is always positive since every savings year adds a positive contribution */
-  const überzahlungFraction =
-    avDepotCapital > 0 ? überzahlungCapital / avDepotCapital : 0
-
-  const überzahlungGainFraction =
-    überzahlungCapital > 0
-      ? Math.max(0, überzahlungCapital - totalÜberzahlungContributions) /
-        überzahlungCapital
-      : 0
-  const secGainFraction =
-    secondaryDepotCapital > 0
-      ? Math.max(
-          0,
-          secondaryDepotCapital -
-            secondaryDepotContributions -
-            secondaryDepotVorabpauschale,
-        ) / secondaryDepotCapital
-      : 0
-
-  const savingYears = retirementAge - age
-  const halbeinkünfteApplies = retirementAge >= 62 && savingYears >= 12
-
-  const computePayoutYear = (avGross: number, secGross: number) => {
-    const subsidizedAmount = avGross * subsidizedFraction
-    const subsidizedTax = grenzsteuer(subsidizedAmount, zveRetirement)
-
-    const überzahlungAmount = avGross * überzahlungFraction
-    const überzahlungTaxableGain =
-      überzahlungAmount *
-      überzahlungGainFraction *
-      (halbeinkünfteApplies ? 0.5 : 1)
-    const überzahlungTax = grenzsteuer(
-      überzahlungTaxableGain,
-      zveRetirement + subsidizedAmount,
+  for (let index = 0; index < payoutYears; index++) {
+    const avWithdrawal = withdrawFromAvDepot(
+      avState,
+      avAnnualPayout + (index === 0 ? avLumpSum : 0),
     )
-
-    const secTaxableGain = Math.max(
-      0,
-      secGross * secGainFraction * TEILFREISTELLUNG - exemptionOrder,
+    const secondarySale = sellFundLots(
+      secondaryDepot,
+      secondaryAnnualPayout + (index === 0 ? secondaryLumpSum : 0),
     )
-    const secTax = günstigerprüfung(
-      secTaxableGain,
-      zveRetirement + subsidizedAmount + überzahlungTaxableGain,
+    const unsubsidizedTaxableGain =
+      avWithdrawal.unsubsidizedGain * (halfDifferenceApplies ? 0.5 : 1)
+    const ordinaryTaxableIncome =
+      avWithdrawal.subsidizedAmount + unsubsidizedTaxableGain
+    const ordinaryTax = grenzsteuer(ordinaryTaxableIncome, input.zveRetirement)
+    const taxableCapitalIncome = applyLossCarryAndAllowance(
+      secondaryDepot,
+      pendingTaxableVorabpauschale + secondarySale.taxableGain,
+      input.exemptionOrder,
     )
+    const secondaryTax = günstigerprüfung(
+      taxableCapitalIncome,
+      Math.max(0, input.zveRetirement + ordinaryTaxableIncome),
+    )
+    const grossPayout = avWithdrawal.amount + secondarySale.proceeds
+    const tax = ordinaryTax + secondaryTax
 
-    const grossPayout = avGross + secGross
-    const tax = subsidizedTax + überzahlungTax + secTax
-    return { grossPayout, tax, netPayout: grossPayout - tax }
+    years.push({
+      grossPayout,
+      tax,
+      netPayout: grossPayout - tax,
+    })
+
+    if (index < payoutYears - 1) {
+      avState.subsidizedValue *= 1 + avReturnRate
+      avState.unsubsidizedValue *= 1 + avReturnRate
+      pendingTaxableVorabpauschale =
+        growAndAssessVorabpauschale(
+          secondaryDepot,
+          input.payoutReturnRate,
+          input.baseRate,
+        ) * TAXABLE_EQUITY_FUND_FRACTION
+    }
   }
 
-  const avLumpSum = avDepotCapital - avRemainingCapital
-  const secLumpSum = secondaryDepotCapital - secRemainingCapital
-  const firstPayoutYear = computePayoutYear(
-    avLumpSum + avAnnualPMT,
-    secLumpSum + secAnnualPMT,
-  )
-  const regularPayoutYear = computePayoutYear(avAnnualPMT, secAnnualPMT)
+  return summarizePayout(years)
+}
+
+function withdrawFromAvDepot(
+  state: {
+    subsidizedValue: number
+    unsubsidizedValue: number
+    unsubsidizedBasis: number
+  },
+  requestedAmount: number,
+): {
+  amount: number
+  subsidizedAmount: number
+  unsubsidizedGain: number
+} {
+  const totalValue = state.subsidizedValue + state.unsubsidizedValue
+  const amount = Math.min(requestedAmount, totalValue)
+  const subsidizedAmount = amount * (state.subsidizedValue / totalValue)
+  const unsubsidizedAmount = amount - subsidizedAmount
+  const closesUnsubsidizedBucket =
+    unsubsidizedAmount >= state.unsubsidizedValue - 1e-9
+  const unsubsidizedBasis =
+    state.unsubsidizedValue > 0
+      ? closesUnsubsidizedBucket
+        ? state.unsubsidizedBasis
+        : unsubsidizedAmount *
+          (state.unsubsidizedBasis / state.unsubsidizedValue)
+      : 0
+
+  state.subsidizedValue -= subsidizedAmount
+  state.unsubsidizedValue -= unsubsidizedAmount
+  state.unsubsidizedBasis -= unsubsidizedBasis
 
   return {
-    firstYear: firstPayoutYear,
-    recurringYear: regularPayoutYear,
-    totalGross:
-      firstPayoutYear.grossPayout +
-      regularPayoutYear.grossPayout * (payoutYears - 1),
-    totalTax: firstPayoutYear.tax + regularPayoutYear.tax * (payoutYears - 1),
-    totalNet:
-      firstPayoutYear.netPayout +
-      regularPayoutYear.netPayout * (payoutYears - 1),
+    amount,
+    subsidizedAmount,
+    unsubsidizedGain: unsubsidizedAmount - unsubsidizedBasis,
   }
 }
 
@@ -779,7 +775,10 @@ function previewTaxableAmount(
 }
 
 function grenzsteuer(amount: number, zve: number): number {
-  return germanTaxIncludingSoli(zve + amount) - germanTaxIncludingSoli(zve)
+  return (
+    germanTaxIncludingSoli(Math.max(0, zve + amount)) -
+    germanTaxIncludingSoli(zve)
+  )
 }
 
 function günstigerprüfung(taxableGain: number, zve: number): number {
@@ -798,4 +797,9 @@ function germanTariffIncomeTax(zve: number): number {
 
 function calculateGermanIncomeTax(zve: number) {
   return incomeTax.calculate({ zve, splitting: false, year: INCOME_TAX_YEAR })
+}
+
+function getSavingYears(input: CalculatorInput): number {
+  // The annual model treats age as the age in the first contribution year.
+  return input.retirementAge - input.age
 }
