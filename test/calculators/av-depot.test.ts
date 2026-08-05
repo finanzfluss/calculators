@@ -81,7 +81,7 @@ describe('/calculators/av-depot', () => {
 
     expect(data.finalCapital.avDepot).toMatchInlineSnapshot(`"616.141€"`)
     expect(data.finalCapital.normalDepot).toMatchInlineSnapshot(`"528.579€"`)
-    expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"582.221€"`)
+    expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"584.016€"`)
     expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"570.321€"`)
   })
 
@@ -184,6 +184,41 @@ describe('/calculators/av-depot', () => {
     expect(data.finalCapital.normalDepot).toMatchInlineSnapshot(`"551.091€"`)
     expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"554.239€"`)
     expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"592.392€"`)
+  })
+
+  it('preserves the basis of a reinvested tax refund', () => {
+    const common = {
+      ...sampleInputs(),
+      age: 63,
+      currentYear: 2027,
+      retirementAge: 65,
+      savingsRate: 1_800,
+      etfReturnRate: 0.0001,
+      avDepotCosts: 0,
+      baseRate: 0,
+      oneTimePayout: 0,
+      payoutReturnRate: 0.0001,
+      exemptionOrder: 0,
+      payoutUntilAge: 85,
+    }
+    const consumed = avDepot.validateAndCalculate({
+      ...common,
+      taxSavingsMode: 'consume',
+    })
+    const reinvested = avDepot.validateAndCalculate({
+      ...common,
+      taxSavingsMode: 'avDepot',
+    })
+
+    const addedCapital =
+      parseCurrency(reinvested.finalCapital.avDepot) -
+      parseCurrency(consumed.finalCapital.avDepot)
+    const addedNetPayout =
+      parseCurrency(reinvested.payoutTotal.net.avDepot) -
+      parseCurrency(consumed.payoutTotal.net.avDepot)
+
+    expect(addedCapital).toBeGreaterThan(0)
+    expect(addedNetPayout).toBeCloseTo(addedCapital, 2)
   })
 })
 
