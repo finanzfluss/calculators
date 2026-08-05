@@ -1,3 +1,4 @@
+import type { TaxableDepotState } from './av-depot-tax'
 import { z } from 'zod'
 import {
   ABGELTUNGSTEUERSATZ,
@@ -6,11 +7,20 @@ import {
   INCOME_TAX_YEAR,
   KINDERZULAGE_CAP,
   MIN_OWN_CONTRIBUTION,
+  TAXABLE_EQUITY_FUND_FRACTION,
   TEILFREISTELLUNG,
-  VORABPAUSCHALE_FACTOR,
 } from '../constants/av-depot'
 import { formatCurrencyAdaptive, parseCurrency, pmt } from '../utils'
 import { defineCalculator } from '../utils/calculator'
+import {
+  addFundLot,
+  assessVorabpauschale,
+  cloneTaxableDepot,
+  createTaxableDepot,
+  getTaxableDepotValue,
+  growTaxableDepot,
+  sellFundLots,
+} from './av-depot-tax'
 import { incomeTax } from './income-tax'
 
 const schema = z
@@ -125,6 +135,14 @@ interface CalculatorOutput {
   payoutTotal: PayoutYearResult
 }
 
+interface TaxableSavingsResult {
+  yearlyData: SavingsYear[]
+  depot: TaxableDepotState
+  finalCapital: number
+  totalContributions: number
+  totalVorabpauschale: number
+}
+
 export const avDepot = defineCalculator({
   schema,
   calculate,
@@ -206,7 +224,9 @@ function payoutYearResult(
   }
 }
 
-function calculateNormalDepotSavings(input: CalculatorInput) {
+function calculateNormalDepotSavings(
+  input: CalculatorInput,
+): TaxableSavingsResult {
   const {
     savingsRate,
     etfReturnRate,
@@ -229,45 +249,118 @@ function calculateNormalDepotSavings(input: CalculatorInput) {
 function calculateDepotSavings(
   contributions: number[],
   returnRate: number,
-  baseRateDecimal: number,
+  baseRate: number,
   exemptionOrder: number,
   zve: number,
-) {
+): TaxableSavingsResult {
   const yearlyData: SavingsYear[] = []
-  let capitalStart = 0
+  const depot = createTaxableDepot()
   let totalVorabpauschale = 0
 
-  for (let year = 1; year <= contributions.length; year++) {
-    const contribution = contributions[year - 1]!
-    const grossReturn = capitalStart * returnRate
-    const vorabpauschale =
-      capitalStart * baseRateDecimal * VORABPAUSCHALE_FACTOR
-    const vorabpauschaleTax = günstigerprüfung(
-      Math.max(0, vorabpauschale - exemptionOrder),
-      zve,
-    )
-    const capitalEnd =
-      capitalStart + contribution + grossReturn - vorabpauschaleTax
-
-    totalVorabpauschale += vorabpauschale
-    yearlyData.push({
-      year,
+  for (const [index, contribution] of contributions.entries()) {
+    const yearResult = advanceTaxableSavingsYear(
+      depot,
       contribution,
-      capitalStart,
-      grossReturn,
-      vorabpauschale,
-      vorabpauschaleTax,
-      capitalEnd,
-    })
-    capitalStart = capitalEnd
+      returnRate,
+      baseRate,
+      exemptionOrder,
+      zve,
+      index + 1,
+    )
+    totalVorabpauschale += yearResult.vorabpauschale
+    yearlyData.push(yearResult)
   }
 
   return {
     yearlyData,
-    finalCapital: capitalStart,
-    totalContributions: contributions.reduce((sum, c) => sum + c, 0),
+    depot,
+    finalCapital: getTaxableDepotValue(depot),
+    totalContributions: contributions.reduce((sum, value) => sum + value, 0),
     totalVorabpauschale,
   }
+}
+
+function advanceTaxableSavingsYear(
+  depot: TaxableDepotState,
+  contribution: number,
+  returnRate: number,
+  baseRate: number,
+  exemptionOrder: number,
+  zve: number,
+  year: number,
+): SavingsYear {
+  const capitalStart = getTaxableDepotValue(depot)
+  const estimatedTax = estimateSavingsYearTax(
+    depot,
+    depot.pendingTaxableVorabpauschale,
+    contribution,
+    exemptionOrder,
+    zve,
+  )
+
+  let saleTaxableGain = 0
+  if (estimatedTax > contribution) {
+    saleTaxableGain = sellFundLots(
+      depot,
+      estimatedTax - contribution,
+    ).taxableGain
+  }
+
+  const taxableAmount = applyLossCarryAndAllowance(
+    depot,
+    depot.pendingTaxableVorabpauschale + saleTaxableGain,
+    exemptionOrder,
+  )
+  const tax = günstigerprüfung(taxableAmount, zve)
+  depot.pendingTaxableVorabpauschale = 0
+
+  const grossReturn = growTaxableDepot(depot, returnRate)
+  const grossVorabpauschale = assessVorabpauschale(
+    depot,
+    getTaxableDepotValue(depot) - grossReturn,
+    grossReturn,
+    baseRate,
+  )
+  depot.pendingTaxableVorabpauschale =
+    grossVorabpauschale * TAXABLE_EQUITY_FUND_FRACTION
+  addFundLot(depot, Math.max(0, contribution - tax))
+
+  return {
+    year,
+    contribution,
+    capitalStart,
+    grossReturn,
+    vorabpauschale: grossVorabpauschale,
+    vorabpauschaleTax: tax,
+    capitalEnd: getTaxableDepotValue(depot),
+  }
+}
+
+function estimateSavingsYearTax(
+  depot: TaxableDepotState,
+  taxableVorabpauschale: number,
+  contribution: number,
+  exemptionOrder: number,
+  zve: number,
+): number {
+  let saleAmount = 0
+  let tax = 0
+
+  for (let iteration = 0; iteration < 12; iteration++) {
+    const preview = cloneTaxableDepot(depot)
+    const saleTaxableGain = sellFundLots(preview, saleAmount).taxableGain
+    const taxableAmount = previewTaxableAmount(
+      taxableVorabpauschale + saleTaxableGain,
+      depot.taxableLossCarry,
+      exemptionOrder,
+    )
+    tax = günstigerprüfung(taxableAmount, zve)
+    const nextSaleAmount = Math.max(0, tax - contribution)
+    if (Math.abs(nextSaleAmount - saleAmount) < 1e-8) break
+    saleAmount = nextSaleAmount
+  }
+
+  return tax
 }
 
 function calculateNormalDepotPayout(
@@ -597,6 +690,29 @@ function calculateZulagen(
   }, 0)
 
   return { grundzulage, kinderzulage, starterBonus }
+}
+
+function applyLossCarryAndAllowance(
+  depot: TaxableDepotState,
+  taxableIncome: number,
+  exemptionOrder: number,
+): number {
+  const afterLossCarry = taxableIncome - depot.taxableLossCarry
+  if (afterLossCarry <= 0) {
+    depot.taxableLossCarry = -afterLossCarry
+    return 0
+  }
+
+  depot.taxableLossCarry = 0
+  return Math.max(0, afterLossCarry - exemptionOrder)
+}
+
+function previewTaxableAmount(
+  taxableIncome: number,
+  lossCarry: number,
+  exemptionOrder: number,
+): number {
+  return Math.max(0, taxableIncome - lossCarry - exemptionOrder)
 }
 
 function grenzsteuer(amount: number, zve: number): number {
