@@ -399,7 +399,7 @@ function calculateAvDepotSavings(input: CalculatorInput) {
     const capitalEnd = subsidizedCapital + überzahlungCapital
 
     totalOwnContributions += contribution
-    totalÜberzahlung += Math.max(0, contribution - AV_SUBSIDIZED_CAP)
+    totalÜberzahlung += überzahlungInflow
 
     yearlyData.push({
       year,
