@@ -149,6 +149,14 @@ interface TaxableSavingsResult {
   totalVorabpauschale: number
 }
 
+interface PayoutResult {
+  firstYear: PayoutYear
+  recurringYear: PayoutYear
+  totalGross: number
+  totalTax: number
+  totalNet: number
+}
+
 export const avDepot = defineCalculator({
   schema,
   calculate,
@@ -371,53 +379,48 @@ function estimateSavingsYearTax(
 
 function calculateNormalDepotPayout(
   input: CalculatorInput,
-  savings: ReturnType<typeof calculateDepotSavings>,
-) {
-  const {
-    zveRetirement,
-    exemptionOrder,
-    payoutReturnRate,
-    payoutUntilAge,
-    retirementAge,
-    oneTimePayout,
-  } = input
-  const { finalCapital, totalContributions, totalVorabpauschale } = savings
-
-  const remainingCapital = finalCapital * (1 - oneTimePayout)
-  const payoutYears = payoutUntilAge - retirementAge
-  /* v8 ignore next -- @preserve —— finalCapital is always positive since every savings year adds a positive contribution */
-  const gainFraction =
-    finalCapital > 0
-      ? Math.max(0, finalCapital - totalContributions - totalVorabpauschale) /
-        finalCapital
-      : 0
-  const annualPMT = -pmt(payoutReturnRate, payoutYears, remainingCapital, 0, 1)
-
-  const computePayoutYear = (grossPayout: number) => {
-    const taxableGain = Math.max(
-      0,
-      grossPayout * gainFraction * TEILFREISTELLUNG - exemptionOrder,
-    )
-    const tax = günstigerprüfung(taxableGain, zveRetirement)
-    return { grossPayout, tax, netPayout: grossPayout - tax }
-  }
-
-  const firstPayoutYear = computePayoutYear(
-    finalCapital - remainingCapital + annualPMT,
+  savings: TaxableSavingsResult,
+): PayoutResult {
+  const depot = cloneTaxableDepot(savings.depot)
+  const initialCapital = getTaxableDepotValue(depot)
+  const payoutYears = input.payoutUntilAge - input.retirementAge
+  const lumpSum = initialCapital * input.oneTimePayout
+  const annualPayout = calculateAnnualPayout(
+    input.payoutReturnRate,
+    payoutYears,
+    initialCapital - lumpSum,
   )
-  const regularPayoutYear = computePayoutYear(annualPMT)
+  const years: PayoutYear[] = []
+  let pendingTaxableVorabpauschale = depot.pendingTaxableVorabpauschale
+  depot.pendingTaxableVorabpauschale = 0
 
-  return {
-    firstYear: firstPayoutYear,
-    recurringYear: regularPayoutYear,
-    totalGross:
-      firstPayoutYear.grossPayout +
-      regularPayoutYear.grossPayout * (payoutYears - 1),
-    totalTax: firstPayoutYear.tax + regularPayoutYear.tax * (payoutYears - 1),
-    totalNet:
-      firstPayoutYear.netPayout +
-      regularPayoutYear.netPayout * (payoutYears - 1),
+  for (let index = 0; index < payoutYears; index++) {
+    const requestedPayout = annualPayout + (index === 0 ? lumpSum : 0)
+    const sale = sellFundLots(depot, requestedPayout)
+    const taxableAmount = applyLossCarryAndAllowance(
+      depot,
+      pendingTaxableVorabpauschale + sale.taxableGain,
+      input.exemptionOrder,
+    )
+    const tax = günstigerprüfung(taxableAmount, input.zveRetirement)
+
+    years.push({
+      grossPayout: sale.proceeds,
+      tax,
+      netPayout: sale.proceeds - tax,
+    })
+
+    pendingTaxableVorabpauschale =
+      index < payoutYears - 1
+        ? growAndAssessVorabpauschale(
+            depot,
+            input.payoutReturnRate,
+            input.baseRate,
+          ) * TAXABLE_EQUITY_FUND_FRACTION
+        : 0
   }
+
+  return summarizePayout(years)
 }
 
 function calculateAvDepotSavings(input: CalculatorInput) {
@@ -681,6 +684,47 @@ function calculateAvDepotPayout(
     totalNet:
       firstPayoutYear.netPayout +
       regularPayoutYear.netPayout * (payoutYears - 1),
+  }
+}
+
+function growAndAssessVorabpauschale(
+  depot: TaxableDepotState,
+  returnRate: number,
+  baseRate: number,
+): number {
+  const capitalStart = getTaxableDepotValue(depot)
+  const grossReturn = growTaxableDepot(depot, returnRate)
+  return assessVorabpauschale(depot, capitalStart, grossReturn, baseRate)
+}
+
+function calculateAnnualPayout(
+  returnRate: number,
+  payoutYears: number,
+  capital: number,
+): number {
+  return capital > 0 ? -pmt(returnRate, payoutYears, capital, 0, 1) : 0
+}
+
+function summarizePayout(years: PayoutYear[]): PayoutResult {
+  const firstYear = years[0]!
+  const recurringYears = years.slice(1)
+  const recurringYear = averagePayoutYear(recurringYears)
+
+  return {
+    firstYear,
+    recurringYear,
+    totalGross: years.reduce((sum, year) => sum + year.grossPayout, 0),
+    totalTax: years.reduce((sum, year) => sum + year.tax, 0),
+    totalNet: years.reduce((sum, year) => sum + year.netPayout, 0),
+  }
+}
+
+function averagePayoutYear(years: PayoutYear[]): PayoutYear {
+  const count = years.length
+  return {
+    grossPayout: years.reduce((sum, year) => sum + year.grossPayout, 0) / count,
+    tax: years.reduce((sum, year) => sum + year.tax, 0) / count,
+    netPayout: years.reduce((sum, year) => sum + year.netPayout, 0) / count,
   }
 }
 

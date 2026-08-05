@@ -41,8 +41,8 @@ describe('/calculators/av-depot', () => {
     expect(data.payoutTotal.gross.normalDepot).toMatchInlineSnapshot(
       `"632.180€"`,
     )
-    expect(data.payoutTotal.tax.normalDepot).toMatchInlineSnapshot(`"51.149€"`)
-    expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"581.032€"`)
+    expect(data.payoutTotal.tax.normalDepot).toMatchInlineSnapshot(`"65.221€"`)
+    expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"566.959€"`)
     expect(data.payoutTotal.gross.avDepot).toMatchInlineSnapshot(`"723.799€"`)
     expect(data.payoutTotal.tax.avDepot).toMatchInlineSnapshot(`"137.146€"`)
     expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"586.653€"`)
@@ -57,7 +57,7 @@ describe('/calculators/av-depot', () => {
     expect(data.finalCapital.avDepot).toMatchInlineSnapshot(`"636.951€"`)
     expect(data.finalCapital.normalDepot).toMatchInlineSnapshot(`"531.491€"`)
     expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"595.440€"`)
-    expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"581.032€"`)
+    expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"566.959€"`)
   })
 
   it('normalizes a single childBirthYears value into an array', () => {
@@ -83,7 +83,7 @@ describe('/calculators/av-depot', () => {
     expect(data.finalCapital.avDepot).toMatchInlineSnapshot(`"587.306€"`)
     expect(data.finalCapital.normalDepot).toMatchInlineSnapshot(`"531.491€"`)
     expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"554.239€"`)
-    expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"581.032€"`)
+    expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"566.959€"`)
   })
 
   it('increases AV depot capital when tax savings are reinvested', () => {
@@ -95,7 +95,7 @@ describe('/calculators/av-depot', () => {
     expect(data.finalCapital.avDepot).toMatchInlineSnapshot(`"614.050€"`)
     expect(data.finalCapital.normalDepot).toMatchInlineSnapshot(`"531.491€"`)
     expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"581.935€"`)
-    expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"581.032€"`)
+    expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"566.959€"`)
   })
 
   it('defaults to the product start year or the current year, whichever is later', () => {
@@ -195,7 +195,7 @@ describe('/calculators/av-depot', () => {
     expect(data.finalCapital.avDepot).toMatchInlineSnapshot(`"587.306€"`)
     expect(data.finalCapital.normalDepot).toMatchInlineSnapshot(`"551.091€"`)
     expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"554.239€"`)
-    expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"600.373€"`)
+    expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"588.638€"`)
   })
 
   it('caps the gross Vorabpauschale at the actual fund appreciation', () => {
@@ -233,7 +233,29 @@ describe('/calculators/av-depot', () => {
     ).toBe(true)
   })
 
-  it('uses FIFO when selling shares from a taxable depot', () => {
+  it('taxes gains generated during the payout phase', () => {
+    const data = avDepot.validateAndCalculate({
+      ...sampleInputs(),
+      age: 64,
+      currentYear: 2027,
+      retirementAge: 65,
+      savingsRate: 1_800,
+      etfReturnRate: 0,
+      avDepotCosts: 0,
+      baseRate: 0,
+      oneTimePayout: 0,
+      payoutReturnRate: 5,
+      exemptionOrder: 0,
+      payoutUntilAge: 85,
+    })
+
+    expect(parseCurrency(data.firstPayoutYear.tax.normalDepot)).toBe(0)
+    expect(
+      parseCurrency(data.regularPayoutYear.tax.normalDepot),
+    ).toBeGreaterThan(0)
+  })
+
+  it('uses FIFO when selling shares from the normal depot', () => {
     const depot = createTaxableDepot()
     addFundLot(depot, 100)
     growTaxableDepot(depot, 1)

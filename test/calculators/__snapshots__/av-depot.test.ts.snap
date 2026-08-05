@@ -13,11 +13,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     "net": {
       "avDepot": "161.706€",
-      "normalDepot": "169.446€",
+      "normalDepot": "163.448€",
     },
     "tax": {
       "avDepot": "52.775€",
-      "normalDepot": "16.265€",
+      "normalDepot": "22.263€",
     },
   },
   "payoutTotal": {
@@ -27,11 +27,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     "net": {
       "avDepot": "586.653€",
-      "normalDepot": "581.032€",
+      "normalDepot": "566.959€",
     },
     "tax": {
       "avDepot": "137.146€",
-      "normalDepot": "51.149€",
+      "normalDepot": "65.221€",
     },
   },
   "regularPayoutYear": {
@@ -41,11 +41,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     "net": {
       "avDepot": "24.997€",
-      "normalDepot": "24.211€",
+      "normalDepot": "23.736€",
     },
     "tax": {
       "avDepot": "4.963€",
-      "normalDepot": "2.052€",
+      "normalDepot": "2.527€",
     },
   },
   "savingsPerYear": [
