@@ -27,16 +27,16 @@ describe('/calculators/av-depot', () => {
       `"80.415€"`,
     )
     expect(data.finalCapital.normalDepot).toMatchInlineSnapshot(`"528.579€"`)
-    expect(data.finalCapital.avDepot).toMatchInlineSnapshot(`"617.285€"`)
+    expect(data.finalCapital.avDepot).toMatchInlineSnapshot(`"615.070€"`)
 
     expect(data.payoutTotal.gross.normalDepot).toMatchInlineSnapshot(
       `"628.716€"`,
     )
     expect(data.payoutTotal.tax.normalDepot).toMatchInlineSnapshot(`"58.395€"`)
     expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"570.321€"`)
-    expect(data.payoutTotal.gross.avDepot).toMatchInlineSnapshot(`"726.434€"`)
-    expect(data.payoutTotal.tax.avDepot).toMatchInlineSnapshot(`"137.357€"`)
-    expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"589.077€"`)
+    expect(data.payoutTotal.gross.avDepot).toMatchInlineSnapshot(`"723.799€"`)
+    expect(data.payoutTotal.tax.avDepot).toMatchInlineSnapshot(`"137.258€"`)
+    expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"586.541€"`)
   })
 
   it('increases AV depot capital with Kinderzulage', () => {
@@ -45,9 +45,9 @@ describe('/calculators/av-depot', () => {
       childBirthYears: [2026, 2019],
     })
 
-    expect(data.finalCapital.avDepot).toMatchInlineSnapshot(`"637.769€"`)
+    expect(data.finalCapital.avDepot).toMatchInlineSnapshot(`"636.951€"`)
     expect(data.finalCapital.normalDepot).toMatchInlineSnapshot(`"528.579€"`)
-    expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"596.414€"`)
+    expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"595.440€"`)
     expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"570.321€"`)
   })
 
@@ -83,9 +83,9 @@ describe('/calculators/av-depot', () => {
       taxSavingsMode: 'avDepot',
     })
 
-    expect(data.finalCapital.avDepot).toMatchInlineSnapshot(`"616.141€"`)
+    expect(data.finalCapital.avDepot).toMatchInlineSnapshot(`"614.050€"`)
     expect(data.finalCapital.normalDepot).toMatchInlineSnapshot(`"528.579€"`)
-    expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"582.221€"`)
+    expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"580.195€"`)
     expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"570.321€"`)
   })
 
@@ -141,8 +141,8 @@ describe('/calculators/av-depot', () => {
       savingsRate: 1_500,
     })
 
-    expect(data.finalCapital.avDepot).toMatchInlineSnapshot(`"232.451€"`)
-    expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"200.370€"`)
+    expect(data.finalCapital.avDepot).toMatchInlineSnapshot(`"230.667€"`)
+    expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"198.328€"`)
   })
 
   it('taxes the full gain without Halbeinkünfteverfahren for short savings phases', () => {
@@ -152,7 +152,7 @@ describe('/calculators/av-depot', () => {
       retirementAge: 65,
     })
 
-    expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"6.275€"`)
+    expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"5.945€"`)
   })
 
   it('applies the Berufseinsteigerbonus for savers under 25 in their first year', () => {
@@ -225,10 +225,30 @@ describe('/calculators/av-depot', () => {
       grundzulage
 
     expect(
-      parseCurrency(reinvested.savingsPerYear[0]!.contribution.avDepot) -
-        parseCurrency(consumed.savingsPerYear[0]!.contribution.avDepot),
+      parseCurrency(reinvested.finalCapital.avDepot) -
+        parseCurrency(consumed.finalCapital.avDepot),
     ).toBe(expectedBenefit)
     expect(expectedBenefit).toBe(443)
+  })
+
+  it('reinvests a tax refund no earlier than the following contribution year', () => {
+    const consumed = avDepot.validateAndCalculate({
+      ...sampleInputs(),
+      taxSavingsMode: 'consume',
+    })
+    const reinvested = avDepot.validateAndCalculate({
+      ...sampleInputs(),
+      taxSavingsMode: 'avDepot',
+    })
+
+    expect(reinvested.savingsPerYear[0]!.contribution.avDepot).toBe(
+      consumed.savingsPerYear[0]!.contribution.avDepot,
+    )
+    expect(
+      parseCurrency(reinvested.savingsPerYear[1]!.contribution.avDepot),
+    ).toBeGreaterThan(
+      parseCurrency(consumed.savingsPerYear[1]!.contribution.avDepot),
+    )
   })
 })
 

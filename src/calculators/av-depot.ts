@@ -344,12 +344,18 @@ function calculateAvDepotSavings(input: CalculatorInput) {
   let totalOwnContributions = 0
   let totalÜberzahlung = 0
   const taxSavings: number[] = []
+  let pendingTaxSaving = 0
 
   for (let year = 1; year <= savingYears; year++) {
     const capitalStart = subsidizedCapital + überzahlungCapital
     const contribution = savingsRate
+    const reinvestedTaxSaving = pendingTaxSaving
+    const ownContribToAv =
+      taxSavingsMode === 'avDepot'
+        ? contribution + reinvestedTaxSaving
+        : contribution
     const { grundzulage, kinderzulage, starterBonus } = calculateZulagen(
-      contribution,
+      ownContribToAv,
       year,
       currentYear,
       age,
@@ -357,18 +363,18 @@ function calculateAvDepotSavings(input: CalculatorInput) {
     )
 
     const deductionBase =
-      Math.min(contribution, AV_SUBSIDIZED_CAP) + grundzulage + kinderzulage
-    const taxSaving = Math.max(
-      0,
-      germanTariffIncomeTax(zveSavingsPhase) -
-        germanTariffIncomeTax(Math.max(0, zveSavingsPhase - deductionBase)) -
-        grundzulage -
-        kinderzulage,
-    )
-    taxSavings.push(taxSaving)
+      Math.min(ownContribToAv, AV_SUBSIDIZED_CAP) + grundzulage + kinderzulage
+    if (year < savingYears) {
+      pendingTaxSaving = Math.max(
+        0,
+        germanTariffIncomeTax(zveSavingsPhase) -
+          germanTariffIncomeTax(Math.max(0, zveSavingsPhase - deductionBase)) -
+          grundzulage -
+          kinderzulage,
+      )
+    }
+    taxSavings.push(reinvestedTaxSaving)
 
-    const ownContribToAv =
-      taxSavingsMode === 'avDepot' ? contribution + taxSaving : contribution
     const subsidizedInflow =
       Math.min(ownContribToAv, AV_SUBSIDIZED_CAP) +
       grundzulage +
@@ -379,7 +385,7 @@ function calculateAvDepotSavings(input: CalculatorInput) {
       grundzulage +
       kinderzulage +
       starterBonus +
-      (taxSavingsMode === 'avDepot' ? taxSaving : 0)
+      (taxSavingsMode === 'avDepot' ? reinvestedTaxSaving : 0)
     const überzahlungInflow = avInflow - subsidizedInflow
 
     const subsidizedGrossReturn = subsidizedCapital * netReturnRate

@@ -3,44 +3,44 @@
 exports[`/calculators/av-depot > produces complete calculation output for standard inputs 1`] = `
 {
   "finalCapital": {
-    "avDepot": "617.285€",
+    "avDepot": "615.070€",
     "normalDepot": "528.579€",
   },
   "firstPayoutYear": {
     "gross": {
-      "avDepot": "215.255€",
+      "avDepot": "214.481€",
       "normalDepot": "184.693€",
     },
     "net": {
-      "avDepot": "162.269€",
+      "avDepot": "161.594€",
       "normalDepot": "166.367€",
     },
     "tax": {
-      "avDepot": "52.986€",
+      "avDepot": "52.887€",
       "normalDepot": "18.326€",
     },
   },
   "payoutTotal": {
     "gross": {
-      "avDepot": "726.434€",
+      "avDepot": "723.799€",
       "normalDepot": "628.716€",
     },
     "net": {
-      "avDepot": "589.077€",
+      "avDepot": "586.541€",
       "normalDepot": "570.321€",
     },
     "tax": {
-      "avDepot": "137.357€",
+      "avDepot": "137.258€",
       "normalDepot": "58.395€",
     },
   },
   "regularPayoutYear": {
     "gross": {
-      "avDepot": "30.069€",
+      "avDepot": "29.960€",
       "normalDepot": "26.119€",
     },
     "net": {
-      "avDepot": "25.106€",
+      "avDepot": "24.997€",
       "normalDepot": "23.762€",
     },
     "tax": {
@@ -51,7 +51,7 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
   "savingsPerYear": [
     {
       "capitalEnd": {
-        "avDepot": "5.812€",
+        "avDepot": "5.540€",
         "normalDepot": "5.000€",
       },
       "capitalStart": {
@@ -59,7 +59,7 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "0,00€",
       },
       "contribution": {
-        "avDepot": "5.812€",
+        "avDepot": "5.540€",
         "normalDepot": "5.000€",
       },
       "grossReturn": {
@@ -78,11 +78,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "12.020€",
+        "avDepot": "11.729€",
         "normalDepot": "10.350€",
       },
       "capitalStart": {
-        "avDepot": "5.812€",
+        "avDepot": "5.540€",
         "normalDepot": "5.000€",
       },
       "contribution": {
@@ -90,11 +90,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "395,76€",
+        "avDepot": "376,72€",
         "normalDepot": "350,00€",
       },
       "vorabpauschale": {
-        "avDepot": "4,00€",
+        "avDepot": "0,00€",
         "normalDepot": "73,50€",
       },
       "vorabpauschaleTax": {
@@ -105,11 +105,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "18.650€",
+        "avDepot": "18.339€",
         "normalDepot": "16.075€",
       },
       "capitalStart": {
-        "avDepot": "12.020€",
+        "avDepot": "11.729€",
         "normalDepot": "10.350€",
       },
       "contribution": {
@@ -117,11 +117,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "818,47€",
+        "avDepot": "798,10€",
         "normalDepot": "724,50€",
       },
       "vorabpauschale": {
-        "avDepot": "8,28€",
+        "avDepot": "4,00€",
         "normalDepot": "152,15€",
       },
       "vorabpauschaleTax": {
@@ -132,11 +132,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "25.732€",
+        "avDepot": "25.399€",
         "normalDepot": "22.200€",
       },
       "capitalStart": {
-        "avDepot": "18.650€",
+        "avDepot": "18.339€",
         "normalDepot": "16.075€",
       },
       "contribution": {
@@ -144,11 +144,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "1.270€",
+        "avDepot": "1.248€",
         "normalDepot": "1.125€",
       },
       "vorabpauschale": {
-        "avDepot": "12,85€",
+        "avDepot": "8,28€",
         "normalDepot": "236,30€",
       },
       "vorabpauschaleTax": {
@@ -159,11 +159,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "33.296€",
+        "avDepot": "32.940€",
         "normalDepot": "28.754€",
       },
       "capitalStart": {
-        "avDepot": "25.732€",
+        "avDepot": "25.399€",
         "normalDepot": "22.200€",
       },
       "contribution": {
@@ -171,11 +171,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "1.752€",
+        "avDepot": "1.729€",
         "normalDepot": "1.554€",
       },
       "vorabpauschale": {
-        "avDepot": "17,75€",
+        "avDepot": "12,85€",
         "normalDepot": "326,34€",
       },
       "vorabpauschaleTax": {
@@ -186,11 +186,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "41.376€",
+        "avDepot": "40.994€",
         "normalDepot": "35.766€",
       },
       "capitalStart": {
-        "avDepot": "33.296€",
+        "avDepot": "32.940€",
         "normalDepot": "28.754€",
       },
       "contribution": {
@@ -198,11 +198,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "2.267€",
+        "avDepot": "2.242€",
         "normalDepot": "2.013€",
       },
       "vorabpauschale": {
-        "avDepot": "22,99€",
+        "avDepot": "17,75€",
         "normalDepot": "422,68€",
       },
       "vorabpauschaleTax": {
@@ -213,11 +213,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "50.005€",
+        "avDepot": "49.597€",
         "normalDepot": "43.270€",
       },
       "capitalStart": {
-        "avDepot": "41.376€",
+        "avDepot": "40.994€",
         "normalDepot": "35.766€",
       },
       "contribution": {
@@ -225,11 +225,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "2.817€",
+        "avDepot": "2.791€",
         "normalDepot": "2.504€",
       },
       "vorabpauschale": {
-        "avDepot": "28,60€",
+        "avDepot": "22,99€",
         "normalDepot": "525,77€",
       },
       "vorabpauschaleTax": {
@@ -240,11 +240,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "59.222€",
+        "avDepot": "58.785€",
         "normalDepot": "51.299€",
       },
       "capitalStart": {
-        "avDepot": "50.005€",
+        "avDepot": "49.597€",
         "normalDepot": "43.270€",
       },
       "contribution": {
@@ -252,11 +252,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "3.405€",
+        "avDepot": "3.376€",
         "normalDepot": "3.029€",
       },
       "vorabpauschale": {
-        "avDepot": "34,60€",
+        "avDepot": "28,60€",
         "normalDepot": "636,07€",
       },
       "vorabpauschaleTax": {
@@ -267,11 +267,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "69.067€",
+        "avDepot": "68.600€",
         "normalDepot": "59.890€",
       },
       "capitalStart": {
-        "avDepot": "59.222€",
+        "avDepot": "58.785€",
         "normalDepot": "51.299€",
       },
       "contribution": {
@@ -279,11 +279,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "4.033€",
+        "avDepot": "4.002€",
         "normalDepot": "3.591€",
       },
       "vorabpauschale": {
-        "avDepot": "41,02€",
+        "avDepot": "34,60€",
         "normalDepot": "754,10€",
       },
       "vorabpauschaleTax": {
@@ -294,11 +294,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "79.582€",
+        "avDepot": "79.082€",
         "normalDepot": "69.082€",
       },
       "capitalStart": {
-        "avDepot": "69.067€",
+        "avDepot": "68.600€",
         "normalDepot": "59.890€",
       },
       "contribution": {
@@ -306,11 +306,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "4.703€",
+        "avDepot": "4.670€",
         "normalDepot": "4.192€",
       },
       "vorabpauschale": {
-        "avDepot": "47,89€",
+        "avDepot": "41,02€",
         "normalDepot": "880,38€",
       },
       "vorabpauschaleTax": {
@@ -321,11 +321,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "90.813€",
+        "avDepot": "90.278€",
         "normalDepot": "78.914€",
       },
       "capitalStart": {
-        "avDepot": "79.582€",
+        "avDepot": "79.082€",
         "normalDepot": "69.082€",
       },
       "contribution": {
@@ -333,11 +333,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "5.419€",
+        "avDepot": "5.384€",
         "normalDepot": "4.836€",
       },
       "vorabpauschale": {
-        "avDepot": "55,24€",
+        "avDepot": "47,89€",
         "normalDepot": "1.016€",
       },
       "vorabpauschaleTax": {
@@ -348,11 +348,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "102.809€",
+        "avDepot": "102.236€",
         "normalDepot": "89.396€",
       },
       "capitalStart": {
-        "avDepot": "90.813€",
+        "avDepot": "90.278€",
         "normalDepot": "78.914€",
       },
       "contribution": {
@@ -360,11 +360,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "6.184€",
+        "avDepot": "6.146€",
         "normalDepot": "5.524€",
       },
       "vorabpauschale": {
-        "avDepot": "63,11€",
+        "avDepot": "55,24€",
         "normalDepot": "1.160€",
       },
       "vorabpauschaleTax": {
@@ -375,11 +375,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "115.622€",
+        "avDepot": "115.009€",
         "normalDepot": "100.571€",
       },
       "capitalStart": {
-        "avDepot": "102.809€",
+        "avDepot": "102.236€",
         "normalDepot": "89.396€",
       },
       "contribution": {
@@ -387,11 +387,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "7.001€",
+        "avDepot": "6.961€",
         "normalDepot": "6.258€",
       },
       "vorabpauschale": {
-        "avDepot": "71,53€",
+        "avDepot": "63,11€",
         "normalDepot": "1.314€",
       },
       "vorabpauschaleTax": {
@@ -402,11 +402,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "129.307€",
+        "avDepot": "128.651€",
         "normalDepot": "112.484€",
       },
       "capitalStart": {
-        "avDepot": "115.622€",
+        "avDepot": "115.009€",
         "normalDepot": "100.571€",
       },
       "contribution": {
@@ -414,11 +414,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "7.873€",
+        "avDepot": "7.830€",
         "normalDepot": "7.040€",
       },
       "vorabpauschale": {
-        "avDepot": "80,53€",
+        "avDepot": "71,53€",
         "normalDepot": "1.478€",
       },
       "vorabpauschaleTax": {
@@ -429,11 +429,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "143.924€",
+        "avDepot": "143.223€",
         "normalDepot": "125.186€",
       },
       "capitalStart": {
-        "avDepot": "129.307€",
+        "avDepot": "128.651€",
         "normalDepot": "112.484€",
       },
       "contribution": {
@@ -441,11 +441,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "8.805€",
+        "avDepot": "8.759€",
         "normalDepot": "7.874€",
       },
       "vorabpauschale": {
-        "avDepot": "90,17€",
+        "avDepot": "80,53€",
         "normalDepot": "1.654€",
       },
       "vorabpauschaleTax": {
@@ -456,11 +456,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "159.536€",
+        "avDepot": "158.786€",
         "normalDepot": "138.727€",
       },
       "capitalStart": {
-        "avDepot": "143.924€",
+        "avDepot": "143.223€",
         "normalDepot": "125.186€",
       },
       "contribution": {
@@ -468,11 +468,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "9.801€",
+        "avDepot": "9.751€",
         "normalDepot": "8.763€",
       },
       "vorabpauschale": {
-        "avDepot": "100,48€",
+        "avDepot": "90,17€",
         "normalDepot": "1.840€",
       },
       "vorabpauschaleTax": {
@@ -483,11 +483,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "176.212€",
+        "avDepot": "175.409€",
         "normalDepot": "153.164€",
       },
       "capitalStart": {
-        "avDepot": "159.536€",
+        "avDepot": "158.786€",
         "normalDepot": "138.727€",
       },
       "contribution": {
@@ -495,11 +495,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "10.864€",
+        "avDepot": "10.811€",
         "normalDepot": "9.711€",
       },
       "vorabpauschale": {
-        "avDepot": "111,51€",
+        "avDepot": "100,48€",
         "normalDepot": "2.039€",
       },
       "vorabpauschaleTax": {
@@ -510,11 +510,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "194.023€",
+        "avDepot": "193.164€",
         "normalDepot": "168.555€",
       },
       "capitalStart": {
-        "avDepot": "176.212€",
+        "avDepot": "175.409€",
         "normalDepot": "153.164€",
       },
       "contribution": {
@@ -522,11 +522,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "11.999€",
+        "avDepot": "11.943€",
         "normalDepot": "10.721€",
       },
       "vorabpauschale": {
-        "avDepot": "123,31€",
+        "avDepot": "111,51€",
         "normalDepot": "2.252€",
       },
       "vorabpauschaleTax": {
@@ -537,11 +537,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "213.047€",
+        "avDepot": "212.128€",
         "normalDepot": "184.965€",
       },
       "capitalStart": {
-        "avDepot": "194.023€",
+        "avDepot": "193.164€",
         "normalDepot": "168.555€",
       },
       "contribution": {
@@ -549,11 +549,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "13.212€",
+        "avDepot": "13.152€",
         "normalDepot": "11.799€",
       },
       "vorabpauschale": {
-        "avDepot": "135,94€",
+        "avDepot": "123,31€",
         "normalDepot": "2.478€",
       },
       "vorabpauschaleTax": {
@@ -564,11 +564,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "233.367€",
+        "avDepot": "232.383€",
         "normalDepot": "202.459€",
       },
       "capitalStart": {
-        "avDepot": "213.047€",
+        "avDepot": "212.128€",
         "normalDepot": "184.965€",
       },
       "contribution": {
@@ -576,11 +576,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "14.508€",
+        "avDepot": "14.443€",
         "normalDepot": "12.948€",
       },
       "vorabpauschale": {
-        "avDepot": "149,46€",
+        "avDepot": "135,94€",
         "normalDepot": "2.719€",
       },
       "vorabpauschaleTax": {
@@ -591,11 +591,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "255.070€",
+        "avDepot": "254.018€",
         "normalDepot": "221.110€",
       },
       "capitalStart": {
-        "avDepot": "233.367€",
+        "avDepot": "232.383€",
         "normalDepot": "202.459€",
       },
       "contribution": {
@@ -603,11 +603,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "15.891€",
+        "avDepot": "15.822€",
         "normalDepot": "14.172€",
       },
       "vorabpauschale": {
-        "avDepot": "163,92€",
+        "avDepot": "149,46€",
         "normalDepot": "2.976€",
       },
       "vorabpauschaleTax": {
@@ -618,11 +618,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "278.251€",
+        "avDepot": "277.125€",
         "normalDepot": "240.994€",
       },
       "capitalStart": {
-        "avDepot": "255.070€",
+        "avDepot": "254.018€",
         "normalDepot": "221.110€",
       },
       "contribution": {
@@ -630,11 +630,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "17.369€",
+        "avDepot": "17.296€",
         "normalDepot": "15.478€",
       },
       "vorabpauschale": {
-        "avDepot": "179,39€",
+        "avDepot": "163,92€",
         "normalDepot": "3.250€",
       },
       "vorabpauschaleTax": {
@@ -645,11 +645,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "303.011€",
+        "avDepot": "301.806€",
         "normalDepot": "262.193€",
       },
       "capitalStart": {
-        "avDepot": "278.251€",
+        "avDepot": "277.125€",
         "normalDepot": "240.994€",
       },
       "contribution": {
@@ -657,11 +657,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "18.948€",
+        "avDepot": "18.869€",
         "normalDepot": "16.870€",
       },
       "vorabpauschale": {
-        "avDepot": "195,94€",
+        "avDepot": "179,39€",
         "normalDepot": "3.543€",
       },
       "vorabpauschaleTax": {
@@ -672,11 +672,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "329.457€",
+        "avDepot": "328.168€",
         "normalDepot": "284.793€",
       },
       "capitalStart": {
-        "avDepot": "303.011€",
+        "avDepot": "301.806€",
         "normalDepot": "262.193€",
       },
       "contribution": {
@@ -684,11 +684,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "20.634€",
+        "avDepot": "20.549€",
         "normalDepot": "18.353€",
       },
       "vorabpauschale": {
-        "avDepot": "213,66€",
+        "avDepot": "195,94€",
         "normalDepot": "3.854€",
       },
       "vorabpauschaleTax": {
@@ -699,11 +699,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "357.704€",
+        "avDepot": "356.324€",
         "normalDepot": "308.888€",
       },
       "capitalStart": {
-        "avDepot": "329.457€",
+        "avDepot": "328.168€",
         "normalDepot": "284.793€",
       },
       "contribution": {
@@ -711,11 +711,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "22.435€",
+        "avDepot": "22.344€",
         "normalDepot": "19.936€",
       },
       "vorabpauschale": {
-        "avDepot": "232,61€",
+        "avDepot": "213,66€",
         "normalDepot": "4.186€",
       },
       "vorabpauschaleTax": {
@@ -726,11 +726,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "387.874€",
+        "avDepot": "386.398€",
         "normalDepot": "334.577€",
       },
       "capitalStart": {
-        "avDepot": "357.704€",
+        "avDepot": "356.324€",
         "normalDepot": "308.888€",
       },
       "contribution": {
@@ -738,11 +738,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "24.358€",
+        "avDepot": "24.262€",
         "normalDepot": "21.622€",
       },
       "vorabpauschale": {
-        "avDepot": "252,89€",
+        "avDepot": "232,61€",
         "normalDepot": "4.541€",
       },
       "vorabpauschaleTax": {
@@ -753,11 +753,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "420.099€",
+        "avDepot": "418.519€",
         "normalDepot": "361.964€",
       },
       "capitalStart": {
-        "avDepot": "387.874€",
+        "avDepot": "386.398€",
         "normalDepot": "334.577€",
       },
       "contribution": {
@@ -765,11 +765,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "26.413€",
+        "avDepot": "26.309€",
         "normalDepot": "23.420€",
       },
       "vorabpauschale": {
-        "avDepot": "274,60€",
+        "avDepot": "252,89€",
         "normalDepot": "4.918€",
       },
       "vorabpauschaleTax": {
@@ -780,11 +780,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "454.518€",
+        "avDepot": "452.828€",
         "normalDepot": "391.162€",
       },
       "capitalStart": {
-        "avDepot": "420.099€",
+        "avDepot": "418.519€",
         "normalDepot": "361.964€",
       },
       "contribution": {
@@ -792,11 +792,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "28.607€",
+        "avDepot": "28.497€",
         "normalDepot": "25.337€",
       },
       "vorabpauschale": {
-        "avDepot": "297,82€",
+        "avDepot": "274,60€",
         "normalDepot": "5.321€",
       },
       "vorabpauschaleTax": {
@@ -807,11 +807,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "491.281€",
+        "avDepot": "489.473€",
         "normalDepot": "422.290€",
       },
       "capitalStart": {
-        "avDepot": "454.518€",
+        "avDepot": "452.828€",
         "normalDepot": "391.162€",
       },
       "contribution": {
@@ -819,11 +819,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "30.951€",
+        "avDepot": "30.833€",
         "normalDepot": "27.381€",
       },
       "vorabpauschale": {
-        "avDepot": "322,66€",
+        "avDepot": "297,82€",
         "normalDepot": "5.750€",
       },
       "vorabpauschaleTax": {
@@ -834,11 +834,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "530.548€",
+        "avDepot": "528.613€",
         "normalDepot": "455.477€",
       },
       "capitalStart": {
-        "avDepot": "491.281€",
+        "avDepot": "489.473€",
         "normalDepot": "422.290€",
       },
       "contribution": {
@@ -846,11 +846,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "33.455€",
+        "avDepot": "33.328€",
         "normalDepot": "29.560€",
       },
       "vorabpauschale": {
-        "avDepot": "349,25€",
+        "avDepot": "322,66€",
         "normalDepot": "6.208€",
       },
       "vorabpauschaleTax": {
@@ -861,11 +861,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "572.488€",
+        "avDepot": "570.418€",
         "normalDepot": "490.858€",
       },
       "capitalStart": {
-        "avDepot": "530.548€",
+        "avDepot": "528.613€",
         "normalDepot": "455.477€",
       },
       "contribution": {
@@ -873,11 +873,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "36.129€",
+        "avDepot": "35.993€",
         "normalDepot": "31.883€",
       },
       "vorabpauschale": {
-        "avDepot": "377,69€",
+        "avDepot": "349,25€",
         "normalDepot": "6.696€",
       },
       "vorabpauschaleTax": {
@@ -888,11 +888,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     {
       "capitalEnd": {
-        "avDepot": "617.285€",
+        "avDepot": "615.070€",
         "normalDepot": "528.579€",
       },
       "capitalStart": {
-        "avDepot": "572.488€",
+        "avDepot": "570.418€",
         "normalDepot": "490.858€",
       },
       "contribution": {
@@ -900,11 +900,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.000€",
       },
       "grossReturn": {
-        "avDepot": "38.985€",
+        "avDepot": "38.840€",
         "normalDepot": "34.360€",
       },
       "vorabpauschale": {
-        "avDepot": "408,13€",
+        "avDepot": "377,69€",
         "normalDepot": "7.216€",
       },
       "vorabpauschaleTax": {
@@ -919,7 +919,7 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     "normalDepot": "160.000€",
   },
   "totalVorabpauschale": {
-    "avDepot": "4.468€",
+    "avDepot": "4.060€",
     "normalDepot": "80.415€",
   },
 }
