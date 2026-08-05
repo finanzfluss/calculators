@@ -154,13 +154,13 @@ describe('/calculators/av-depot', () => {
   it('applies the Berufseinsteigerbonus for savers under 25 in their first year', () => {
     const withBonus = avDepot.validateAndCalculate({
       ...sampleInputs(),
-      age: 20,
-      taxSavingsMode: 'consume',
+      age: 24,
+      taxSavingsMode: 'avDepot',
     })
     const withoutBonus = avDepot.validateAndCalculate({
       ...sampleInputs(),
       age: 25,
-      taxSavingsMode: 'consume',
+      taxSavingsMode: 'avDepot',
     })
 
     const firstYearContributionDiff =
@@ -168,6 +168,9 @@ describe('/calculators/av-depot', () => {
       parseCurrency(withoutBonus.savingsPerYear[0]!.contribution.avDepot)
 
     expect(firstYearContributionDiff).toBe(BERUFSEINSTEIGER_BONUS)
+    expect(withBonus.savingsPerYear[1]!.contribution.avDepot).toBe(
+      withoutBonus.savingsPerYear[1]!.contribution.avDepot,
+    )
   })
 
   it('applies günstigerprüfung when marginal income tax rate is lower than Abgeltungsteuer', () => {

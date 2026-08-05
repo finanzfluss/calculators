@@ -348,7 +348,7 @@ function calculateAvDepotSavings(input: CalculatorInput) {
   for (let year = 1; year <= savingYears; year++) {
     const capitalStart = subsidizedCapital + überzahlungCapital
     const contribution = savingsRate
-    const { grundzulage, kinderzulage } = calculateZulagen(
+    const { grundzulage, kinderzulage, starterBonus } = calculateZulagen(
       contribution,
       year,
       currentYear,
@@ -370,11 +370,15 @@ function calculateAvDepotSavings(input: CalculatorInput) {
     const ownContribToAv =
       taxSavingsMode === 'avDepot' ? contribution + taxSaving : contribution
     const subsidizedInflow =
-      Math.min(ownContribToAv, AV_SUBSIDIZED_CAP) + grundzulage + kinderzulage
+      Math.min(ownContribToAv, AV_SUBSIDIZED_CAP) +
+      grundzulage +
+      kinderzulage +
+      starterBonus
     const avInflow =
       contribution +
       grundzulage +
       kinderzulage +
+      starterBonus +
       (taxSavingsMode === 'avDepot' ? taxSaving : 0)
     const überzahlungInflow = avInflow - subsidizedInflow
 
@@ -564,16 +568,20 @@ function calculateZulagen(
   currentYear: number,
   age: number,
   childBirthYears: number[],
-): { grundzulage: number; kinderzulage: number } {
+): {
+  grundzulage: number
+  kinderzulage: number
+  starterBonus: number
+} {
   /* v8 ignore if -- @preserve —— unreachable while savingsRate's schema min equals MIN_OWN_CONTRIBUTION (120) */
   if (contribution < MIN_OWN_CONTRIBUTION)
-    return { grundzulage: 0, kinderzulage: 0 }
+    return { grundzulage: 0, kinderzulage: 0, starterBonus: 0 }
 
   const grundzulage =
     Math.min(contribution, 360) * 0.5 +
-    Math.max(0, Math.min(contribution, AV_SUBSIDIZED_CAP) - 360) * 0.25 +
-    (savingsYear === 1 && age < 25 ? BERUFSEINSTEIGER_BONUS : 0)
-
+    Math.max(0, Math.min(contribution, AV_SUBSIDIZED_CAP) - 360) * 0.25
+  const starterBonus =
+    savingsYear === 1 && age < 25 ? BERUFSEINSTEIGER_BONUS : 0
   const calendarYear = currentYear + savingsYear - 1
   const kinderzulage = childBirthYears.reduce((sum, birthYear) => {
     const childAge = calendarYear - birthYear
@@ -582,7 +590,7 @@ function calculateZulagen(
       : sum
   }, 0)
 
-  return { grundzulage, kinderzulage }
+  return { grundzulage, kinderzulage, starterBonus }
 }
 
 function grenzsteuer(amount: number, zve: number): number {
