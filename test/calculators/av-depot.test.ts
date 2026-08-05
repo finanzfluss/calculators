@@ -1,9 +1,18 @@
 import { describe, expect, it } from 'vitest'
 import { avDepot } from '../../src/calculators/av-depot'
+import {
+  addFundLot,
+  calculateGrossVorabpauschale,
+  calculateTaxableFundSaleGain,
+  createTaxableDepot,
+  growTaxableDepot,
+  sellFundLots,
+} from '../../src/calculators/av-depot-tax'
 import { incomeTax } from '../../src/calculators/income-tax'
 import {
   BERUFSEINSTEIGER_BONUS,
   INCOME_TAX_YEAR,
+  TAXABLE_EQUITY_FUND_FRACTION,
 } from '../../src/constants/av-depot'
 import { parseCurrency } from '../../src/utils'
 
@@ -187,6 +196,32 @@ describe('/calculators/av-depot', () => {
     expect(data.finalCapital.normalDepot).toMatchInlineSnapshot(`"551.091€"`)
     expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"554.239€"`)
     expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"592.392€"`)
+  })
+
+  it('caps the gross Vorabpauschale at the actual fund appreciation', () => {
+    const grossVorabpauschale = calculateGrossVorabpauschale(
+      100_000,
+      1_000,
+      0.03,
+    )
+
+    expect(grossVorabpauschale).toBe(1_000)
+    expect(grossVorabpauschale * TAXABLE_EQUITY_FUND_FRACTION).toBe(700)
+  })
+
+  it('deducts gross Vorabpauschalen before applying the partial exemption', () => {
+    expect(calculateTaxableFundSaleGain(20_000, 2_100)).toBe(12_530)
+  })
+
+  it('uses FIFO when selling shares from a taxable depot', () => {
+    const depot = createTaxableDepot()
+    addFundLot(depot, 100)
+    growTaxableDepot(depot, 1)
+    addFundLot(depot, 100)
+
+    const sale = sellFundLots(depot, 150)
+
+    expect(sale.taxableGain).toBeCloseTo(52.5)
   })
 
   it('calculates the § 10a benefit from tariff income tax without solidarity surcharge', () => {
