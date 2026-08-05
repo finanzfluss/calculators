@@ -360,8 +360,8 @@ function calculateAvDepotSavings(input: CalculatorInput) {
       Math.min(contribution, AV_SUBSIDIZED_CAP) + grundzulage + kinderzulage
     const taxSaving = Math.max(
       0,
-      germanIncomeTax(zveSavingsPhase) -
-        germanIncomeTax(Math.max(0, zveSavingsPhase - deductionBase)) -
+      germanTariffIncomeTax(zveSavingsPhase) -
+        germanTariffIncomeTax(Math.max(0, zveSavingsPhase - deductionBase)) -
         grundzulage -
         kinderzulage,
     )
@@ -594,7 +594,7 @@ function calculateZulagen(
 }
 
 function grenzsteuer(amount: number, zve: number): number {
-  return germanIncomeTax(zve + amount) - germanIncomeTax(zve)
+  return germanTaxIncludingSoli(zve + amount) - germanTaxIncludingSoli(zve)
 }
 
 function günstigerprüfung(taxableGain: number, zve: number): number {
@@ -603,9 +603,14 @@ function günstigerprüfung(taxableGain: number, zve: number): number {
   return Math.min(kapitalertragsteuer, grenzsteuerbetrag)
 }
 
-function germanIncomeTax(zve: number): number {
-  return parseCurrency(
-    incomeTax.calculate({ zve, splitting: false, year: INCOME_TAX_YEAR }).total
-      .amount,
-  )
+function germanTaxIncludingSoli(zve: number): number {
+  return parseCurrency(calculateGermanIncomeTax(zve).total.amount)
+}
+
+function germanTariffIncomeTax(zve: number): number {
+  return parseCurrency(calculateGermanIncomeTax(zve).incomeTax.amount)
+}
+
+function calculateGermanIncomeTax(zve: number) {
+  return incomeTax.calculate({ zve, splitting: false, year: INCOME_TAX_YEAR })
 }

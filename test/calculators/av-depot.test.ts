@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import { avDepot } from '../../src/calculators/av-depot'
-import { BERUFSEINSTEIGER_BONUS } from '../../src/constants/av-depot'
+import { incomeTax } from '../../src/calculators/income-tax'
+import {
+  BERUFSEINSTEIGER_BONUS,
+  INCOME_TAX_YEAR,
+} from '../../src/constants/av-depot'
 import { parseCurrency } from '../../src/utils'
 
 describe('/calculators/av-depot', () => {
@@ -183,6 +187,48 @@ describe('/calculators/av-depot', () => {
     expect(data.finalCapital.normalDepot).toMatchInlineSnapshot(`"551.091€"`)
     expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"554.239€"`)
     expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"592.392€"`)
+  })
+
+  it('calculates the § 10a benefit from tariff income tax without solidarity surcharge', () => {
+    const common = {
+      ...sampleInputs(),
+      age: 63,
+      retirementAge: 65,
+      savingsRate: 1_800,
+      zveSavingsPhase: 100_000,
+      etfReturnRate: 1,
+      avDepotCosts: 0,
+      baseRate: 0,
+      oneTimePayout: 0,
+      payoutReturnRate: 1,
+    }
+    const consumed = avDepot.validateAndCalculate({
+      ...common,
+      taxSavingsMode: 'consume',
+    })
+    const reinvested = avDepot.validateAndCalculate({
+      ...common,
+      taxSavingsMode: 'secondaryDepot',
+    })
+    const tariffTax = (zve: number) =>
+      parseCurrency(
+        incomeTax.validateAndCalculate({
+          zve,
+          splitting: false,
+          year: String(INCOME_TAX_YEAR),
+        }).incomeTax.amount,
+      )
+    const grundzulage = 540
+    const expectedBenefit =
+      tariffTax(common.zveSavingsPhase) -
+      tariffTax(common.zveSavingsPhase - common.savingsRate - grundzulage) -
+      grundzulage
+
+    expect(
+      parseCurrency(reinvested.savingsPerYear[0]!.contribution.avDepot) -
+        parseCurrency(consumed.savingsPerYear[0]!.contribution.avDepot),
+    ).toBe(expectedBenefit)
+    expect(expectedBenefit).toBe(443)
   })
 })
 
