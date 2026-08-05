@@ -48,7 +48,7 @@ const schema = z
       .positive()
       .max(100)
       .transform((v) => v / 100),
-    payoutUntilAge: z.coerce.number().min(85).max(120),
+    payoutUntilAge: z.coerce.number().int().min(85).max(120),
     childBirthYears: z.preprocess(
       (val) => (val === undefined ? [] : Array.isArray(val) ? val : [val]),
       z.array(z.coerce.number().int().min(1900)),
@@ -65,7 +65,7 @@ const schema = z
   })
   .refine((data) => data.retirementAge < data.payoutUntilAge, {
     message: 'retirementAge must be less than payoutUntilAge',
-    path: ['retirementAge'],
+    path: ['payoutUntilAge'],
   })
   .refine((data) => data.avDepotCosts < data.etfReturnRate, {
     message: 'avDepotCosts must be less than etfReturnRate',

@@ -109,6 +109,15 @@ describe('/calculators/av-depot', () => {
     ).toThrow()
   })
 
+  it('rejects fractional payout ages in the whole-year model', () => {
+    expect(() =>
+      avDepot.validateAndCalculate({
+        ...sampleInputs(),
+        payoutUntilAge: 85.5,
+      }),
+    ).toThrow()
+  })
+
   it('treats omitted childBirthYears the same as an empty array', () => {
     const { childBirthYears: _childBirthYears, ...inputsWithoutChildren } =
       sampleInputs()
