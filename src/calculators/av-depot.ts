@@ -56,7 +56,8 @@ const schema = z
     currentYear: z.coerce
       .number()
       .int()
-      .default(() => new Date().getFullYear()),
+      .min(2027)
+      .default(() => Math.max(2027, new Date().getFullYear())),
   })
   .refine((data) => data.age < data.retirementAge, {
     message: 'age must be less than retirementAge',

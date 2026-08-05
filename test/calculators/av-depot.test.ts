@@ -85,20 +85,28 @@ describe('/calculators/av-depot', () => {
     expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"570.321€"`)
   })
 
-  it('defaults currentYear to the current calendar year when omitted', () => {
-    const realYear = new Date().getFullYear()
+  it('defaults to the product start year or the current year, whichever is later', () => {
     const { currentYear: _currentYear, ...inputsWithoutCurrentYear } =
       sampleInputs()
 
     const defaulted = avDepot.validateAndCalculate(inputsWithoutCurrentYear)
-    const explicitRealYear = avDepot.validateAndCalculate({
-      currentYear: realYear,
+    const explicitFirstProductYear = avDepot.validateAndCalculate({
+      currentYear: Math.max(2027, new Date().getFullYear()),
       ...inputsWithoutCurrentYear,
     })
 
     expect(defaulted.finalCapital.avDepot).toBe(
-      explicitRealYear.finalCapital.avDepot,
+      explicitFirstProductYear.finalCapital.avDepot,
     )
+  })
+
+  it('rejects contribution years before the product exists', () => {
+    expect(() =>
+      avDepot.validateAndCalculate({
+        ...sampleInputs(),
+        currentYear: 2026,
+      }),
+    ).toThrow()
   })
 
   it('treats omitted childBirthYears the same as an empty array', () => {
