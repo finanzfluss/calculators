@@ -251,11 +251,11 @@ describe('/calculators/av-depot', () => {
       retirementAge: 65,
       savingsRate: 1_800,
       zveSavingsPhase: 100_000,
-      etfReturnRate: 1,
+      etfReturnRate: 0,
       avDepotCosts: 0,
       baseRate: 0,
       oneTimePayout: 0,
-      payoutReturnRate: 1,
+      payoutReturnRate: 0,
     }
     const consumed = avDepot.validateAndCalculate({
       ...common,
@@ -313,11 +313,11 @@ describe('/calculators/av-depot', () => {
       currentYear: 2027,
       retirementAge: 65,
       savingsRate: 1_800,
-      etfReturnRate: 0.0001,
+      etfReturnRate: 0,
       avDepotCosts: 0,
       baseRate: 0,
       oneTimePayout: 0,
-      payoutReturnRate: 0.0001,
+      payoutReturnRate: 0,
       exemptionOrder: 0,
       payoutUntilAge: 85,
     }
@@ -339,6 +339,18 @@ describe('/calculators/av-depot', () => {
 
     expect(addedCapital).toBeGreaterThan(0)
     expect(addedNetPayout).toBeCloseTo(addedCapital, 2)
+  })
+
+  it('accepts loss scenarios and assesses no Vorabpauschale for them', () => {
+    const data = avDepot.validateAndCalculate({
+      ...sampleInputs(),
+      etfReturnRate: -10,
+      avDepotCosts: 0,
+      payoutReturnRate: -5,
+    })
+
+    expect(data.totalVorabpauschale.normalDepot).toBe('0,00€')
+    expect(data.totalVorabpauschale.avDepot).toBe('0,00€')
   })
 })
 

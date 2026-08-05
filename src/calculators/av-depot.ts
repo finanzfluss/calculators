@@ -32,14 +32,14 @@ const schema = z
     savingsRate: z.coerce.number().min(120).max(13_680),
     etfReturnRate: z.coerce
       .number()
-      .positive()
+      .gt(-100)
       .max(100)
-      .transform((v) => v / 100),
+      .transform((value) => value / 100),
     avDepotCosts: z.coerce
       .number()
       .min(0)
       .max(100)
-      .transform((v) => v / 100),
+      .transform((value) => value / 100),
     exemptionOrder: z.coerce.number().min(0).max(1000).default(1000),
     taxSavingsMode: z.enum(['avDepot', 'secondaryDepot', 'consume']),
     baseRate: z.coerce
@@ -47,20 +47,21 @@ const schema = z
       .min(0)
       .max(100)
       .default(0)
-      .transform((v) => v / 100),
+      .transform((value) => value / 100),
     oneTimePayout: z.coerce
       .number()
       .min(0)
       .max(30)
-      .transform((v) => v / 100),
+      .transform((value) => value / 100),
     payoutReturnRate: z.coerce
       .number()
-      .positive()
+      .gt(-100)
       .max(100)
-      .transform((v) => v / 100),
+      .transform((value) => value / 100),
     payoutUntilAge: z.coerce.number().int().min(85).max(120),
     childBirthYears: z.preprocess(
-      (val) => (val === undefined ? [] : Array.isArray(val) ? val : [val]),
+      (value) =>
+        value === undefined ? [] : Array.isArray(value) ? value : [value],
       z.array(z.coerce.number().int().min(1900)),
     ),
     currentYear: z.coerce
@@ -77,12 +78,12 @@ const schema = z
     message: 'retirementAge must be less than payoutUntilAge',
     path: ['payoutUntilAge'],
   })
-  .refine((data) => data.avDepotCosts < data.etfReturnRate, {
-    message: 'avDepotCosts must be less than etfReturnRate',
+  .refine((data) => data.etfReturnRate - data.avDepotCosts > -1, {
+    message: 'AV depot net return must be greater than -100%',
     path: ['avDepotCosts'],
   })
-  .refine((data) => data.avDepotCosts < data.payoutReturnRate, {
-    message: 'avDepotCosts must be less than payoutReturnRate',
+  .refine((data) => data.payoutReturnRate - data.avDepotCosts > -1, {
+    message: 'AV depot payout net return must be greater than -100%',
     path: ['avDepotCosts'],
   })
 
