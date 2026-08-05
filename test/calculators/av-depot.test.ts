@@ -352,6 +352,45 @@ describe('/calculators/av-depot', () => {
     expect(data.totalVorabpauschale.normalDepot).toBe('0,00€')
     expect(data.totalVorabpauschale.avDepot).toBe('0,00€')
   })
+
+  it('routes refunds beyond the inferred contract capacity to the secondary depot', () => {
+    const common = {
+      ...sampleInputs(),
+      savingsRate: 6_840,
+      avDepotCosts: 0,
+    }
+    const reinvestedInAv = avDepot.validateAndCalculate({
+      ...common,
+      taxSavingsMode: 'avDepot',
+    })
+    const reinvestedInSecondary = avDepot.validateAndCalculate({
+      ...common,
+      taxSavingsMode: 'secondaryDepot',
+    })
+
+    expect(reinvestedInAv.totalVorabpauschale.avDepot).toBe(
+      reinvestedInSecondary.totalVorabpauschale.avDepot,
+    )
+    expect(reinvestedInAv.finalCapital.avDepot).toBe(
+      reinvestedInSecondary.finalCapital.avDepot,
+    )
+  })
+
+  it('infers a second contract and rejects savings above both contracts', () => {
+    expect(() =>
+      avDepot.validateAndCalculate({
+        ...sampleInputs(),
+        savingsRate: 6_841,
+      }),
+    ).not.toThrow()
+
+    expect(() =>
+      avDepot.validateAndCalculate({
+        ...sampleInputs(),
+        savingsRate: 13_681,
+      }),
+    ).toThrow()
+  })
 })
 
 function sampleInputs() {

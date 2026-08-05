@@ -2,7 +2,9 @@ import type { TaxableDepotState } from './av-depot-tax'
 import { z } from 'zod'
 import {
   ABGELTUNGSTEUERSATZ,
+  AV_CONTRACT_CONTRIBUTION_CAP,
   AV_SUBSIDIZED_CAP,
+  AV_TOTAL_CONTRIBUTION_CAP,
   BERUFSEINSTEIGER_BONUS,
   INCOME_TAX_YEAR,
   KINDERZULAGE_CAP,
@@ -29,7 +31,10 @@ const schema = z
     retirementAge: z.coerce.number().int().min(65).max(70),
     zveSavingsPhase: z.coerce.number().min(0),
     zveRetirement: z.coerce.number().min(0),
-    savingsRate: z.coerce.number().min(120).max(13_680),
+    savingsRate: z.coerce
+      .number()
+      .min(MIN_OWN_CONTRIBUTION)
+      .max(AV_TOTAL_CONTRIBUTION_CAP),
     etfReturnRate: z.coerce
       .number()
       .gt(-100)
@@ -416,139 +421,156 @@ function calculateNormalDepotPayout(
 }
 
 function calculateAvDepotSavings(input: CalculatorInput) {
-  const {
-    savingsRate,
-    etfReturnRate,
-    avDepotCosts,
-    baseRate,
-    exemptionOrder,
-    age,
-    retirementAge,
-    zveSavingsPhase,
-    taxSavingsMode,
-    currentYear,
-    childBirthYears,
-  } = input
-
-  const savingYears = retirementAge - age
-  const netReturnRate = etfReturnRate - avDepotCosts
+  const savingYears = input.retirementAge - input.age
+  const netReturnRate = input.etfReturnRate - input.avDepotCosts
   const yearlyData: SavingsYear[] = []
+  const secondaryDepot = createTaxableDepot()
   let subsidizedCapital = 0
-  let überzahlungCapital = 0
-  let totalOwnContributions = 0
-  let totalÜberzahlung = 0
-  const taxSavings: number[] = []
+  let unsubsidizedCapital = 0
+  let unsubsidizedContributionBasis = 0
   let pendingTaxSaving = 0
+  let totalSecondaryVorabpauschale = 0
+  const contractContributionCap =
+    input.savingsRate <= AV_CONTRACT_CONTRIBUTION_CAP
+      ? AV_CONTRACT_CONTRIBUTION_CAP
+      : AV_TOTAL_CONTRIBUTION_CAP
 
-  for (let year = 1; year <= savingYears; year++) {
-    const capitalStart = subsidizedCapital + überzahlungCapital
-    const contribution = savingsRate
-    const reinvestedTaxSaving = pendingTaxSaving
-    const ownContribToAv =
-      taxSavingsMode === 'avDepot'
-        ? contribution + reinvestedTaxSaving
-        : contribution
-    const { grundzulage, kinderzulage, starterBonus } = calculateZulagen(
-      ownContribToAv,
-      year,
-      currentYear,
-      age,
-      childBirthYears,
+  for (let index = 0; index < savingYears; index++) {
+    const savingsYear = index + 1
+    const capitalStart =
+      subsidizedCapital +
+      unsubsidizedCapital +
+      getTaxableDepotValue(secondaryDepot)
+
+    const reinvestment = allocateTaxSaving(
+      pendingTaxSaving,
+      input.savingsRate,
+      contractContributionCap,
+      input.taxSavingsMode,
     )
-
-    const deductionBase =
-      Math.min(ownContribToAv, AV_SUBSIDIZED_CAP) + grundzulage + kinderzulage
-    if (year < savingYears) {
-      pendingTaxSaving = Math.max(
-        0,
-        germanTariffIncomeTax(zveSavingsPhase) -
-          germanTariffIncomeTax(Math.max(0, zveSavingsPhase - deductionBase)) -
-          grundzulage -
-          kinderzulage,
+    const contractOwnContribution = input.savingsRate + reinvestment.avDepot
+    const { grundzulage, kinderzulage, starterBonus } = calculateZulagen(
+      contractOwnContribution,
+      savingsYear,
+      input.currentYear,
+      input.age,
+      input.childBirthYears,
+    )
+    const subsidizedOwnContribution = Math.min(
+      contractOwnContribution,
+      AV_SUBSIDIZED_CAP,
+    )
+    const unsubsidizedOwnContribution =
+      contractOwnContribution - subsidizedOwnContribution
+    if (index < savingYears - 1) {
+      const deductionBase =
+        subsidizedOwnContribution + grundzulage + kinderzulage
+      pendingTaxSaving = calculateTaxSaving(
+        deductionBase,
+        grundzulage + kinderzulage,
+        input,
       )
     }
-    taxSavings.push(reinvestedTaxSaving)
 
-    const subsidizedInflow =
-      Math.min(ownContribToAv, AV_SUBSIDIZED_CAP) +
+    const subsidizedGrossReturn = subsidizedCapital * netReturnRate
+    const unsubsidizedGrossReturn = unsubsidizedCapital * netReturnRate
+    subsidizedCapital +=
+      subsidizedGrossReturn +
+      subsidizedOwnContribution +
       grundzulage +
       kinderzulage +
       starterBonus
+    unsubsidizedCapital += unsubsidizedGrossReturn + unsubsidizedOwnContribution
+    unsubsidizedContributionBasis += unsubsidizedOwnContribution
+
+    const secondaryYear = advanceTaxableSavingsYear(
+      secondaryDepot,
+      reinvestment.secondaryDepot,
+      input.etfReturnRate,
+      input.baseRate,
+      input.exemptionOrder,
+      input.zveSavingsPhase,
+      savingsYear,
+    )
+    totalSecondaryVorabpauschale += secondaryYear.vorabpauschale
+
     const avInflow =
-      contribution +
-      grundzulage +
-      kinderzulage +
-      starterBonus +
-      (taxSavingsMode === 'avDepot' ? reinvestedTaxSaving : 0)
-    const überzahlungInflow = avInflow - subsidizedInflow
-
-    const subsidizedGrossReturn = subsidizedCapital * netReturnRate
-    const überzahlungGrossReturn = überzahlungCapital * netReturnRate
-    const grossReturn = subsidizedGrossReturn + überzahlungGrossReturn
-
-    subsidizedCapital =
-      subsidizedCapital + subsidizedInflow + subsidizedGrossReturn
-    überzahlungCapital =
-      überzahlungCapital + überzahlungInflow + überzahlungGrossReturn
-    const capitalEnd = subsidizedCapital + überzahlungCapital
-
-    totalOwnContributions += contribution
-    totalÜberzahlung += überzahlungInflow
-
+      contractOwnContribution + grundzulage + kinderzulage + starterBonus
     yearlyData.push({
-      year,
-      contribution: avInflow,
+      year: savingsYear,
+      contribution: avInflow + reinvestment.secondaryDepot,
       capitalStart,
-      grossReturn,
-      vorabpauschale: 0,
-      vorabpauschaleTax: 0,
-      capitalEnd,
+      grossReturn:
+        subsidizedGrossReturn +
+        unsubsidizedGrossReturn +
+        secondaryYear.grossReturn,
+      vorabpauschale: secondaryYear.vorabpauschale,
+      vorabpauschaleTax: secondaryYear.vorabpauschaleTax,
+      capitalEnd:
+        subsidizedCapital +
+        unsubsidizedCapital +
+        getTaxableDepotValue(secondaryDepot),
     })
   }
 
-  const secondaryDepot =
-    taxSavingsMode === 'secondaryDepot'
-      ? calculateDepotSavings(
-          taxSavings,
-          etfReturnRate,
-          baseRate,
-          exemptionOrder,
-          zveSavingsPhase,
-        )
-      : undefined
-
-  const yearlyDataWithSecondaryDepot = secondaryDepot
-    ? yearlyData.map((av, i) => {
-        const secondary = secondaryDepot.yearlyData[i]!
-        return {
-          ...av,
-          contribution: av.contribution + secondary.contribution,
-          capitalStart: av.capitalStart + secondary.capitalStart,
-          grossReturn: av.grossReturn + secondary.grossReturn,
-          vorabpauschale: av.vorabpauschale + secondary.vorabpauschale,
-          vorabpauschaleTax: av.vorabpauschaleTax + secondary.vorabpauschaleTax,
-          capitalEnd: av.capitalEnd + secondary.capitalEnd,
-        }
-      })
-    : yearlyData
+  const secondaryDepotCapital = getTaxableDepotValue(secondaryDepot)
+  const secondaryDepotContributions = secondaryDepot.lots.reduce(
+    (sum, lot) => sum + lot.basis,
+    0,
+  )
+  const secondaryDepotVorabpauschale = secondaryDepot.lots.reduce(
+    (sum, lot) => sum + lot.grossVorabpauschale,
+    0,
+  )
 
   return {
     result: {
-      yearlyData: yearlyDataWithSecondaryDepot,
+      yearlyData,
       finalCapital:
-        subsidizedCapital +
-        überzahlungCapital +
-        (secondaryDepot?.finalCapital ?? 0),
-      totalContributions: totalOwnContributions,
-      totalVorabpauschale: secondaryDepot?.totalVorabpauschale ?? 0,
+        subsidizedCapital + unsubsidizedCapital + secondaryDepotCapital,
+      totalContributions: input.savingsRate * savingYears,
+      totalVorabpauschale: totalSecondaryVorabpauschale,
     },
     subsidizedCapital,
-    überzahlungCapital,
-    totalÜberzahlungContributions: totalÜberzahlung,
-    secondaryDepotCapital: secondaryDepot?.finalCapital ?? 0,
-    secondaryDepotContributions: secondaryDepot?.totalContributions ?? 0,
-    secondaryDepotVorabpauschale: secondaryDepot?.totalVorabpauschale ?? 0,
+    überzahlungCapital: unsubsidizedCapital,
+    totalÜberzahlungContributions: unsubsidizedContributionBasis,
+    secondaryDepotCapital,
+    secondaryDepotContributions,
+    secondaryDepotVorabpauschale,
+    secondaryDepot,
   }
+}
+
+function allocateTaxSaving(
+  taxSaving: number,
+  regularContribution: number,
+  contributionCap: number,
+  mode: CalculatorInput['taxSavingsMode'],
+): { avDepot: number; secondaryDepot: number } {
+  if (mode === 'consume') return { avDepot: 0, secondaryDepot: 0 }
+  if (mode === 'secondaryDepot') {
+    return { avDepot: 0, secondaryDepot: taxSaving }
+  }
+
+  const avDepot = Math.min(taxSaving, contributionCap - regularContribution)
+  return { avDepot, secondaryDepot: taxSaving - avDepot }
+}
+
+function calculateTaxSaving(
+  deductionBase: number,
+  allowance: number,
+  input: CalculatorInput,
+): number {
+  // § 10a separately determines the additional tariff-income-tax reduction.
+  // A possible secondary solidarity-surcharge effect is outside this model.
+  return Math.max(
+    0,
+    germanTariffIncomeTax(input.zveSavingsPhase) -
+      germanTariffIncomeTax(
+        Math.max(0, input.zveSavingsPhase - deductionBase),
+      ) -
+      allowance,
+  )
 }
 
 function calculateAvDepotPayout(
@@ -673,10 +695,6 @@ function calculateZulagen(
   kinderzulage: number
   starterBonus: number
 } {
-  /* v8 ignore if -- @preserve —— unreachable while savingsRate's schema min equals MIN_OWN_CONTRIBUTION (120) */
-  if (contribution < MIN_OWN_CONTRIBUTION)
-    return { grundzulage: 0, kinderzulage: 0, starterBonus: 0 }
-
   const grundzulage =
     Math.min(contribution, 360) * 0.5 +
     Math.max(0, Math.min(contribution, AV_SUBSIDIZED_CAP) - 360) * 0.25
