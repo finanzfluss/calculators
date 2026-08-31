@@ -1,6 +1,7 @@
 /* eslint-disable unused-imports/no-unused-vars */
 import { describe, expect, it } from 'vitest'
 import { grossToNet } from '../../src/calculators/gross-to-net'
+import { parseCurrency } from '../../src/utils'
 
 const MONTHLY_PERIOD = 2
 const YEARLY_PERIOD = 1
@@ -59,6 +60,7 @@ const DEFAULT_VALUES: Record<string, string | number> = {
   healthInsurance: HEALTH_INSURANCE,
   additionalContribution: 1.1,
   pkvContribution: 0,
+  ppvContribution: 0,
   employerSubsidy: NO_EMPLOYER_SUBSIDY,
   pensionInsurance: PENSION_INSURANCE,
   levyOne: 0,
@@ -236,6 +238,107 @@ describe('calculators/gross-to-net', () => {
         }),
       )
 
+      expect(result).toMatchSnapshot()
+    })
+
+    it('reduces income tax via the Vorsorgepauschale (PKPV)', () => {
+      const withoutContribution = grossToNet.validateAndCalculate(
+        fakeTestValues({
+          healthInsurance: PRIVATE_HEALTH_INSURANCE,
+          pkvContribution: 0,
+          employerSubsidy: NO_EMPLOYER_SUBSIDY,
+        }),
+      )
+      const withContribution = grossToNet.validateAndCalculate(
+        fakeTestValues({
+          healthInsurance: PRIVATE_HEALTH_INSURANCE,
+          pkvContribution: 800,
+          employerSubsidy: NO_EMPLOYER_SUBSIDY,
+        }),
+      )
+
+      expect(
+        parseCurrency(withContribution.outputResIncomeTaxMonth),
+      ).toBeLessThan(parseCurrency(withoutContribution.outputResIncomeTaxMonth))
+    })
+  })
+
+  describe('private care insurance (PPV)', () => {
+    it('without employer subsidy', () => {
+      const withoutPpv = grossToNet.validateAndCalculate(
+        fakeTestValues({
+          healthInsurance: PRIVATE_HEALTH_INSURANCE,
+          pkvContribution: 800,
+          ppvContribution: 0,
+          employerSubsidy: NO_EMPLOYER_SUBSIDY,
+        }),
+      )
+      const withPpv = grossToNet.validateAndCalculate(
+        fakeTestValues({
+          healthInsurance: PRIVATE_HEALTH_INSURANCE,
+          pkvContribution: 800,
+          ppvContribution: 120,
+          employerSubsidy: NO_EMPLOYER_SUBSIDY,
+        }),
+      )
+
+      expect(withPpv.outputResPrivateCareInsuranceMonth).toBe('120€')
+      expect(withPpv.outputResPrivateCareInsuranceEmployerMonth).toBe('0€')
+      // the full PPV premium must reduce net pay, not just show up as a line item
+      expect(withPpv.outputResNetWageMonth).not.toBe(
+        withoutPpv.outputResNetWageMonth,
+      )
+      expect(withPpv).toMatchSnapshot()
+    })
+
+    it('with employer subsidy, under the cap', () => {
+      const result = grossToNet.validateAndCalculate(
+        fakeTestValues({
+          healthInsurance: PRIVATE_HEALTH_INSURANCE,
+          pkvContribution: 800,
+          ppvContribution: 100,
+          employerSubsidy: EMPLOYER_SUBSIDY,
+        }),
+      )
+
+      // below the cap, employee and employer split 50/50
+      expect(result.outputResPrivateCareInsuranceMonth).toBe(
+        result.outputResPrivateCareInsuranceEmployerMonth,
+      )
+      expect(result).toMatchSnapshot()
+    })
+
+    it('with employer subsidy, over the cap, Sachsen', () => {
+      const result = grossToNet.validateAndCalculate(
+        fakeTestValues({
+          healthInsurance: PRIVATE_HEALTH_INSURANCE,
+          pkvContribution: 800,
+          ppvContribution: 200,
+          employerSubsidy: EMPLOYER_SUBSIDY,
+          state: STATE_SACHSEN,
+        }),
+      )
+
+      // above the cap, the employer share is clamped and the employee absorbs the rest
+      expect(result.outputResPrivateCareInsuranceEmployerMonth).toBe('49,58€')
+      expect(result.outputResPrivateCareInsuranceMonth).not.toBe(
+        result.outputResPrivateCareInsuranceEmployerMonth,
+      )
+      expect(result).toMatchSnapshot()
+    })
+
+    it('applies the accounting year specific cap', () => {
+      const result = grossToNet.validateAndCalculate(
+        fakeTestValues({
+          accountingYear: '2026',
+          healthInsurance: PRIVATE_HEALTH_INSURANCE,
+          pkvContribution: 800,
+          ppvContribution: 250,
+          employerSubsidy: EMPLOYER_SUBSIDY,
+        }),
+      )
+
+      expect(result.outputResPrivateCareInsuranceEmployerMonth).toBe('104,63€')
       expect(result).toMatchSnapshot()
     })
   })
@@ -466,6 +569,7 @@ function fakeTestValues(options = {}) {
       'additionalContribution',
     ), // Zusatzbeitrag Prozentual
     inputPkvContribution: getOrDefault(options, 'pkvContribution'), // PKV-Beitrag
+    inputPpvContribution: getOrDefault(options, 'ppvContribution'), // PPV-Beitrag
     inputEmployerSubsidy: getOrDefault(options, 'employerSubsidy'), // Arbeitgeberzuschuss: 0 Nein, 1 Ja
     inputPensionInsurance: getOrDefault(options, 'pensionInsurance'), // Rentenversicherungspflicht: 0 Nein, 1 Ja
     inputLevyOne: getOrDefault(options, 'levyOne'), // Umlage U1

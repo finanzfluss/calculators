@@ -34,3 +34,16 @@ export const CARE_INSURANCE_CONTRIBUTION_RATES_SAXONY: CareInsuranceContribution
     { AN: 1.55, AG: 1.3 }, // 4 children
     { AN: 1.3, AG: 1.3 }, // 5 children
   ]
+export const PRIVATE_CARE_INSURANCE_EMPLOYER_RATES: Record<
+  number,
+  { default: number; saxony: number }
+> = {
+  2019: { default: 1.525, saxony: 1.025 },
+  2020: { default: 1.525, saxony: 1.025 },
+  2021: { default: 1.525, saxony: 1.025 },
+  2022: { default: 1.525, saxony: 1.025 },
+  2023: { default: 1.525, saxony: 1.025 },
+  2024: { default: 1.7, saxony: 1.2 },
+  2025: { default: 1.8, saxony: 1.3 },
+  2026: { default: 1.8, saxony: 1.3 },
+}

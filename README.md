@@ -135,6 +135,7 @@ const input = {
   inputChildren: 0,
   inputChildTaxAllowance: 0,
   inputPkvContribution: 0,
+  inputPpvContribution: 0,
   inputEmployerSubsidy: 0,
   inputPensionInsurance: 0,
   inputLevyOne: 0,
