@@ -363,6 +363,14 @@ function calculate({
   lst.setLzz(inputPeriod) // 1 Jahreslohn, 2 Monatslohn
   lst.setLzzhinzu(ZERO)
   lst.setPkv(inputHealthInsurance) // Krankenversicherung
+  if (inputHealthInsurance === 1) {
+    lst.setPkpv(
+      healthInsurance
+        .add(privateCareInsuranceEmployee)
+        .divide(ZAHL12, 50, BigDecimal.ROUND_HALF_DOWN)
+        .multiply(WageTaxClass.ZAHL100),
+    )
+  }
   lst.setPvs(inputState === 'Sachsen' ? 1 : 0) // Besonderheiten Pflegeversicherung in Sachsen
   lst.setR(inputChurchTax) // Kirchensteuer
   lst.setRe4(grossWage.multiply(WageTaxClass.ZAHL100)) // in Cents

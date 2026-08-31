@@ -1,6 +1,7 @@
 /* eslint-disable unused-imports/no-unused-vars */
 import { describe, expect, it } from 'vitest'
 import { grossToNet } from '../../src/calculators/gross-to-net'
+import { parseCurrency } from '../../src/utils'
 
 const MONTHLY_PERIOD = 2
 const YEARLY_PERIOD = 1
@@ -238,6 +239,27 @@ describe('calculators/gross-to-net', () => {
       )
 
       expect(result).toMatchSnapshot()
+    })
+
+    it('reduces income tax via the Vorsorgepauschale (PKPV)', () => {
+      const withoutContribution = grossToNet.validateAndCalculate(
+        fakeTestValues({
+          healthInsurance: PRIVATE_HEALTH_INSURANCE,
+          pkvContribution: 0,
+          employerSubsidy: NO_EMPLOYER_SUBSIDY,
+        }),
+      )
+      const withContribution = grossToNet.validateAndCalculate(
+        fakeTestValues({
+          healthInsurance: PRIVATE_HEALTH_INSURANCE,
+          pkvContribution: 800,
+          employerSubsidy: NO_EMPLOYER_SUBSIDY,
+        }),
+      )
+
+      expect(
+        parseCurrency(withContribution.outputResIncomeTaxMonth),
+      ).toBeLessThan(parseCurrency(withoutContribution.outputResIncomeTaxMonth))
     })
   })
 
