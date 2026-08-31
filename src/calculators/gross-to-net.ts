@@ -2,6 +2,7 @@ import { z } from 'zod'
 import {
   CARE_INSURANCE_CONTRIBUTION_RATES,
   CARE_INSURANCE_CONTRIBUTION_RATES_SAXONY,
+  PRIVATE_CARE_INSURANCE_EMPLOYER_RATES,
 } from '../constants/gross-to-net'
 import { PENSION_VALUES } from '../constants/pension'
 import { formatCurrencyNatural, formatPercent } from '../utils'
@@ -22,6 +23,7 @@ const schema = z.object({
   inputChildren: z.coerce.number().nonnegative().int().max(5).default(0),
   inputChildTaxAllowance: z.coerce.number(), // ZKF
   inputPkvContribution: z.coerce.number(),
+  inputPpvContribution: z.coerce.number(),
   inputEmployerSubsidy: z.coerce.number(),
   inputPensionInsurance: z.coerce.number(), // KRV
   inputLevyOne: z.coerce.number(),
@@ -53,6 +55,7 @@ function calculate({
   inputChildren,
   inputChildTaxAllowance,
   inputPkvContribution,
+  inputPpvContribution,
   inputEmployerSubsidy,
   inputPensionInsurance,
   inputLevyOne,
@@ -142,6 +145,8 @@ function calculate({
   let healthInsurance = ZERO
   let noCareInsurance = false
   let privateHealthInsurance = ZERO
+  let privateCareInsuranceEmployee = ZERO
+  let privateCareInsuranceEmployer = ZERO
 
   /* v8 ignore else -- @preserve */
   if (inputHealthInsurance === 0) {
@@ -153,6 +158,9 @@ function calculate({
 
     noCareInsurance = true
     healthInsurance = new BigDecimal(inputPkvContribution).multiply(ZAHL12)
+    privateCareInsuranceEmployee = new BigDecimal(
+      inputPpvContribution,
+    ).multiply(ZAHL12)
     if (inputEmployerSubsidy === 1) {
       let maxEmployerGrant =
         {
@@ -180,11 +188,45 @@ function calculate({
       } else {
         privateHealthInsurance = healthInsurance
       }
+
+      // Private Pflegepflichtversicherung (PPV), § 61 SGB XI
+      /* v8 ignore next -- @preserve */
+      const PPV_EMPLOYER_RATE_KEY =
+        Object.keys(PRIVATE_CARE_INSURANCE_EMPLOYER_RATES).find(
+          (key) => key === inputAccountingYear.toString(),
+        ) ?? Object.keys(PRIVATE_CARE_INSURANCE_EMPLOYER_RATES).at(-1)!
+      const ppvEmployerRate =
+        PRIVATE_CARE_INSURANCE_EMPLOYER_RATES[Number(PPV_EMPLOYER_RATE_KEY)]![
+          inputState === 'Sachsen' ? 'saxony' : 'default'
+        ]
+      const maxPpvEmployerGrant = SOCIAL_THRESHOLDS[
+        SOCIAL_INSURANCE_THRESHOLD_KEY
+      ]!.multiply(new BigDecimal(ppvEmployerRate)).divide(
+        ZAHL100,
+        50,
+        BigDecimal.ROUND_HALF_DOWN,
+      )
+
+      privateCareInsuranceEmployee = privateCareInsuranceEmployee.divide(
+        ZAHL2,
+        50,
+        BigDecimal.ROUND_HALF_DOWN,
+      )
+      if (privateCareInsuranceEmployee.comparedTo(maxPpvEmployerGrant) === 1) {
+        privateCareInsuranceEmployer = maxPpvEmployerGrant
+        privateCareInsuranceEmployee = privateCareInsuranceEmployee.add(
+          privateCareInsuranceEmployee.subtract(maxPpvEmployerGrant),
+        )
+      } else {
+        privateCareInsuranceEmployer = privateCareInsuranceEmployee
+      }
     }
   }
 
   if (GROSS_WAGE.comparedTo(ZAHL450.multiply(ZAHL12))! < 1) {
     healthInsurance = ZERO
+    privateCareInsuranceEmployee = ZERO
+    privateCareInsuranceEmployer = ZERO
   }
 
   // Pflegeversicherung
@@ -373,6 +415,7 @@ function calculate({
     .divide(WageTaxClass.ZAHL100, 50, BigDecimal.ROUND_HALF_DOWN)
   const insuranceComplete = healthInsurance
     .add(careInsurance)
+    .add(privateCareInsuranceEmployee)
     .add(pensionInsurance)
     .add(unemploymentInsurance)
     .divide(ZAHL12, 50, BigDecimal.ROUND_HALF_DOWN)
@@ -437,12 +480,29 @@ function calculate({
       inputEmployerSubsidy === 1 ? privateHealthInsurance : ZERO
   }
 
+  let employerPrivateCareInsuranceMonth = ZERO
+  let employerPrivateCareInsuranceYear = ZERO
+  if (inputHealthInsurance === 1) {
+    employerPrivateCareInsuranceMonth =
+      inputEmployerSubsidy === 1
+        ? privateCareInsuranceEmployer.divide(
+            ZAHL12,
+            50,
+            BigDecimal.ROUND_HALF_DOWN,
+          )
+        : ZERO
+    employerPrivateCareInsuranceYear =
+      inputEmployerSubsidy === 1 ? privateCareInsuranceEmployer : ZERO
+  }
+
   const employerTotalInsurances = employerHealthInsuranceMonth
     .add(employerCareInsuranceMonth)
+    .add(employerPrivateCareInsuranceMonth)
     .add(pensionInsurance.divide(ZAHL12, 50, BigDecimal.ROUND_HALF_DOWN))
     .add(unemploymentInsurance.divide(ZAHL12, 50, BigDecimal.ROUND_HALF_DOWN))
   const employerTotalInsurancesYear = employerHealthInsuranceYear
     .add(employerCareInsuranceYear)
+    .add(employerPrivateCareInsuranceYear)
     .add(pensionInsurance)
     .add(unemploymentInsurance)
 
@@ -510,6 +570,20 @@ function calculate({
     ),
     outputResPrivateHealthInsuranceEmployerYear: formatCurrencyNatural(
       privateHealthInsurance.toNumber(),
+    ),
+    outputResPrivateCareInsuranceMonth: formatCurrencyNatural(
+      privateCareInsuranceEmployee
+        .divide(ZAHL12, 50, BigDecimal.ROUND_HALF_DOWN)
+        .toNumber(),
+    ),
+    outputResPrivateCareInsuranceYear: formatCurrencyNatural(
+      privateCareInsuranceEmployee.toNumber(),
+    ),
+    outputResPrivateCareInsuranceEmployerMonth: formatCurrencyNatural(
+      employerPrivateCareInsuranceMonth.toNumber(),
+    ),
+    outputResPrivateCareInsuranceEmployerYear: formatCurrencyNatural(
+      employerPrivateCareInsuranceYear.toNumber(),
     ),
     outputDisableResCareInsurance: noCareInsurance,
     outputResCareInsurancePercentage: formatPercent(
