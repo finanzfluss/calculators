@@ -65,7 +65,7 @@ const schema = z
   })
   .refine((data) => data.retirementAge < data.payoutUntilAge, {
     message: 'retirementAge must be less than payoutUntilAge',
-    path: ['payoutUntilAge'],
+    path: ['retirementAge'],
   })
   .refine((data) => data.avDepotCosts < data.etfReturnRate, {
     message: 'avDepotCosts must be less than etfReturnRate',
