@@ -48,7 +48,7 @@ const schema = z
       .positive()
       .max(100)
       .transform((v) => v / 100),
-    payoutUntilAge: z.coerce.number().min(85).max(120),
+    payoutUntilAge: z.coerce.number().int().min(85).max(120),
     childBirthYears: z.preprocess(
       (val) => (val === undefined ? [] : Array.isArray(val) ? val : [val]),
       z.array(z.coerce.number().int().min(1900)),
@@ -56,7 +56,8 @@ const schema = z
     currentYear: z.coerce
       .number()
       .int()
-      .default(() => new Date().getFullYear()),
+      .min(2027)
+      .default(() => Math.max(2027, new Date().getFullYear())),
   })
   .refine((data) => data.age < data.retirementAge, {
     message: 'age must be less than retirementAge',

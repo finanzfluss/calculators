@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { avDepot } from '../../src/calculators/av-depot'
 import { BERUFSEINSTEIGER_BONUS } from '../../src/constants/av-depot'
 import { parseCurrency } from '../../src/utils'
@@ -85,20 +85,38 @@ describe('/calculators/av-depot', () => {
     expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"570.321€"`)
   })
 
-  it('defaults currentYear to the current calendar year when omitted', () => {
-    const realYear = new Date().getFullYear()
+  it('defaults to the product start year 2027 if current year is before 2027', () => {
+    vi.setSystemTime(`2026-01-01`)
     const { currentYear: _currentYear, ...inputsWithoutCurrentYear } =
       sampleInputs()
 
     const defaulted = avDepot.validateAndCalculate(inputsWithoutCurrentYear)
-    const explicitRealYear = avDepot.validateAndCalculate({
-      currentYear: realYear,
+    const explicitFirstProductYear = avDepot.validateAndCalculate({
+      currentYear: 2027,
       ...inputsWithoutCurrentYear,
     })
 
     expect(defaulted.finalCapital.avDepot).toBe(
-      explicitRealYear.finalCapital.avDepot,
+      explicitFirstProductYear.finalCapital.avDepot,
     )
+  })
+
+  it('rejects contribution years before the product exists', () => {
+    expect(() =>
+      avDepot.validateAndCalculate({
+        ...sampleInputs(),
+        currentYear: 2026,
+      }),
+    ).toThrow()
+  })
+
+  it('rejects fractional payout ages in the whole-year model', () => {
+    expect(() =>
+      avDepot.validateAndCalculate({
+        ...sampleInputs(),
+        payoutUntilAge: 85.5,
+      }),
+    ).toThrow()
   })
 
   it('treats omitted childBirthYears the same as an empty array', () => {
