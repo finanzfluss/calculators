@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { avDepot } from '../../src/calculators/av-depot'
 import { BERUFSEINSTEIGER_BONUS } from '../../src/constants/av-depot'
 import { parseCurrency } from '../../src/utils'
@@ -85,13 +85,14 @@ describe('/calculators/av-depot', () => {
     expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"570.321€"`)
   })
 
-  it('defaults to the product start year or the current year, whichever is later', () => {
+  it('defaults to the product start year 2027 if current year is before 2027', () => {
+    vi.setSystemTime(`2026-01-01`)
     const { currentYear: _currentYear, ...inputsWithoutCurrentYear } =
       sampleInputs()
 
     const defaulted = avDepot.validateAndCalculate(inputsWithoutCurrentYear)
     const explicitFirstProductYear = avDepot.validateAndCalculate({
-      currentYear: Math.max(2027, new Date().getFullYear()),
+      currentYear: 2027,
       ...inputsWithoutCurrentYear,
     })
 
