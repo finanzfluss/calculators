@@ -171,8 +171,8 @@ function calculate({
           2023: new BigDecimal(403.99),
           2024: new BigDecimal(421.76),
           2025: new BigDecimal(471.32),
-          2026: new BigDecimal(580.59),
-        }[inputAccountingYear] ?? new BigDecimal(580.59)
+          2026: new BigDecimal(508.59),
+        }[inputAccountingYear] ?? new BigDecimal(508.59)
       maxEmployerGrant = maxEmployerGrant.multiply(ZAHL12)
 
       healthInsurance = healthInsurance.divide(
