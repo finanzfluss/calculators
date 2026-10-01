@@ -182,6 +182,40 @@ describe('/calculators/av-depot', () => {
     expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"554.239€"`)
     expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"592.392€"`)
   })
+
+  it('lowers income tax with splitting for married couples', () => {
+    const single = avDepot.validateAndCalculate(sampleInputs())
+    const married = avDepot.validateAndCalculate({
+      ...sampleInputs(),
+      splitting: true,
+    })
+
+    expect(parseCurrency(married.payoutTotal.tax.avDepot)).toBeLessThan(
+      parseCurrency(single.payoutTotal.tax.avDepot),
+    )
+    expect(married.finalCapital.avDepot).toMatchInlineSnapshot(`"595.462€"`)
+    expect(married.finalCapital.normalDepot).toMatchInlineSnapshot(`"528.580€"`)
+    expect(married.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"616.277€"`)
+    expect(married.payoutTotal.net.normalDepot).toMatchInlineSnapshot(
+      `"599.659€"`,
+    )
+  })
+
+  it('accepts a Sparerpauschbetrag above 1000 only with splitting', () => {
+    expect(() =>
+      avDepot.validateAndCalculate({
+        ...sampleInputs(),
+        exemptionOrder: 2_000,
+      }),
+    ).toThrow()
+    expect(() =>
+      avDepot.validateAndCalculate({
+        ...sampleInputs(),
+        exemptionOrder: 2_000,
+        splitting: true,
+      }),
+    ).not.toThrow()
+  })
 })
 
 function sampleInputs() {

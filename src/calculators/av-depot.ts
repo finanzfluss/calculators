@@ -30,7 +30,7 @@ const schema = z
       .min(0)
       .max(100)
       .transform((v) => v / 100),
-    exemptionOrder: z.coerce.number().min(0).max(1000).default(1000),
+    exemptionOrder: z.coerce.number().min(0).max(2000).default(1000),
     taxSavingsMode: z.enum(['avDepot', 'secondaryDepot', 'consume']),
     baseRate: z.coerce
       .number()
@@ -58,6 +58,11 @@ const schema = z
       .int()
       .min(2027)
       .default(() => Math.max(2027, new Date().getFullYear())),
+    splitting: z.stringbool().or(z.boolean()).default(false),
+  })
+  .refine((data) => data.splitting || data.exemptionOrder <= 1000, {
+    message: 'exemptionOrder must not exceed 1000 without splitting',
+    path: ['exemptionOrder'],
   })
   .refine((data) => data.age < data.retirementAge, {
     message: 'age must be less than retirementAge',
@@ -215,6 +220,7 @@ function calculateNormalDepotSavings(input: CalculatorInput) {
     zveSavingsPhase,
     age,
     retirementAge,
+    splitting,
   } = input
   const savingYears = retirementAge - age
   return calculateDepotSavings(
@@ -223,6 +229,7 @@ function calculateNormalDepotSavings(input: CalculatorInput) {
     baseRate,
     exemptionOrder,
     zveSavingsPhase,
+    splitting,
   )
 }
 
@@ -232,6 +239,7 @@ function calculateDepotSavings(
   baseRateDecimal: number,
   exemptionOrder: number,
   zve: number,
+  splitting: boolean,
 ) {
   const yearlyData: SavingsYear[] = []
   let capitalStart = 0
@@ -245,6 +253,7 @@ function calculateDepotSavings(
     const vorabpauschaleTax = günstigerprüfung(
       Math.max(0, vorabpauschale - exemptionOrder),
       zve,
+      splitting,
     )
     const capitalEnd =
       capitalStart + contribution + grossReturn - vorabpauschaleTax
@@ -281,6 +290,7 @@ function calculateNormalDepotPayout(
     payoutUntilAge,
     retirementAge,
     oneTimePayout,
+    splitting,
   } = input
   const { finalCapital, totalContributions, totalVorabpauschale } = savings
 
@@ -299,7 +309,7 @@ function calculateNormalDepotPayout(
       0,
       grossPayout * gainFraction * TEILFREISTELLUNG - exemptionOrder,
     )
-    const tax = günstigerprüfung(taxableGain, zveRetirement)
+    const tax = günstigerprüfung(taxableGain, zveRetirement, splitting)
     return { grossPayout, tax, netPayout: grossPayout - tax }
   }
 
@@ -334,6 +344,7 @@ function calculateAvDepotSavings(input: CalculatorInput) {
     taxSavingsMode,
     currentYear,
     childBirthYears,
+    splitting,
   } = input
 
   const savingYears = retirementAge - age
@@ -360,8 +371,11 @@ function calculateAvDepotSavings(input: CalculatorInput) {
       Math.min(contribution, AV_SUBSIDIZED_CAP) + grundzulage + kinderzulage
     const taxSaving = Math.max(
       0,
-      germanIncomeTax(zveSavingsPhase) -
-        germanIncomeTax(Math.max(0, zveSavingsPhase - deductionBase)) -
+      germanIncomeTax(zveSavingsPhase, splitting) -
+        germanIncomeTax(
+          Math.max(0, zveSavingsPhase - deductionBase),
+          splitting,
+        ) -
         grundzulage -
         kinderzulage,
     )
@@ -410,6 +424,7 @@ function calculateAvDepotSavings(input: CalculatorInput) {
           baseRate,
           exemptionOrder,
           zveSavingsPhase,
+          splitting,
         )
       : undefined
 
@@ -460,6 +475,7 @@ function calculateAvDepotPayout(
     oneTimePayout,
     age,
     avDepotCosts,
+    splitting,
   } = input
   const {
     subsidizedCapital,
@@ -511,7 +527,11 @@ function calculateAvDepotPayout(
 
   const computePayoutYear = (avGross: number, secGross: number) => {
     const subsidizedAmount = avGross * subsidizedFraction
-    const subsidizedTax = grenzsteuer(subsidizedAmount, zveRetirement)
+    const subsidizedTax = grenzsteuer(
+      subsidizedAmount,
+      zveRetirement,
+      splitting,
+    )
 
     const überzahlungAmount = avGross * überzahlungFraction
     const überzahlungTaxableGain =
@@ -521,6 +541,7 @@ function calculateAvDepotPayout(
     const überzahlungTax = grenzsteuer(
       überzahlungTaxableGain,
       zveRetirement + subsidizedAmount,
+      splitting,
     )
 
     const secTaxableGain = Math.max(
@@ -530,6 +551,7 @@ function calculateAvDepotPayout(
     const secTax = günstigerprüfung(
       secTaxableGain,
       zveRetirement + subsidizedAmount + überzahlungTaxableGain,
+      splitting,
     )
 
     const grossPayout = avGross + secGross
@@ -585,19 +607,24 @@ function calculateZulagen(
   return { grundzulage, kinderzulage }
 }
 
-function grenzsteuer(amount: number, zve: number): number {
-  return germanIncomeTax(zve + amount) - germanIncomeTax(zve)
+function grenzsteuer(amount: number, zve: number, splitting: boolean): number {
+  return (
+    germanIncomeTax(zve + amount, splitting) - germanIncomeTax(zve, splitting)
+  )
 }
 
-function günstigerprüfung(taxableGain: number, zve: number): number {
+function günstigerprüfung(
+  taxableGain: number,
+  zve: number,
+  splitting: boolean,
+): number {
   const kapitalertragsteuer = taxableGain * ABGELTUNGSTEUERSATZ
-  const grenzsteuerbetrag = grenzsteuer(taxableGain, zve)
+  const grenzsteuerbetrag = grenzsteuer(taxableGain, zve, splitting)
   return Math.min(kapitalertragsteuer, grenzsteuerbetrag)
 }
 
-function germanIncomeTax(zve: number): number {
+function germanIncomeTax(zve: number, splitting: boolean): number {
   return parseCurrency(
-    incomeTax.calculate({ zve, splitting: false, year: INCOME_TAX_YEAR }).total
-      .amount,
+    incomeTax.calculate({ zve, splitting, year: INCOME_TAX_YEAR }).total.amount,
   )
 }

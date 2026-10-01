@@ -268,6 +268,7 @@ const input = {
   payoutReturnRate: 3, // percent
   payoutUntilAge: 85,
   childBirthYears: [], // enables Kinderzulage while children are under 18
+  splitting: false, // joint assessment (Zusammenveranlagung) for married couples
 }
 
 // Validate input and calculate AV-Depot result
