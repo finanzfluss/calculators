@@ -2,12 +2,12 @@ import { z } from 'zod'
 import {
   ABGELTUNGSTEUERSATZ,
   AV_SUBSIDIZED_CAP,
+  BASISERTRAG_FACTOR,
   BERUFSEINSTEIGER_BONUS,
   INCOME_TAX_YEAR,
   KINDERZULAGE_CAP,
   MIN_OWN_CONTRIBUTION,
   TEILFREISTELLUNG,
-  VORABPAUSCHALE_FACTOR,
 } from '../constants/av-depot'
 import { formatCurrencyAdaptive, parseCurrency, pmt } from '../utils'
 import { defineCalculator } from '../utils/calculator'
@@ -240,10 +240,12 @@ function calculateDepotSavings(
   for (let year = 1; year <= contributions.length; year++) {
     const contribution = contributions[year - 1]!
     const grossReturn = capitalStart * returnRate
-    const vorabpauschale =
-      capitalStart * baseRateDecimal * VORABPAUSCHALE_FACTOR
+    const vorabpauschale = Math.min(
+      capitalStart * baseRateDecimal * BASISERTRAG_FACTOR,
+      grossReturn,
+    )
     const vorabpauschaleTax = günstigerprüfung(
-      Math.max(0, vorabpauschale - exemptionOrder),
+      Math.max(0, vorabpauschale * TEILFREISTELLUNG - exemptionOrder),
       zve,
     )
     const capitalEnd =
