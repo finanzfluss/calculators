@@ -253,6 +253,24 @@ describe('/calculators/av-depot', () => {
     ).toBeGreaterThan(0)
     expect(parseCurrency(data.firstPayoutYear.tax.normalDepot)).toBe(0)
   })
+
+  it('moves reinvested tax savings beyond the contribution cap to the secondary depot', () => {
+    const common = {
+      ...sampleInputs(),
+      savingsRate: 13_680,
+      zveSavingsPhase: 100_000,
+    }
+    const avDepotMode = avDepot.validateAndCalculate({
+      ...common,
+      taxSavingsMode: 'avDepot',
+    })
+    const secondaryDepotMode = avDepot.validateAndCalculate({
+      ...common,
+      taxSavingsMode: 'secondaryDepot',
+    })
+
+    expect(avDepotMode).toEqual(secondaryDepotMode)
+  })
 })
 
 function sampleInputs() {

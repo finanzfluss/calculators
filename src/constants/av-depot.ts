@@ -2,6 +2,7 @@ export const ABGELTUNGSTEUERSATZ = 0.26375
 export const TEILFREISTELLUNG = 0.7
 export const BASISERTRAG_FACTOR = 0.7
 export const AV_SUBSIDIZED_CAP = 1800
+export const AV_CONTRIBUTION_CAP = 13_680 // 2 contracts × 6840 €
 export const KINDERZULAGE_CAP = 300
 export const MIN_OWN_CONTRIBUTION = 120
 export const BERUFSEINSTEIGER_BONUS = 200

@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import {
   ABGELTUNGSTEUERSATZ,
+  AV_CONTRIBUTION_CAP,
   AV_SUBSIDIZED_CAP,
   BASISERTRAG_FACTOR,
   BERUFSEINSTEIGER_BONUS,
@@ -19,7 +20,7 @@ const schema = z
     retirementAge: z.coerce.number().int().min(65).max(70),
     zveSavingsPhase: z.coerce.number().min(0),
     zveRetirement: z.coerce.number().min(0),
-    savingsRate: z.coerce.number().min(120).max(13_680),
+    savingsRate: z.coerce.number().min(120).max(AV_CONTRIBUTION_CAP),
     etfReturnRate: z.coerce
       .number()
       .positive()
@@ -345,7 +346,7 @@ function calculateAvDepotSavings(input: CalculatorInput) {
   let überzahlungCapital = 0
   let totalOwnContributions = 0
   let totalÜberzahlung = 0
-  const taxSavings: number[] = []
+  const secondaryDepotContributions: number[] = []
 
   for (let year = 1; year <= savingYears; year++) {
     const capitalStart = subsidizedCapital + überzahlungCapital
@@ -367,10 +368,16 @@ function calculateAvDepotSavings(input: CalculatorInput) {
         grundzulage -
         kinderzulage,
     )
-    taxSavings.push(taxSaving)
 
-    const ownContribToAv =
-      taxSavingsMode === 'avDepot' ? contribution + taxSaving : contribution
+    const reinvestedTaxSaving =
+      taxSavingsMode === 'avDepot'
+        ? Math.min(taxSaving, AV_CONTRIBUTION_CAP - contribution)
+        : 0
+    secondaryDepotContributions.push(
+      taxSavingsMode === 'consume' ? 0 : taxSaving - reinvestedTaxSaving,
+    )
+
+    const ownContribToAv = contribution + reinvestedTaxSaving
     const subsidizedInflow =
       Math.min(ownContribToAv, AV_SUBSIDIZED_CAP) +
       grundzulage +
@@ -381,7 +388,7 @@ function calculateAvDepotSavings(input: CalculatorInput) {
       grundzulage +
       kinderzulage +
       starterBonus +
-      (taxSavingsMode === 'avDepot' ? taxSaving : 0)
+      reinvestedTaxSaving
     const überzahlungInflow = avInflow - subsidizedInflow
 
     const subsidizedGrossReturn = subsidizedCapital * netReturnRate
@@ -408,16 +415,15 @@ function calculateAvDepotSavings(input: CalculatorInput) {
     })
   }
 
-  const secondaryDepot =
-    taxSavingsMode === 'secondaryDepot'
-      ? calculateDepotSavings(
-          taxSavings,
-          etfReturnRate,
-          baseRate,
-          exemptionOrder,
-          zveSavingsPhase,
-        )
-      : undefined
+  const secondaryDepot = secondaryDepotContributions.some((c) => c > 0)
+    ? calculateDepotSavings(
+        secondaryDepotContributions,
+        etfReturnRate,
+        baseRate,
+        exemptionOrder,
+        zveSavingsPhase,
+      )
+    : undefined
 
   const yearlyDataWithSecondaryDepot = secondaryDepot
     ? yearlyData.map((av, i) => {
