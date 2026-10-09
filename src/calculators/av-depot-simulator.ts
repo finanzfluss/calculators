@@ -1,5 +1,5 @@
-import type { z } from 'zod'
 import type { SavingsYear } from './av-depot-utils'
+import { z } from 'zod'
 import {
   AV_CONTRIBUTION_CAP,
   AV_SUBSIDIZED_CAP,
@@ -18,7 +18,10 @@ import {
   günstigerprüfung,
 } from './av-depot-utils'
 
-const schema = avDepotBaseSchema
+const schema = avDepotBaseSchema.extend({
+  startCapital: z.coerce.number().min(0).default(0),
+  includeStarterBonus: z.stringbool().or(z.boolean()).default(true),
+})
 
 type CalculatorInput = z.output<typeof schema>
 
@@ -50,15 +53,22 @@ function calculateAvDepotSavings(input: CalculatorInput) {
     taxSavingsMode,
     currentYear,
     childBirthYears,
+    startCapital,
+    includeStarterBonus,
   } = input
 
   const savingYears = retirementAge - age
   const netReturnRate = etfReturnRate - avDepotCosts
   const yearlyData: SavingsYear[] = []
-  let subsidizedCapital = 0
+  let subsidizedCapital = startCapital
   let überzahlungCapital = 0
   let totalOwnContributions = 0
   let totalÜberzahlung = 0
+  let totalGrundzulage = 0
+  let totalKinderzulage = 0
+  let totalStarterBonus = 0
+  let totalTaxSaving = 0
+  let totalReinvestedTaxSaving = 0
   const secondaryDepotContributions: number[] = []
 
   for (let year = 1; year <= savingYears; year++) {
@@ -70,6 +80,7 @@ function calculateAvDepotSavings(input: CalculatorInput) {
       currentYear,
       age,
       childBirthYears,
+      includeStarterBonus,
     )
 
     const deductionBase =
@@ -116,6 +127,11 @@ function calculateAvDepotSavings(input: CalculatorInput) {
 
     totalOwnContributions += contribution
     totalÜberzahlung += überzahlungInflow
+    totalGrundzulage += grundzulage
+    totalKinderzulage += kinderzulage
+    totalStarterBonus += starterBonus
+    totalTaxSaving += taxSaving
+    totalReinvestedTaxSaving += reinvestedTaxSaving
 
     yearlyData.push({
       year,
@@ -162,6 +178,11 @@ function calculateAvDepotSavings(input: CalculatorInput) {
         (secondaryDepot?.finalCapital ?? 0),
       totalContributions: totalOwnContributions,
       totalVorabpauschale: secondaryDepot?.totalVorabpauschale ?? 0,
+      totalGrundzulage,
+      totalKinderzulage,
+      totalStarterBonus,
+      totalTaxSaving,
+      totalReinvestedTaxSaving,
     },
     subsidizedCapital,
     überzahlungCapital,
@@ -289,6 +310,7 @@ function calculateZulagen(
   currentYear: number,
   age: number,
   childBirthYears: number[],
+  includeStarterBonus: boolean,
 ): {
   grundzulage: number
   kinderzulage: number
@@ -302,7 +324,9 @@ function calculateZulagen(
     Math.min(contribution, 360) * 0.5 +
     Math.max(0, Math.min(contribution, AV_SUBSIDIZED_CAP) - 360) * 0.25
   const starterBonus =
-    savingsYear === 1 && age < 25 ? BERUFSEINSTEIGER_BONUS : 0
+    includeStarterBonus && savingsYear === 1 && age < 25
+      ? BERUFSEINSTEIGER_BONUS
+      : 0
   const calendarYear = currentYear + savingsYear - 1
   const kinderzulage = childBirthYears.reduce((sum, birthYear) => {
     const childAge = calendarYear - birthYear

@@ -58,7 +58,11 @@ function calculate(input: CalculatorInput): CalculatorOutput {
   )
 
   const { savings: avDepotSavings, payout: avDepotPayout } =
-    avDepotSimulator.calculate(input)
+    avDepotSimulator.calculate({
+      ...input,
+      startCapital: 0,
+      includeStarterBonus: true,
+    })
 
   return {
     savingsPerYear: normalDepotSavings.yearlyData.map((normalYear, i) => {
