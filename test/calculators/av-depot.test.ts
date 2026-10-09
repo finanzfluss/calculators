@@ -20,7 +20,7 @@ describe('/calculators/av-depot', () => {
       `"160.000€"`,
     )
     expect(data.totalVorabpauschale.normalDepot).toMatchInlineSnapshot(
-      `"80.415€"`,
+      `"114.879€"`,
     )
     expect(data.finalCapital.normalDepot).toMatchInlineSnapshot(`"528.579€"`)
     expect(data.finalCapital.avDepot).toMatchInlineSnapshot(`"617.285€"`)
@@ -28,11 +28,11 @@ describe('/calculators/av-depot', () => {
     expect(data.payoutTotal.gross.normalDepot).toMatchInlineSnapshot(
       `"628.716€"`,
     )
-    expect(data.payoutTotal.tax.normalDepot).toMatchInlineSnapshot(`"58.395€"`)
-    expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"570.321€"`)
+    expect(data.payoutTotal.tax.normalDepot).toMatchInlineSnapshot(`"50.579€"`)
+    expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"578.137€"`)
     expect(data.payoutTotal.gross.avDepot).toMatchInlineSnapshot(`"726.434€"`)
-    expect(data.payoutTotal.tax.avDepot).toMatchInlineSnapshot(`"137.357€"`)
-    expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"589.077€"`)
+    expect(data.payoutTotal.tax.avDepot).toMatchInlineSnapshot(`"137.233€"`)
+    expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"589.200€"`)
   })
 
   it('increases AV depot capital with Kinderzulage', () => {
@@ -44,7 +44,7 @@ describe('/calculators/av-depot', () => {
     expect(data.finalCapital.avDepot).toMatchInlineSnapshot(`"637.769€"`)
     expect(data.finalCapital.normalDepot).toMatchInlineSnapshot(`"528.579€"`)
     expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"596.414€"`)
-    expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"570.321€"`)
+    expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"578.137€"`)
   })
 
   it('normalizes a single childBirthYears value into an array', () => {
@@ -70,7 +70,7 @@ describe('/calculators/av-depot', () => {
     expect(data.finalCapital.avDepot).toMatchInlineSnapshot(`"587.306€"`)
     expect(data.finalCapital.normalDepot).toMatchInlineSnapshot(`"528.579€"`)
     expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"554.239€"`)
-    expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"570.321€"`)
+    expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"578.137€"`)
   })
 
   it('increases AV depot capital when tax savings are reinvested', () => {
@@ -81,8 +81,8 @@ describe('/calculators/av-depot', () => {
 
     expect(data.finalCapital.avDepot).toMatchInlineSnapshot(`"616.141€"`)
     expect(data.finalCapital.normalDepot).toMatchInlineSnapshot(`"528.579€"`)
-    expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"582.221€"`)
-    expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"570.321€"`)
+    expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"584.016€"`)
+    expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"578.137€"`)
   })
 
   it('defaults to the product start year 2027 if current year is before 2027', () => {
@@ -139,7 +139,7 @@ describe('/calculators/av-depot', () => {
     })
 
     expect(data.finalCapital.avDepot).toMatchInlineSnapshot(`"232.451€"`)
-    expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"200.370€"`)
+    expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"200.469€"`)
   })
 
   it('taxes the full gain without Halbeinkünfteverfahren for short savings phases', () => {
@@ -155,13 +155,13 @@ describe('/calculators/av-depot', () => {
   it('applies the Berufseinsteigerbonus for savers under 25 in their first year', () => {
     const withBonus = avDepot.validateAndCalculate({
       ...sampleInputs(),
-      age: 20,
-      taxSavingsMode: 'consume',
+      age: 24,
+      taxSavingsMode: 'avDepot',
     })
     const withoutBonus = avDepot.validateAndCalculate({
       ...sampleInputs(),
       age: 25,
-      taxSavingsMode: 'consume',
+      taxSavingsMode: 'avDepot',
     })
 
     const firstYearContributionDiff =
@@ -169,6 +169,9 @@ describe('/calculators/av-depot', () => {
       parseCurrency(withoutBonus.savingsPerYear[0]!.contribution.avDepot)
 
     expect(firstYearContributionDiff).toBe(BERUFSEINSTEIGER_BONUS)
+    expect(withBonus.savingsPerYear[1]!.contribution.avDepot).toBe(
+      withoutBonus.savingsPerYear[1]!.contribution.avDepot,
+    )
   })
 
   it('applies günstigerprüfung when marginal income tax rate is lower than Abgeltungsteuer', () => {
@@ -180,7 +183,93 @@ describe('/calculators/av-depot', () => {
     expect(data.finalCapital.avDepot).toMatchInlineSnapshot(`"587.306€"`)
     expect(data.finalCapital.normalDepot).toMatchInlineSnapshot(`"551.091€"`)
     expect(data.payoutTotal.net.avDepot).toMatchInlineSnapshot(`"554.239€"`)
-    expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"592.392€"`)
+    expect(data.payoutTotal.net.normalDepot).toMatchInlineSnapshot(`"600.373€"`)
+  })
+
+  it('preserves the basis of a reinvested tax refund', () => {
+    const common = {
+      ...sampleInputs(),
+      age: 63,
+      currentYear: 2027,
+      retirementAge: 65,
+      savingsRate: 1_800,
+      etfReturnRate: 0.0001,
+      avDepotCosts: 0,
+      baseRate: 0,
+      oneTimePayout: 0,
+      payoutReturnRate: 0.0001,
+      exemptionOrder: 0,
+      payoutUntilAge: 85,
+    }
+    const consumed = avDepot.validateAndCalculate({
+      ...common,
+      taxSavingsMode: 'consume',
+    })
+    const reinvested = avDepot.validateAndCalculate({
+      ...common,
+      taxSavingsMode: 'avDepot',
+    })
+
+    const addedCapital =
+      parseCurrency(reinvested.finalCapital.avDepot) -
+      parseCurrency(consumed.finalCapital.avDepot)
+    const addedNetPayout =
+      parseCurrency(reinvested.payoutTotal.net.avDepot) -
+      parseCurrency(consumed.payoutTotal.net.avDepot)
+
+    expect(addedCapital).toBeGreaterThan(0)
+    expect(addedNetPayout).toBeCloseTo(addedCapital, 2)
+  })
+
+  it('reports the gross Vorabpauschale, capped at the actual appreciation', () => {
+    const uncapped = avDepot.validateAndCalculate(sampleInputs())
+    const year2 = uncapped.savingsPerYear[1]!
+    expect(parseCurrency(year2.vorabpauschale.normalDepot)).toBe(
+      Math.round(5_000 * 0.03 * 0.7),
+    )
+
+    const capped = avDepot.validateAndCalculate({
+      ...sampleInputs(),
+      etfReturnRate: 1,
+      avDepotCosts: 0,
+      baseRate: 10,
+    })
+    for (const year of capped.savingsPerYear) {
+      expect(year.vorabpauschale.normalDepot).toBe(year.grossReturn.normalDepot)
+    }
+  })
+
+  it('does not tax gains again at payout that were already taxed as Vorabpauschale', () => {
+    const data = avDepot.validateAndCalculate({
+      ...sampleInputs(),
+      etfReturnRate: 1.4,
+      avDepotCosts: 0,
+      baseRate: 2,
+      exemptionOrder: 0,
+    })
+
+    expect(
+      parseCurrency(data.savingsPerYear[1]!.vorabpauschaleTax.normalDepot),
+    ).toBeGreaterThan(0)
+    expect(parseCurrency(data.firstPayoutYear.tax.normalDepot)).toBe(0)
+  })
+
+  it('moves reinvested tax savings beyond the contribution cap to the secondary depot', () => {
+    const common = {
+      ...sampleInputs(),
+      savingsRate: 13_680,
+      zveSavingsPhase: 100_000,
+    }
+    const avDepotMode = avDepot.validateAndCalculate({
+      ...common,
+      taxSavingsMode: 'avDepot',
+    })
+    const secondaryDepotMode = avDepot.validateAndCalculate({
+      ...common,
+      taxSavingsMode: 'secondaryDepot',
+    })
+
+    expect(avDepotMode).toEqual(secondaryDepotMode)
   })
 })
 

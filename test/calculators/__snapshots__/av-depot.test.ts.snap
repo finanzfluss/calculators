@@ -12,12 +12,12 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
       "normalDepot": "184.693€",
     },
     "net": {
-      "avDepot": "162.269€",
-      "normalDepot": "166.367€",
+      "avDepot": "162.393€",
+      "normalDepot": "168.590€",
     },
     "tax": {
-      "avDepot": "52.986€",
-      "normalDepot": "18.326€",
+      "avDepot": "52.862€",
+      "normalDepot": "16.103€",
     },
   },
   "payoutTotal": {
@@ -26,12 +26,12 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
       "normalDepot": "628.716€",
     },
     "net": {
-      "avDepot": "589.077€",
-      "normalDepot": "570.321€",
+      "avDepot": "589.200€",
+      "normalDepot": "578.137€",
     },
     "tax": {
-      "avDepot": "137.357€",
-      "normalDepot": "58.395€",
+      "avDepot": "137.233€",
+      "normalDepot": "50.579€",
     },
   },
   "regularPayoutYear": {
@@ -41,11 +41,11 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     },
     "net": {
       "avDepot": "25.106€",
-      "normalDepot": "23.762€",
+      "normalDepot": "24.091€",
     },
     "tax": {
       "avDepot": "4.963€",
-      "normalDepot": "2.357€",
+      "normalDepot": "2.028€",
     },
   },
   "savingsPerYear": [
@@ -94,8 +94,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "350,00€",
       },
       "vorabpauschale": {
-        "avDepot": "4,00€",
-        "normalDepot": "73,50€",
+        "avDepot": "5,71€",
+        "normalDepot": "105,00€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -121,8 +121,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "724,50€",
       },
       "vorabpauschale": {
-        "avDepot": "8,28€",
-        "normalDepot": "152,15€",
+        "avDepot": "11,82€",
+        "normalDepot": "217,35€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -148,8 +148,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "1.125€",
       },
       "vorabpauschale": {
-        "avDepot": "12,85€",
-        "normalDepot": "236,30€",
+        "avDepot": "18,36€",
+        "normalDepot": "337,56€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -175,8 +175,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "1.554€",
       },
       "vorabpauschale": {
-        "avDepot": "17,75€",
-        "normalDepot": "326,34€",
+        "avDepot": "25,36€",
+        "normalDepot": "466,19€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -202,8 +202,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "2.013€",
       },
       "vorabpauschale": {
-        "avDepot": "22,99€",
-        "normalDepot": "422,68€",
+        "avDepot": "32,85€",
+        "normalDepot": "603,83€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -229,8 +229,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "2.504€",
       },
       "vorabpauschale": {
-        "avDepot": "28,60€",
-        "normalDepot": "525,77€",
+        "avDepot": "40,86€",
+        "normalDepot": "751,10€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -256,8 +256,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "3.029€",
       },
       "vorabpauschale": {
-        "avDepot": "34,60€",
-        "normalDepot": "636,07€",
+        "avDepot": "49,43€",
+        "normalDepot": "908,67€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -283,8 +283,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "3.591€",
       },
       "vorabpauschale": {
-        "avDepot": "41,02€",
-        "normalDepot": "754,10€",
+        "avDepot": "58,60€",
+        "normalDepot": "1.077€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -310,8 +310,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "4.192€",
       },
       "vorabpauschale": {
-        "avDepot": "47,89€",
-        "normalDepot": "880,38€",
+        "avDepot": "68,42€",
+        "normalDepot": "1.258€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -337,8 +337,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "4.836€",
       },
       "vorabpauschale": {
-        "avDepot": "55,24€",
-        "normalDepot": "1.016€",
+        "avDepot": "78,92€",
+        "normalDepot": "1.451€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -364,8 +364,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "5.524€",
       },
       "vorabpauschale": {
-        "avDepot": "63,11€",
-        "normalDepot": "1.160€",
+        "avDepot": "90,16€",
+        "normalDepot": "1.657€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -391,8 +391,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "6.258€",
       },
       "vorabpauschale": {
-        "avDepot": "71,53€",
-        "normalDepot": "1.314€",
+        "avDepot": "102,18€",
+        "normalDepot": "1.877€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -418,8 +418,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "7.040€",
       },
       "vorabpauschale": {
-        "avDepot": "80,53€",
-        "normalDepot": "1.478€",
+        "avDepot": "115,04€",
+        "normalDepot": "2.112€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -445,8 +445,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "7.874€",
       },
       "vorabpauschale": {
-        "avDepot": "90,17€",
-        "normalDepot": "1.654€",
+        "avDepot": "128,81€",
+        "normalDepot": "2.362€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -472,8 +472,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "8.763€",
       },
       "vorabpauschale": {
-        "avDepot": "100,48€",
-        "normalDepot": "1.840€",
+        "avDepot": "143,54€",
+        "normalDepot": "2.629€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -499,8 +499,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "9.711€",
       },
       "vorabpauschale": {
-        "avDepot": "111,51€",
-        "normalDepot": "2.039€",
+        "avDepot": "159,30€",
+        "normalDepot": "2.913€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -526,8 +526,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "10.721€",
       },
       "vorabpauschale": {
-        "avDepot": "123,31€",
-        "normalDepot": "2.252€",
+        "avDepot": "176,16€",
+        "normalDepot": "3.216€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -553,8 +553,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "11.799€",
       },
       "vorabpauschale": {
-        "avDepot": "135,94€",
-        "normalDepot": "2.478€",
+        "avDepot": "194,20€",
+        "normalDepot": "3.540€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -580,8 +580,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "12.948€",
       },
       "vorabpauschale": {
-        "avDepot": "149,46€",
-        "normalDepot": "2.719€",
+        "avDepot": "213,51€",
+        "normalDepot": "3.884€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -607,8 +607,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "14.172€",
       },
       "vorabpauschale": {
-        "avDepot": "163,92€",
-        "normalDepot": "2.976€",
+        "avDepot": "234,17€",
+        "normalDepot": "4.252€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -634,8 +634,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "15.478€",
       },
       "vorabpauschale": {
-        "avDepot": "179,39€",
-        "normalDepot": "3.250€",
+        "avDepot": "256,27€",
+        "normalDepot": "4.643€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -661,8 +661,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "16.870€",
       },
       "vorabpauschale": {
-        "avDepot": "195,94€",
-        "normalDepot": "3.543€",
+        "avDepot": "279,92€",
+        "normalDepot": "5.061€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -688,8 +688,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "18.353€",
       },
       "vorabpauschale": {
-        "avDepot": "213,66€",
-        "normalDepot": "3.854€",
+        "avDepot": "305,23€",
+        "normalDepot": "5.506€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -715,8 +715,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "19.936€",
       },
       "vorabpauschale": {
-        "avDepot": "232,61€",
-        "normalDepot": "4.186€",
+        "avDepot": "332,31€",
+        "normalDepot": "5.981€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -742,8 +742,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "21.622€",
       },
       "vorabpauschale": {
-        "avDepot": "252,89€",
-        "normalDepot": "4.541€",
+        "avDepot": "361,28€",
+        "normalDepot": "6.487€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -769,8 +769,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "23.420€",
       },
       "vorabpauschale": {
-        "avDepot": "274,60€",
-        "normalDepot": "4.918€",
+        "avDepot": "392,28€",
+        "normalDepot": "7.026€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -796,8 +796,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "25.337€",
       },
       "vorabpauschale": {
-        "avDepot": "297,82€",
-        "normalDepot": "5.321€",
+        "avDepot": "425,45€",
+        "normalDepot": "7.601€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -823,8 +823,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "27.381€",
       },
       "vorabpauschale": {
-        "avDepot": "322,66€",
-        "normalDepot": "5.750€",
+        "avDepot": "460,95€",
+        "normalDepot": "8.214€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -850,8 +850,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "29.560€",
       },
       "vorabpauschale": {
-        "avDepot": "349,25€",
-        "normalDepot": "6.208€",
+        "avDepot": "498,92€",
+        "normalDepot": "8.868€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -877,8 +877,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "31.883€",
       },
       "vorabpauschale": {
-        "avDepot": "377,69€",
-        "normalDepot": "6.696€",
+        "avDepot": "539,56€",
+        "normalDepot": "9.565€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -904,8 +904,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
         "normalDepot": "34.360€",
       },
       "vorabpauschale": {
-        "avDepot": "408,13€",
-        "normalDepot": "7.216€",
+        "avDepot": "583,04€",
+        "normalDepot": "10.308€",
       },
       "vorabpauschaleTax": {
         "avDepot": "0,00€",
@@ -919,8 +919,8 @@ exports[`/calculators/av-depot > produces complete calculation output for standa
     "normalDepot": "160.000€",
   },
   "totalVorabpauschale": {
-    "avDepot": "4.468€",
-    "normalDepot": "80.415€",
+    "avDepot": "6.383€",
+    "normalDepot": "114.879€",
   },
 }
 `;

@@ -1,13 +1,14 @@
 import { z } from 'zod'
 import {
   ABGELTUNGSTEUERSATZ,
+  AV_CONTRIBUTION_CAP,
   AV_SUBSIDIZED_CAP,
+  BASISERTRAG_FACTOR,
   BERUFSEINSTEIGER_BONUS,
   INCOME_TAX_YEAR,
   KINDERZULAGE_CAP,
   MIN_OWN_CONTRIBUTION,
   TEILFREISTELLUNG,
-  VORABPAUSCHALE_FACTOR,
 } from '../constants/av-depot'
 import { formatCurrencyAdaptive, parseCurrency, pmt } from '../utils'
 import { defineCalculator } from '../utils/calculator'
@@ -19,7 +20,7 @@ const schema = z
     retirementAge: z.coerce.number().int().min(65).max(70),
     zveSavingsPhase: z.coerce.number().min(0),
     zveRetirement: z.coerce.number().min(0),
-    savingsRate: z.coerce.number().min(120).max(13_680),
+    savingsRate: z.coerce.number().min(120).max(AV_CONTRIBUTION_CAP),
     etfReturnRate: z.coerce
       .number()
       .positive()
@@ -240,10 +241,12 @@ function calculateDepotSavings(
   for (let year = 1; year <= contributions.length; year++) {
     const contribution = contributions[year - 1]!
     const grossReturn = capitalStart * returnRate
-    const vorabpauschale =
-      capitalStart * baseRateDecimal * VORABPAUSCHALE_FACTOR
+    const vorabpauschale = Math.min(
+      capitalStart * baseRateDecimal * BASISERTRAG_FACTOR,
+      grossReturn,
+    )
     const vorabpauschaleTax = günstigerprüfung(
-      Math.max(0, vorabpauschale - exemptionOrder),
+      Math.max(0, vorabpauschale * TEILFREISTELLUNG - exemptionOrder),
       zve,
     )
     const capitalEnd =
@@ -343,12 +346,12 @@ function calculateAvDepotSavings(input: CalculatorInput) {
   let überzahlungCapital = 0
   let totalOwnContributions = 0
   let totalÜberzahlung = 0
-  const taxSavings: number[] = []
+  const secondaryDepotContributions: number[] = []
 
   for (let year = 1; year <= savingYears; year++) {
     const capitalStart = subsidizedCapital + überzahlungCapital
     const contribution = savingsRate
-    const { grundzulage, kinderzulage } = calculateZulagen(
+    const { grundzulage, kinderzulage, starterBonus } = calculateZulagen(
       contribution,
       year,
       currentYear,
@@ -365,17 +368,27 @@ function calculateAvDepotSavings(input: CalculatorInput) {
         grundzulage -
         kinderzulage,
     )
-    taxSavings.push(taxSaving)
 
-    const ownContribToAv =
-      taxSavingsMode === 'avDepot' ? contribution + taxSaving : contribution
+    const reinvestedTaxSaving =
+      taxSavingsMode === 'avDepot'
+        ? Math.min(taxSaving, AV_CONTRIBUTION_CAP - contribution)
+        : 0
+    secondaryDepotContributions.push(
+      taxSavingsMode === 'consume' ? 0 : taxSaving - reinvestedTaxSaving,
+    )
+
+    const ownContribToAv = contribution + reinvestedTaxSaving
     const subsidizedInflow =
-      Math.min(ownContribToAv, AV_SUBSIDIZED_CAP) + grundzulage + kinderzulage
+      Math.min(ownContribToAv, AV_SUBSIDIZED_CAP) +
+      grundzulage +
+      kinderzulage +
+      starterBonus
     const avInflow =
       contribution +
       grundzulage +
       kinderzulage +
-      (taxSavingsMode === 'avDepot' ? taxSaving : 0)
+      starterBonus +
+      reinvestedTaxSaving
     const überzahlungInflow = avInflow - subsidizedInflow
 
     const subsidizedGrossReturn = subsidizedCapital * netReturnRate
@@ -389,7 +402,7 @@ function calculateAvDepotSavings(input: CalculatorInput) {
     const capitalEnd = subsidizedCapital + überzahlungCapital
 
     totalOwnContributions += contribution
-    totalÜberzahlung += Math.max(0, contribution - AV_SUBSIDIZED_CAP)
+    totalÜberzahlung += überzahlungInflow
 
     yearlyData.push({
       year,
@@ -402,16 +415,15 @@ function calculateAvDepotSavings(input: CalculatorInput) {
     })
   }
 
-  const secondaryDepot =
-    taxSavingsMode === 'secondaryDepot'
-      ? calculateDepotSavings(
-          taxSavings,
-          etfReturnRate,
-          baseRate,
-          exemptionOrder,
-          zveSavingsPhase,
-        )
-      : undefined
+  const secondaryDepot = secondaryDepotContributions.some((c) => c > 0)
+    ? calculateDepotSavings(
+        secondaryDepotContributions,
+        etfReturnRate,
+        baseRate,
+        exemptionOrder,
+        zveSavingsPhase,
+      )
+    : undefined
 
   const yearlyDataWithSecondaryDepot = secondaryDepot
     ? yearlyData.map((av, i) => {
@@ -564,16 +576,20 @@ function calculateZulagen(
   currentYear: number,
   age: number,
   childBirthYears: number[],
-): { grundzulage: number; kinderzulage: number } {
+): {
+  grundzulage: number
+  kinderzulage: number
+  starterBonus: number
+} {
   /* v8 ignore if -- @preserve —— unreachable while savingsRate's schema min equals MIN_OWN_CONTRIBUTION (120) */
   if (contribution < MIN_OWN_CONTRIBUTION)
-    return { grundzulage: 0, kinderzulage: 0 }
+    return { grundzulage: 0, kinderzulage: 0, starterBonus: 0 }
 
   const grundzulage =
     Math.min(contribution, 360) * 0.5 +
-    Math.max(0, Math.min(contribution, AV_SUBSIDIZED_CAP) - 360) * 0.25 +
-    (savingsYear === 1 && age < 25 ? BERUFSEINSTEIGER_BONUS : 0)
-
+    Math.max(0, Math.min(contribution, AV_SUBSIDIZED_CAP) - 360) * 0.25
+  const starterBonus =
+    savingsYear === 1 && age < 25 ? BERUFSEINSTEIGER_BONUS : 0
   const calendarYear = currentYear + savingsYear - 1
   const kinderzulage = childBirthYears.reduce((sum, birthYear) => {
     const childAge = calendarYear - birthYear
@@ -582,7 +598,7 @@ function calculateZulagen(
       : sum
   }, 0)
 
-  return { grundzulage, kinderzulage }
+  return { grundzulage, kinderzulage, starterBonus }
 }
 
 function grenzsteuer(amount: number, zve: number): number {
