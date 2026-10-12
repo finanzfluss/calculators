@@ -278,6 +278,31 @@ result.finalCapital.normalDepot // Capital in a comparable normal depot at retir
 result.payoutTotal.net.avDepot // Total net payout from the AV-Depot
 ```
 
+### AV-Depot Simulator
+
+The AV-Depot calculation on its own, without the comparison to a normal depot. It is the core of the AV-Depot Calculator. It returns raw numbers instead of formatted strings.
+
+#### Key Features:
+
+- **Same inputs as the AV-Depot Calculator**, plus two optional fields for transfers into an AV-Depot
+- **Start capital** (`startCapital`) treated as subsidized capital: it grows from the first year, is taxed like subsidized capital on payout, earns no Zulagen and doesn't count as own contribution
+- **Optional Berufseinsteigerbonus** (`includeStarterBonus`) to exclude the bonus when it was already received, e.g. in a transferred Riester contract
+- **Subsidy and tax-saving totals** for Grundzulage, Kinderzulage, Berufseinsteigerbonus and the income-tax saving
+
+```ts
+import { avDepotSimulator } from '@finanzfluss/calculators'
+
+const result = avDepotSimulator.validateAndCalculate({
+  ...input, // same input as for the AV-Depot Calculator
+  startCapital: 25_000, // optional, defaults to 0
+  includeStarterBonus: false, // optional, defaults to true
+})
+
+result.savings.finalCapital // Capital in the AV-Depot (incl. secondary depot) at retirement
+result.savings.totalGrundzulage // Sum of all Grundzulagen
+result.payout.totalNet // Total net payout
+```
+
 <br />
 
 ## Testing

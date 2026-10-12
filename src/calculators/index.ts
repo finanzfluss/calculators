@@ -1,4 +1,6 @@
 export * from './av-depot'
+export * from './av-depot-simulator'
+export * as avDepotUtils from './av-depot-utils'
 export * from './compound-interest'
 export * from './disability-insurance'
 export * from './gross-to-net'
