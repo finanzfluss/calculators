@@ -1,16 +1,17 @@
 import type { z } from 'zod'
 
 export function defineCalculator<
-  Schema extends z.core.$ZodShape,
-  Output,
+  InputShape extends z.core.$ZodShape,
+  OutputSchema extends z.ZodType,
 >(config: {
-  schema: z.ZodObject<Schema>
-  calculate: (input: z.output<z.ZodObject<Schema>>) => Output
+  inputSchema: z.ZodObject<InputShape>
+  outputSchema: OutputSchema
+  calculate: (input: z.output<z.ZodObject<InputShape>>) => z.input<OutputSchema>
 }) {
   return {
     ...config,
-    validateAndCalculate: (rawInput: unknown): Output => {
-      const parsed = config.schema.parse(rawInput)
+    validateAndCalculate: (rawInput: unknown): z.input<OutputSchema> => {
+      const parsed = config.inputSchema.parse(rawInput)
       return config.calculate(parsed)
     },
   }
