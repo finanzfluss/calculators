@@ -2,6 +2,20 @@ import { describe, expect, it } from 'vitest'
 import { disabilityInsurance } from '../../src/calculators/disability-insurance'
 
 describe('/calculators/disability-insurance', () => {
+  it.each([false, true])(
+    'matches outputSchema (useCustomPensionAmount: %s)',
+    (useCustomPensionAmount) => {
+      const result = disabilityInsurance.validateAndCalculate({
+        grossIncome: 4000,
+        netIncome: 2602,
+        customHalfDisabilityPension: 720,
+        useCustomPensionAmount,
+        customPensionAmount: 500,
+      })
+      expect(disabilityInsurance.outputSchema.parse(result)).toEqual(result)
+    },
+  )
+
   it('returns coverage levels for default inputs', async () => {
     const result = disabilityInsurance.validateAndCalculate({
       grossIncome: 4000,

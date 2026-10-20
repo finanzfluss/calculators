@@ -2,6 +2,23 @@ import { describe, expect, it } from 'vitest'
 import { savings } from '../../src/calculators/savings'
 
 describe('/calculators/savings', () => {
+  it('matches outputSchema', () => {
+    const data = savings.validateAndCalculate({
+      output: 'endValue',
+      startValue: '5000',
+      yearlyInterest: '1.5',
+      yearlyDuration: '10',
+      saveIntervalType: 'yearly',
+      interestIntervalType: 'yearly',
+      savingRate: '1800',
+      considerCapitalGainsTax: 'true',
+      capitalGainsTax: '26.375',
+      distributionType: 'distributing',
+      partialExemption: '30',
+    })
+    expect(savings.outputSchema.parse(data)).toEqual(data)
+  })
+
   describe('endValue', () => {
     it('computes endValue for yearly saving / yearly interest with tax and 30% exemption', async () => {
       const data = savings.validateAndCalculate({

@@ -2,6 +2,15 @@ import { describe, expect, it } from 'vitest'
 import { incomeTax } from '../../src/calculators/income-tax'
 
 describe('calculators/income-tax', () => {
+  it('matches outputSchema', () => {
+    const result = incomeTax.validateAndCalculate({
+      zve: 80000,
+      splitting: false,
+      year: '2026',
+    })
+    expect(incomeTax.outputSchema.parse(result)).toEqual(result)
+  })
+
   it('floors decimal ZVE to whole euros — 80,000.99 is treated as 80,000', () => {
     const decimal = incomeTax.validateAndCalculate({
       zve: 80000.99,

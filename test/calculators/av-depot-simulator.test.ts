@@ -3,6 +3,11 @@ import { avDepotSimulator } from '../../src/calculators/av-depot-simulator'
 import { BERUFSEINSTEIGER_BONUS } from '../../src/constants/av-depot'
 
 describe('/calculators/av-depot-simulator', () => {
+  it('matches outputSchema', () => {
+    const data = avDepotSimulator.validateAndCalculate(sampleInputs())
+    expect(avDepotSimulator.outputSchema.parse(data)).toEqual(data)
+  })
+
   it('produces complete calculation output for standard inputs', () => {
     const data = avDepotSimulator.validateAndCalculate(sampleInputs())
     expect(data).toMatchSnapshot()
