@@ -1,4 +1,4 @@
-import type { z } from 'zod'
+import { z } from 'zod'
 import { defineCalculator } from '../utils/calculator'
 import { rate } from '../utils/financial'
 import { bisectByEndValue } from './savings-end-value'
@@ -7,12 +7,15 @@ import {
   savingsBaseSchema,
 } from './savings-utils'
 
-const schema = savingsBaseSchema.omit({ yearlyInterest: true })
+const inputSchema = savingsBaseSchema.omit({ yearlyInterest: true })
 
-type CalculatorInput = z.output<typeof schema>
+const outputSchema = z.number()
+
+type CalculatorInput = z.output<typeof inputSchema>
 
 export const savingsInterestRate = defineCalculator({
-  schema,
+  inputSchema,
+  outputSchema,
   calculate,
 })
 

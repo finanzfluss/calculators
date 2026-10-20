@@ -2,9 +2,9 @@ import { z } from 'zod'
 import { formatCurrencyAdaptive } from '../utils'
 import { defineCalculator } from '../utils/calculator'
 import { savingsEndValue } from './savings-end-value'
-import { calcDiagramData } from './savings-utils'
+import { calcDiagramData, diagramDataSchema } from './savings-utils'
 
-const schema = z.object({
+const inputSchema = z.object({
   startCapital: z.coerce.number(),
   monthlyPayment: z.coerce.number(),
   durationYears: z.coerce.number().nonnegative().max(1000),
@@ -12,9 +12,20 @@ const schema = z.object({
   type: z.enum(['monthly', 'quarterly', 'yearly']),
 })
 
-type CalculatorInput = z.output<typeof schema>
+const outputSchema = z.object({
+  finalCapital: z.string(),
+  totalPayments: z.string(),
+  totalInterest: z.string(),
+  diagramData: diagramDataSchema,
+})
 
-export const compoundInterest = defineCalculator({ schema, calculate })
+type CalculatorInput = z.output<typeof inputSchema>
+
+export const compoundInterest = defineCalculator({
+  inputSchema,
+  outputSchema,
+  calculate,
+})
 
 function calculate(parsedInput: CalculatorInput) {
   const savingsObject = getSavingsObject(parsedInput)

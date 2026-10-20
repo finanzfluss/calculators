@@ -10,7 +10,7 @@ import { defineCalculator } from '../utils/calculator'
 import { INCOME_TAX_CLASSES } from '../utils/Lohnsteuer'
 import { BigDecimal } from '../utils/Lohnsteuer/shims/BigDecimal'
 
-const schema = z.object({
+const inputSchema = z.object({
   output: z.literal('grossToNetCalc').optional(),
   inputAccountingYear: z
     .enum(['2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026'])
@@ -38,10 +38,72 @@ const schema = z.object({
   inputPeriod: z.coerce.number(), // LZZ
 })
 
-type CalculatorInput = z.output<typeof schema>
+const outputSchema = z.object({
+  outputResGrossWageMonth: z.string(),
+  outputResGrossWageYear: z.string(),
+  outputResIncomeTaxMonth: z.string(),
+  outputResIncomeTaxYear: z.string(),
+  outputResSolidaritySurchargeMonth: z.string(),
+  outputResSolidaritySurchargeYear: z.string(),
+  outputResChurchTaxPercentage: z.string(),
+  outputResChurchTaxMonth: z.string(),
+  outputResChurchTaxYear: z.string(),
+  outputTotalTaxes: z.string(),
+  outputTotalTaxesYear: z.string(),
+  outputResHealthInsurancePercentage: z.string(),
+  outputResHealthInsuranceMonth: z.string(),
+  outputResHealthInsuranceYear: z.string(),
+  outputResPrivateHealthInsuranceEmployerMonth: z.string(),
+  outputResPrivateHealthInsuranceEmployerYear: z.string(),
+  outputResPrivateCareInsuranceMonth: z.string(),
+  outputResPrivateCareInsuranceYear: z.string(),
+  outputResPrivateCareInsuranceEmployerMonth: z.string(),
+  outputResPrivateCareInsuranceEmployerYear: z.string(),
+  outputDisableResCareInsurance: z.boolean(),
+  outputResCareInsurancePercentage: z.string(),
+  outputResCareInsuranceMonth: z.string(),
+  outputResCareInsuranceYear: z.string(),
+  outputResPensionInsurancePercentage: z.string(),
+  outputResPensionInsuranceMonth: z.string(),
+  outputResPensionInsuranceYear: z.string(),
+  outputResUnemploymentInsurancePercentage: z.string(),
+  outputResUnemploymentInsuranceMonth: z.string(),
+  outputResUnemploymentInsuranceYear: z.string(),
+  outputTotalInsurances: z.string(),
+  outputTotalInsurancesYear: z.string(),
+  outputResNetWageMonth: z.string(),
+  outputResNetWageYear: z.string(),
+  outputResEmployerHealthInsuranceMonth: z.string(),
+  outputResEmployerHealthInsuranceYear: z.string(),
+  outputResEmployerCareInsuranceMonth: z.string(),
+  outputResEmployerCareInsuranceYear: z.string(),
+  outputResEmployerPensionInsuranceMonth: z.string(),
+  outputResEmployerPensionInsuranceYear: z.string(),
+  outputResEmployerUnemploymentInsuranceMonth: z.string(),
+  outputResEmployerUnemploymentInsuranceYear: z.string(),
+  outputResEmployerHealthInsurancePercentage: z.string(),
+  outputResEmployerCareInsurancePercentage: z.string(),
+  outputResEmployerPensionInsurancePercentage: z.string(),
+  outputResEmployerUnemploymentInsurancePercentage: z.string(),
+  outputEmployerTotalInsurances: z.string(),
+  outputEmployerTotalInsurancesYear: z.string(),
+  outputResEmployerLevyOneMonth: z.string(),
+  outputResEmployerLevyOneYear: z.string(),
+  outputResEmployerLevyTwoMonth: z.string(),
+  outputResEmployerLevyTwoYear: z.string(),
+  outputResEmployerLevyThreeMonth: z.string(),
+  outputResEmployerLevyThreeYear: z.string(),
+  outputResEmployerLevyTotal: z.string(),
+  outputResEmployerLevyTotalYear: z.string(),
+  outputResEmployerGrossWageMonth: z.string(),
+  outputResEmployerGrossWageYear: z.string(),
+})
+
+type CalculatorInput = z.output<typeof inputSchema>
 
 export const grossToNet = defineCalculator({
-  schema,
+  inputSchema,
+  outputSchema,
   calculate,
 })
 

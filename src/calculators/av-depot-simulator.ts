@@ -16,17 +16,41 @@ import {
   germanIncomeTax,
   grenzsteuer,
   günstigerprüfung,
+  payoutYearSchema,
+  savingsYearSchema,
 } from './av-depot-utils'
 
-const schema = avDepotBaseSchema.extend({
+const inputSchema = avDepotBaseSchema.extend({
   startCapital: z.coerce.number().min(0).default(0),
   includeStarterBonus: z.stringbool().or(z.boolean()).default(true),
 })
 
-type CalculatorInput = z.output<typeof schema>
+const outputSchema = z.object({
+  savings: z.object({
+    yearlyData: z.array(savingsYearSchema),
+    finalCapital: z.number(),
+    totalContributions: z.number(),
+    totalVorabpauschale: z.number(),
+    totalGrundzulage: z.number(),
+    totalKinderzulage: z.number(),
+    totalStarterBonus: z.number(),
+    totalTaxSaving: z.number(),
+    totalReinvestedTaxSaving: z.number(),
+  }),
+  payout: z.object({
+    firstYear: payoutYearSchema,
+    recurringYear: payoutYearSchema,
+    totalGross: z.number(),
+    totalTax: z.number(),
+    totalNet: z.number(),
+  }),
+})
+
+type CalculatorInput = z.output<typeof inputSchema>
 
 export const avDepotSimulator = defineCalculator({
-  schema,
+  inputSchema,
+  outputSchema,
   calculate,
 })
 

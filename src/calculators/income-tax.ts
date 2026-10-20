@@ -4,7 +4,7 @@ import { formatCurrencyNatural, formatPercent } from '../utils/formatters'
 import { INCOME_TAX_CLASSES } from '../utils/Lohnsteuer'
 import { BigDecimal } from '../utils/Lohnsteuer/shims/BigDecimal'
 
-const schema = z.object({
+const inputSchema = z.object({
   zve: z.coerce.number().min(0).max(10_000_000).transform(Math.floor),
   splitting: z.stringbool().or(z.boolean()),
   year: z
@@ -12,9 +12,24 @@ const schema = z.object({
     .transform(Number),
 })
 
-type CalculatorInput = z.output<typeof schema>
+const taxShareSchema = z.object({
+  amount: z.string(),
+  averageRate: z.string(),
+})
 
-export const incomeTax = defineCalculator({ schema, calculate })
+const outputSchema = z.object({
+  incomeTax: taxShareSchema.extend({ marginalRate: z.string() }),
+  solidaritySurcharge: taxShareSchema,
+  total: taxShareSchema,
+})
+
+type CalculatorInput = z.output<typeof inputSchema>
+
+export const incomeTax = defineCalculator({
+  inputSchema,
+  outputSchema,
+  calculate,
+})
 
 /**
  * Step size (€) for the numerical marginal rate:

@@ -17,7 +17,7 @@ import { incomeTax } from './income-tax'
 const MAX_EURO = 10_000
 const MAX_PERCENT = 100
 
-const schema = z.object({
+const inputSchema = z.object({
   // General inputs
   savingRate: z.coerce.number().nonnegative().max(MAX_EURO).transform(toDinero),
   duration: z.coerce
@@ -119,10 +119,27 @@ const schema = z.object({
     .transform(toDineroMultiplier),
 })
 
-type CalculatorInput = z.output<typeof schema>
+const comparisonSchema = z.object({
+  policy: z.string(),
+  etf: z.string(),
+})
+
+const outputSchema = z.object({
+  tableData: z.object({
+    grossWorth: comparisonSchema,
+    totalPayments: comparisonSchema,
+    gain: comparisonSchema,
+    gross: comparisonSchema,
+    tax: comparisonSchema,
+    netWorth: comparisonSchema,
+  }),
+})
+
+type CalculatorInput = z.output<typeof inputSchema>
 
 export const netPolicy = defineCalculator({
-  schema,
+  inputSchema,
+  outputSchema,
   calculate,
 })
 
