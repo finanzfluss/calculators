@@ -1,4 +1,4 @@
-import type { z } from 'zod'
+import { z } from 'zod'
 import { defineCalculator } from '../utils/calculator'
 import { rate } from '../utils/financial'
 import { bisectByEndValue } from './savings-end-value'
@@ -7,23 +7,29 @@ import {
   savingsBaseSchema,
 } from './savings-utils'
 
-const schema = savingsBaseSchema.omit({ yearlyInterest: true })
+const inputSchema = savingsBaseSchema.omit({ yearlyInterest: true })
 
-type CalculatorInput = z.output<typeof schema>
+const outputSchema = z.number()
+
+type CalculatorInput = z.output<typeof inputSchema>
 
 export const savingsInterestRate = defineCalculator({
-  schema,
+  inputSchema,
+  outputSchema,
   calculate,
 })
 
 function calculate(parsedInput: CalculatorInput) {
-  const { useCompoundInterest } = parsedInput
+  const result = parsedInput.useCompoundInterest
+    ? calculateWithCompoundInterest(parsedInput)
+    : calculateWithSimpleInterest(parsedInput)
 
-  if (useCompoundInterest) {
-    return calculateWithCompoundInterest(parsedInput)
-  } else {
-    return calculateWithSimpleInterest(parsedInput)
+  if (!Number.isFinite(result)) {
+    throw new TypeError(
+      'Cannot calculate interest rate: endValue is not reachable',
+    )
   }
+  return result
 }
 
 function calculateWithCompoundInterest(parsedInput: CalculatorInput) {

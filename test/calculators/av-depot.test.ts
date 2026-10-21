@@ -4,6 +4,11 @@ import { BERUFSEINSTEIGER_BONUS } from '../../src/constants/av-depot'
 import { parseCurrency } from '../../src/utils'
 
 describe('/calculators/av-depot', () => {
+  it('matches outputSchema', () => {
+    const data = avDepot.validateAndCalculate(sampleInputs())
+    expect(avDepot.outputSchema.parse(data)).toEqual(data)
+  })
+
   it('produces complete calculation output for standard inputs', () => {
     const data = avDepot.validateAndCalculate(sampleInputs())
     expect(data).toMatchSnapshot()

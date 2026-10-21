@@ -72,21 +72,25 @@ export const avDepotBaseSchema = z
     path: ['avDepotCosts'],
   })
 
-export interface SavingsYear {
-  year: number
-  contribution: number
-  capitalStart: number
-  grossReturn: number
-  vorabpauschale: number
-  vorabpauschaleTax: number
-  capitalEnd: number
-}
+export const savingsYearSchema = z.object({
+  year: z.number(),
+  contribution: z.number(),
+  capitalStart: z.number(),
+  grossReturn: z.number(),
+  vorabpauschale: z.number(),
+  vorabpauschaleTax: z.number(),
+  capitalEnd: z.number(),
+})
 
-export interface PayoutYear {
-  grossPayout: number
-  tax: number
-  netPayout: number
-}
+export type SavingsYear = z.output<typeof savingsYearSchema>
+
+export const payoutYearSchema = z.object({
+  grossPayout: z.number(),
+  tax: z.number(),
+  netPayout: z.number(),
+})
+
+export type PayoutYear = z.output<typeof payoutYearSchema>
 
 export function calculateDepotSavings(
   contributions: number[],

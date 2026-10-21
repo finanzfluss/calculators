@@ -21,6 +21,14 @@ const SHARED_INPUT = {
 }
 
 describe('calculators/net-policy', () => {
+  it('matches outputSchema', () => {
+    const data = netPolicy.validateAndCalculate({
+      ...SHARED_INPUT,
+      duration: 35,
+    })
+    expect(netPolicy.outputSchema.parse(data)).toEqual(data)
+  })
+
   it('returns table data comparing policy vs ETF over 35 years', () => {
     const data = netPolicy.validateAndCalculate({
       ...SHARED_INPUT,

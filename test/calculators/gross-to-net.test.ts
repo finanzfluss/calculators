@@ -69,6 +69,11 @@ const DEFAULT_VALUES: Record<string, string | number> = {
 }
 
 describe('calculators/gross-to-net', () => {
+  it('matches outputSchema', () => {
+    const result = grossToNet.validateAndCalculate(fakeTestValues())
+    expect(grossToNet.outputSchema.parse(result)).toEqual(result)
+  })
+
   describe('with page defaults', () => {
     it('data from initial page load', () => {
       const result = grossToNet.validateAndCalculate(fakeTestValues())

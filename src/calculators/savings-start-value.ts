@@ -1,4 +1,4 @@
-import type { z } from 'zod'
+import { z } from 'zod'
 import { defineCalculator } from '../utils/calculator'
 import { pv } from '../utils/financial'
 import { roundToTwoDecimals } from '../utils/validation'
@@ -8,12 +8,15 @@ import {
   savingsBaseSchema,
 } from './savings-utils'
 
-const schema = savingsBaseSchema.omit({ startValue: true })
+const inputSchema = savingsBaseSchema.omit({ startValue: true })
 
-type CalculatorInput = z.output<typeof schema>
+const outputSchema = z.number()
+
+type CalculatorInput = z.output<typeof inputSchema>
 
 export const savingsStartValue = defineCalculator({
-  schema,
+  inputSchema,
+  outputSchema,
   calculate,
 })
 

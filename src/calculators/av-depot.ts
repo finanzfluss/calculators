@@ -1,5 +1,5 @@
-import type { z } from 'zod'
 import type { PayoutYear } from './av-depot-utils'
+import { z } from 'zod'
 import { TEILFREISTELLUNG } from '../constants/av-depot'
 import { formatCurrencyAdaptive, pmt } from '../utils'
 import { defineCalculator } from '../utils/calculator'
@@ -10,43 +10,47 @@ import {
   günstigerprüfung,
 } from './av-depot-utils'
 
-const schema = avDepotBaseSchema
+const inputSchema = avDepotBaseSchema
 
-type CalculatorInput = z.output<typeof schema>
+const depotPairSchema = z.object({
+  avDepot: z.string(),
+  normalDepot: z.string(),
+})
 
-interface DepotPair {
-  avDepot: string
-  normalDepot: string
-}
+const payoutYearResultSchema = z.object({
+  gross: depotPairSchema,
+  tax: depotPairSchema,
+  net: depotPairSchema,
+})
 
-interface PayoutYearResult {
-  gross: DepotPair
-  tax: DepotPair
-  net: DepotPair
-}
+const outputSchema = z.object({
+  savingsPerYear: z.array(
+    z.object({
+      year: z.number(),
+      contribution: depotPairSchema,
+      capitalStart: depotPairSchema,
+      grossReturn: depotPairSchema,
+      vorabpauschale: depotPairSchema,
+      vorabpauschaleTax: depotPairSchema,
+      capitalEnd: depotPairSchema,
+    }),
+  ),
+  finalCapital: depotPairSchema,
+  totalContributions: depotPairSchema,
+  totalVorabpauschale: depotPairSchema,
+  firstPayoutYear: payoutYearResultSchema,
+  regularPayoutYear: payoutYearResultSchema,
+  payoutTotal: payoutYearResultSchema,
+})
 
-interface SavingsYearResult {
-  year: number
-  contribution: DepotPair
-  capitalStart: DepotPair
-  grossReturn: DepotPair
-  vorabpauschale: DepotPair
-  vorabpauschaleTax: DepotPair
-  capitalEnd: DepotPair
-}
-
-interface CalculatorOutput {
-  savingsPerYear: SavingsYearResult[]
-  finalCapital: DepotPair
-  totalContributions: DepotPair
-  totalVorabpauschale: DepotPair
-  firstPayoutYear: PayoutYearResult
-  regularPayoutYear: PayoutYearResult
-  payoutTotal: PayoutYearResult
-}
+type CalculatorInput = z.output<typeof inputSchema>
+type CalculatorOutput = z.output<typeof outputSchema>
+type DepotPair = z.output<typeof depotPairSchema>
+type PayoutYearResult = z.output<typeof payoutYearResultSchema>
 
 export const avDepot = defineCalculator({
-  schema,
+  inputSchema,
+  outputSchema,
   calculate,
 })
 

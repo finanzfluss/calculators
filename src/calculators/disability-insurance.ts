@@ -16,7 +16,7 @@ import { defineCalculator } from '../utils/calculator'
 
 const MAX_EURO = 10_000
 
-const schema = z.object({
+const inputSchema = z.object({
   grossIncome: z.coerce
     .number()
     .nonnegative()
@@ -55,10 +55,30 @@ const schema = z.object({
     .default(0),
 })
 
-type CalculatorInput = z.output<typeof schema>
+const outputSchema = z.object({
+  tableData: z.object({
+    level1: z.string(),
+    level2: z.string(),
+    level3: z.string(),
+    levelCustom: z.string().optional(),
+  }),
+  diagramData: z.object({
+    netIncome: z.number(),
+    intervalCoverages: z.array(z.number()),
+    insuranceLevels: z.object({
+      level1: z.number(),
+      level2: z.number(),
+      level3: z.number(),
+      levelCustom: z.number().optional(),
+    }),
+  }),
+})
+
+type CalculatorInput = z.output<typeof inputSchema>
 
 export const disabilityInsurance = defineCalculator({
-  schema,
+  inputSchema,
+  outputSchema,
   calculate,
 })
 

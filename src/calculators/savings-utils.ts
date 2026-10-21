@@ -146,13 +146,17 @@ export function getFinancialFunctionParameters(
   )
 }
 
-export function calcDiagramData(savings: z.output<typeof savingsBaseSchema>): {
-  CAPITAL_LIST?: number[]
-  INTEREST_LIST?: number[]
-  LAST_CAPITAL: string
-  LAST_INTEREST: string
-  TOTAL_CAPITAL: string
-} {
+export const diagramDataSchema = z.object({
+  CAPITAL_LIST: z.array(z.number()),
+  INTEREST_LIST: z.array(z.number()),
+  LAST_CAPITAL: z.string(),
+  LAST_INTEREST: z.string(),
+  TOTAL_CAPITAL: z.string(),
+})
+
+export function calcDiagramData(
+  savings: z.output<typeof savingsBaseSchema>,
+): z.output<typeof diagramDataSchema> {
   const {
     capitalGainsTax,
     considerCapitalGainsTax,

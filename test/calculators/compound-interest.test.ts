@@ -2,6 +2,17 @@ import { describe, expect, it } from 'vitest'
 import { compoundInterest } from '../../src/calculators/compound-interest'
 
 describe('calculators/compound-interest', () => {
+  it('matches outputSchema', () => {
+    const result = compoundInterest.validateAndCalculate({
+      startCapital: 5000,
+      monthlyPayment: 100,
+      durationYears: 10,
+      yearlyInterest: 5,
+      type: 'monthly',
+    })
+    expect(compoundInterest.outputSchema.parse(result)).toEqual(result)
+  })
+
   it('compounds monthly with start capital', () => {
     const result = compoundInterest.validateAndCalculate({
       startCapital: 5000,

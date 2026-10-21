@@ -6,9 +6,13 @@ import { savingsEndValue } from './savings-end-value'
 import { savingsInterestRate } from './savings-interest-rate'
 import { savingsPayment } from './savings-payment'
 import { savingsStartValue } from './savings-start-value'
-import { calcDiagramData, savingsBaseSchema } from './savings-utils'
+import {
+  calcDiagramData,
+  diagramDataSchema,
+  savingsBaseSchema,
+} from './savings-utils'
 
-const schema = z.looseObject({
+const inputSchema = z.looseObject({
   output: z.enum([
     'endValue',
     'startValue',
@@ -18,11 +22,24 @@ const schema = z.looseObject({
   ]),
 })
 
-type CalculatorInput = z.output<typeof schema>
+const outputSchema = z.object({
+  endValue: z.string(),
+  startCapital: z.string(),
+  savingRate: z.string(),
+  yearlyDuration: z.string(),
+  monthlyDuration: z.string(),
+  yearlyInterest: z.string(),
+  deposits: z.string(),
+  interestAfterTax: z.string(),
+  diagramData: diagramDataSchema,
+})
+
+type CalculatorInput = z.output<typeof inputSchema>
 type SavingsObject = z.output<typeof savingsBaseSchema>
 
 export const savings = defineCalculator({
-  schema,
+  inputSchema,
+  outputSchema,
   calculate,
 })
 
