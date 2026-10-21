@@ -551,6 +551,40 @@ describe('/calculators/savings-utils', () => {
     }
   })
 
+  describe('unreachable endValue', () => {
+    const unreachableInput = {
+      ...testConfig[0].input,
+      endValue: 10_000,
+      startValue: 0,
+      savingRate: 0,
+      saveIntervalType: 'monthly',
+      interestIntervalType: 'monthly',
+    } as const
+
+    it.each([true, false])(
+      'throws for duration instead of returning a non-finite number (compound: %s)',
+      (useCompoundInterest) => {
+        expect(() =>
+          savingsDuration.validateAndCalculate({
+            ...unreachableInput,
+            useCompoundInterest,
+          }),
+        ).toThrowError('Cannot calculate duration: endValue is not reachable')
+      },
+    )
+
+    it('throws for interest rate instead of returning NaN', () => {
+      expect(() =>
+        savingsInterestRate.validateAndCalculate({
+          ...unreachableInput,
+          useCompoundInterest: true,
+        }),
+      ).toThrowError(
+        'Cannot calculate interest rate: endValue is not reachable',
+      )
+    })
+  })
+
   function parseTestData(
     endValueString: string,
     saveIntervalType: string,

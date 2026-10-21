@@ -20,13 +20,14 @@ export const savingsDuration = defineCalculator({
 })
 
 function calculate(parsedInput: CalculatorInput) {
-  const { useCompoundInterest } = parsedInput
+  const result = parsedInput.useCompoundInterest
+    ? calculateWithCompoundInterest(parsedInput)
+    : calculateWithSimpleInterest(parsedInput)
 
-  if (useCompoundInterest) {
-    return calculateWithCompoundInterest(parsedInput)
-  } else {
-    return calculateWithSimpleInterest(parsedInput)
+  if (!Number.isFinite(result)) {
+    throw new TypeError('Cannot calculate duration: endValue is not reachable')
   }
+  return result
 }
 
 function calculateWithCompoundInterest(parsedInput: CalculatorInput) {
