@@ -1,0 +1,577 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`/calculators/riester-or-av-depot > calculates the AV-Depot scenario 1`] = `
+{
+  "finalCapital": {
+    "avDepot": "163.435€",
+    "riester": "77.065€",
+  },
+  "firstPayoutYear": {
+    "gross": {
+      "avDepot": "11.365€",
+      "riester": "3.006€",
+    },
+    "net": {
+      "avDepot": "8.331€",
+      "riester": "2.247€",
+    },
+    "tax": {
+      "avDepot": "3.034€",
+      "riester": "759€",
+    },
+  },
+  "payoutTotal": {
+    "gross": {
+      "avDepot": "204.569€",
+      "riester": "54.099€",
+    },
+    "net": {
+      "avDepot": "149.957€",
+      "riester": "40.437€",
+    },
+    "tax": {
+      "avDepot": "54.612€",
+      "riester": "13.662€",
+    },
+  },
+  "regularPayoutYear": {
+    "gross": {
+      "avDepot": "11.365€",
+      "riester": "3.006€",
+    },
+    "net": {
+      "avDepot": "8.331€",
+      "riester": "2.247€",
+    },
+    "tax": {
+      "avDepot": "3.034€",
+      "riester": "759€",
+    },
+  },
+  "riesterReturnRate": {
+    "case": "missingInputs",
+    "derivedValue": null,
+    "value": "1,7%",
+  },
+  "savingsPerYear": [
+    {
+      "capitalEnd": {
+        "avDepot": "21.217€",
+        "riester": "20.400€",
+      },
+      "capitalStart": {
+        "avDepot": "18.500€",
+        "riester": "18.500€",
+      },
+      "contribution": {
+        "avDepot": "1.644€",
+        "riester": "1.585€",
+      },
+      "grossReturn": {
+        "avDepot": "1.073€",
+        "riester": "315€",
+      },
+      "year": 1,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "24.092€",
+        "riester": "22.331€",
+      },
+      "capitalStart": {
+        "avDepot": "21.217€",
+        "riester": "20.400€",
+      },
+      "contribution": {
+        "avDepot": "1.644€",
+        "riester": "1.585€",
+      },
+      "grossReturn": {
+        "avDepot": "1.231€",
+        "riester": "347€",
+      },
+      "year": 2,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "27.133€",
+        "riester": "24.296€",
+      },
+      "capitalStart": {
+        "avDepot": "24.092€",
+        "riester": "22.331€",
+      },
+      "contribution": {
+        "avDepot": "1.644€",
+        "riester": "1.585€",
+      },
+      "grossReturn": {
+        "avDepot": "1.397€",
+        "riester": "380€",
+      },
+      "year": 3,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "30.351€",
+        "riester": "26.294€",
+      },
+      "capitalStart": {
+        "avDepot": "27.133€",
+        "riester": "24.296€",
+      },
+      "contribution": {
+        "avDepot": "1.644€",
+        "riester": "1.585€",
+      },
+      "grossReturn": {
+        "avDepot": "1.574€",
+        "riester": "413€",
+      },
+      "year": 4,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "33.755€",
+        "riester": "28.326€",
+      },
+      "capitalStart": {
+        "avDepot": "30.351€",
+        "riester": "26.294€",
+      },
+      "contribution": {
+        "avDepot": "1.644€",
+        "riester": "1.585€",
+      },
+      "grossReturn": {
+        "avDepot": "1.760€",
+        "riester": "447€",
+      },
+      "year": 5,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "37.357€",
+        "riester": "30.392€",
+      },
+      "capitalStart": {
+        "avDepot": "33.755€",
+        "riester": "28.326€",
+      },
+      "contribution": {
+        "avDepot": "1.644€",
+        "riester": "1.585€",
+      },
+      "grossReturn": {
+        "avDepot": "1.958€",
+        "riester": "482€",
+      },
+      "year": 6,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "41.167€",
+        "riester": "32.494€",
+      },
+      "capitalStart": {
+        "avDepot": "37.357€",
+        "riester": "30.392€",
+      },
+      "contribution": {
+        "avDepot": "1.644€",
+        "riester": "1.585€",
+      },
+      "grossReturn": {
+        "avDepot": "2.167€",
+        "riester": "517€",
+      },
+      "year": 7,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "45.199€",
+        "riester": "34.632€",
+      },
+      "capitalStart": {
+        "avDepot": "41.167€",
+        "riester": "32.494€",
+      },
+      "contribution": {
+        "avDepot": "1.644€",
+        "riester": "1.585€",
+      },
+      "grossReturn": {
+        "avDepot": "2.388€",
+        "riester": "552€",
+      },
+      "year": 8,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "49.465€",
+        "riester": "36.805€",
+      },
+      "capitalStart": {
+        "avDepot": "45.199€",
+        "riester": "34.632€",
+      },
+      "contribution": {
+        "avDepot": "1.644€",
+        "riester": "1.585€",
+      },
+      "grossReturn": {
+        "avDepot": "2.622€",
+        "riester": "589€",
+      },
+      "year": 9,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "53.978€",
+        "riester": "39.016€",
+      },
+      "capitalStart": {
+        "avDepot": "49.465€",
+        "riester": "36.805€",
+      },
+      "contribution": {
+        "avDepot": "1.644€",
+        "riester": "1.585€",
+      },
+      "grossReturn": {
+        "avDepot": "2.869€",
+        "riester": "626€",
+      },
+      "year": 10,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "58.752€",
+        "riester": "41.264€",
+      },
+      "capitalStart": {
+        "avDepot": "53.978€",
+        "riester": "39.016€",
+      },
+      "contribution": {
+        "avDepot": "1.644€",
+        "riester": "1.585€",
+      },
+      "grossReturn": {
+        "avDepot": "3.131€",
+        "riester": "663€",
+      },
+      "year": 11,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "63.804€",
+        "riester": "43.551€",
+      },
+      "capitalStart": {
+        "avDepot": "58.752€",
+        "riester": "41.264€",
+      },
+      "contribution": {
+        "avDepot": "1.644€",
+        "riester": "1.585€",
+      },
+      "grossReturn": {
+        "avDepot": "3.408€",
+        "riester": "701€",
+      },
+      "year": 12,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "69.149€",
+        "riester": "45.876€",
+      },
+      "capitalStart": {
+        "avDepot": "63.804€",
+        "riester": "43.551€",
+      },
+      "contribution": {
+        "avDepot": "1.644€",
+        "riester": "1.585€",
+      },
+      "grossReturn": {
+        "avDepot": "3.701€",
+        "riester": "740€",
+      },
+      "year": 13,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "74.803€",
+        "riester": "48.241€",
+      },
+      "capitalStart": {
+        "avDepot": "69.149€",
+        "riester": "45.876€",
+      },
+      "contribution": {
+        "avDepot": "1.644€",
+        "riester": "1.585€",
+      },
+      "grossReturn": {
+        "avDepot": "4.011€",
+        "riester": "780€",
+      },
+      "year": 14,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "80.786€",
+        "riester": "50.646€",
+      },
+      "capitalStart": {
+        "avDepot": "74.803€",
+        "riester": "48.241€",
+      },
+      "contribution": {
+        "avDepot": "1.644€",
+        "riester": "1.585€",
+      },
+      "grossReturn": {
+        "avDepot": "4.339€",
+        "riester": "820€",
+      },
+      "year": 15,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "87.115€",
+        "riester": "53.092€",
+      },
+      "capitalStart": {
+        "avDepot": "80.786€",
+        "riester": "50.646€",
+      },
+      "contribution": {
+        "avDepot": "1.644€",
+        "riester": "1.585€",
+      },
+      "grossReturn": {
+        "avDepot": "4.686€",
+        "riester": "861€",
+      },
+      "year": 16,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "93.812€",
+        "riester": "55.580€",
+      },
+      "capitalStart": {
+        "avDepot": "87.115€",
+        "riester": "53.092€",
+      },
+      "contribution": {
+        "avDepot": "1.644€",
+        "riester": "1.585€",
+      },
+      "grossReturn": {
+        "avDepot": "5.053€",
+        "riester": "903€",
+      },
+      "year": 17,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "100.897€",
+        "riester": "58.110€",
+      },
+      "capitalStart": {
+        "avDepot": "93.812€",
+        "riester": "55.580€",
+      },
+      "contribution": {
+        "avDepot": "1.644€",
+        "riester": "1.585€",
+      },
+      "grossReturn": {
+        "avDepot": "5.441€",
+        "riester": "945€",
+      },
+      "year": 18,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "108.393€",
+        "riester": "60.682€",
+      },
+      "capitalStart": {
+        "avDepot": "100.897€",
+        "riester": "58.110€",
+      },
+      "contribution": {
+        "avDepot": "1.644€",
+        "riester": "1.585€",
+      },
+      "grossReturn": {
+        "avDepot": "5.852€",
+        "riester": "988€",
+      },
+      "year": 19,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "116.324€",
+        "riester": "63.299€",
+      },
+      "capitalStart": {
+        "avDepot": "108.393€",
+        "riester": "60.682€",
+      },
+      "contribution": {
+        "avDepot": "1.644€",
+        "riester": "1.585€",
+      },
+      "grossReturn": {
+        "avDepot": "6.287€",
+        "riester": "1.032€",
+      },
+      "year": 20,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "124.715€",
+        "riester": "65.960€",
+      },
+      "capitalStart": {
+        "avDepot": "116.324€",
+        "riester": "63.299€",
+      },
+      "contribution": {
+        "avDepot": "1.644€",
+        "riester": "1.585€",
+      },
+      "grossReturn": {
+        "avDepot": "6.747€",
+        "riester": "1.076€",
+      },
+      "year": 21,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "133.592€",
+        "riester": "68.666€",
+      },
+      "capitalStart": {
+        "avDepot": "124.715€",
+        "riester": "65.960€",
+      },
+      "contribution": {
+        "avDepot": "1.644€",
+        "riester": "1.585€",
+      },
+      "grossReturn": {
+        "avDepot": "7.233€",
+        "riester": "1.121€",
+      },
+      "year": 22,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "142.985€",
+        "riester": "71.419€",
+      },
+      "capitalStart": {
+        "avDepot": "133.592€",
+        "riester": "68.666€",
+      },
+      "contribution": {
+        "avDepot": "1.644€",
+        "riester": "1.585€",
+      },
+      "grossReturn": {
+        "avDepot": "7.748€",
+        "riester": "1.167€",
+      },
+      "year": 23,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "152.922€",
+        "riester": "74.218€",
+      },
+      "capitalStart": {
+        "avDepot": "142.985€",
+        "riester": "71.419€",
+      },
+      "contribution": {
+        "avDepot": "1.644€",
+        "riester": "1.585€",
+      },
+      "grossReturn": {
+        "avDepot": "8.293€",
+        "riester": "1.214€",
+      },
+      "year": 24,
+    },
+    {
+      "capitalEnd": {
+        "avDepot": "163.435€",
+        "riester": "77.065€",
+      },
+      "capitalStart": {
+        "avDepot": "152.922€",
+        "riester": "74.218€",
+      },
+      "contribution": {
+        "avDepot": "1.644€",
+        "riester": "1.585€",
+      },
+      "grossReturn": {
+        "avDepot": "8.869€",
+        "riester": "1.262€",
+      },
+      "year": 25,
+    },
+  ],
+  "startCapital": {
+    "avDepot": "18.500€",
+    "riester": "18.500€",
+  },
+  "totalContributions": {
+    "avDepot": "30.000€",
+    "riester": "30.000€",
+  },
+  "totalGrundzulage": {
+    "avDepot": "9.750€",
+    "riester": "4.375€",
+  },
+  "totalInflow": {
+    "avDepot": "41.100€",
+    "riester": "39.625€",
+  },
+  "totalKinderzulage": {
+    "avDepot": "0€",
+    "riester": "0€",
+  },
+  "totalReturn": {
+    "avDepot": "103.835€",
+    "riester": "18.940€",
+  },
+  "totalTaxSaving": {
+    "avDepot": "1.350€",
+    "riester": "5.250€",
+  },
+  "verdict": {
+    "capitalDifference": "+86.370€",
+    "case": "avDepotWins",
+    "leader": "avDepot",
+    "monthlyPayout": {
+      "avDepot": "694€",
+      "riester": "187€",
+    },
+    "subsidyDifference": "1.475€",
+    "survivalToPayoutEnd": {
+      "age": 85,
+      "female": "56,3%",
+      "male": "39,6%",
+    },
+  },
+}
+`;

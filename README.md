@@ -303,6 +303,49 @@ result.savings.totalGrundzulage // Sum of all Grundzulagen
 result.payout.totalNet // Total net payout
 ```
 
+### Riester or AV-Depot Calculator
+
+Compares keeping an existing Riester contract with transferring its capital into an AV-Depot and continuing the contributions there. Both scenarios are projected through the savings and payout phases. The result includes a verdict on which option leads.
+
+#### Key Features:
+
+- **Contract transfer** moving the current Riester contract value into the AV-Depot, minus switching costs if the contract is younger than five years
+- **Riester return rate** entered manually or derived from the contract's value, total contributions and allowances (falls back to a default rate if the contract is too young or inputs are missing)
+- **Riester payout** as a lifelong annuity based on the contract's annuity factor (Rentenfaktor per 10,000 €)
+- **Verdict** with the capital difference, the subsidy difference, the monthly net payout of both options and the survival probability to the end of the payout phase (Destatis Periodensterbetafel)
+
+```ts
+import { riesterOrAvDepot } from '@finanzfluss/calculators'
+
+const input = {
+  age: 42,
+  retirementAge: 67,
+  zveSavingsPhase: 30_000,
+  zveRetirement: 20_000,
+  riesterAnnualContribution: 1_200, // own contribution per year
+  riesterContractValue: 18_500, // current value of the Riester contract
+  riesterContractStart: 2012,
+  riesterTotalContributions: 9_000, // optional, used to derive the return rate
+  riesterTotalAllowances: 2_500, // optional, used to derive the return rate
+  // riesterReturnRate: 2, // optional, percent, overrides the derived rate
+  riesterAnnuityFactor: 32.5, // monthly annuity per 10,000 € capital
+  riesterSwitchingCosts: 150,
+  etfReturnRate: 6, // percent
+  avDepotCosts: 0.2, // percent, annual AV-Depot cost drag
+  oneTimePayout: 0, // percent taken as a lump sum at retirement
+  payoutReturnRate: 3, // percent
+  payoutUntilAge: 85,
+  childBirthYears: [],
+}
+
+const result = riesterOrAvDepot.validateAndCalculate(input)
+
+result.finalCapital.avDepot // Capital in the AV-Depot at retirement
+result.finalCapital.riester // Capital in the Riester contract at retirement
+result.riesterReturnRate.case // 'manual' | 'derived' | 'missingInputs' | 'tooShort' | 'tooHigh' | 'tooLow'
+result.verdict.case // 'avDepotWins' | 'riesterWins' | 'mixed'
+```
+
 <br />
 
 ## Testing
