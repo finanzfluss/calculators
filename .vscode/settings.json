@@ -1,18 +1,11 @@
 {
-  // Enable ESLint flat config support
   "eslint.useFlatConfig": true,
-
-  // Use Pretter as the default formatter
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
-
-  // Auto-fix ESLint errors on save
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
     "source.organizeImports": "never"
   },
-
-  // Enable ESLint for all supported languages
   "eslint.validate": [
     "javascript",
     "javascriptreact",
